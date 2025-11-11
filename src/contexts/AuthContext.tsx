@@ -18,36 +18,41 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      // For now, we'll skip auto-login until backend auth is fully set up
-      setIsLoading(false);
+      // Verify token and get user profile from REAL API
+      authAPI.getProfile()
+        .then(response => {
+          setUser(response.data);
+        })
+        .catch((error) => {
+          console.error('Token validation failed:', error);
+          localStorage.removeItem('authToken');
+        })
+        .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
     }
   }, []);
 
   const login = async (email: string, password: string) => {
-    // TEMPORARY: Mock login until backend auth endpoints are ready
-    if (email === 'admin@moldcrm.com' && password === 'admin123') {
-      const mockUser: User = {
-        id: 1,
-        email: 'admin@moldcrm.com',
-        first_name: 'Admin',
-        last_name: 'User',
-        role: 'admin',
-        phone: '',
-        department: '',
-        account: 1
-      };
-      localStorage.setItem('authToken', 'mock-token');
-      setUser(mockUser);
-    } else {
-      throw new Error('Invalid credentials');
+    try {
+      // REAL Django authentication
+      const response = await authAPI.login(email, password);
+      const { token, user } = response.data;
+      
+      // Store token and set user
+      localStorage.setItem('authToken', token);
+      setUser(user);
+    } catch (error: any) {
+      console.error('Login failed:', error);
+      throw new Error(error.response?.data?.detail || 'Login failed. Please check your credentials.');
     }
   };
 
   const logout = () => {
     localStorage.removeItem('authToken');
     setUser(null);
+    // Optionally call backend logout endpoint
+    // authAPI.logout().catch(console.error);
   };
 
   return (
