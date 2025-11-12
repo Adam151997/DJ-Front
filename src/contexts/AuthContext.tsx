@@ -17,61 +17,68 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    if (token) {
-      authAPI.getProfile()
-        .then(response => setUser(response.data))
-        .catch(() => localStorage.removeItem('authToken'))
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
+    const storedUser = localStorage.getItem('user');
+    
+    if (token && storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setUser(userData);
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        localStorage.removeItem('user');
+        localStorage.removeItem('authToken');
+      }
     }
+    setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
+      setIsLoading(true);
       console.log('Attempting login with:', { email, password });
       
-      // 🚨 CRITICAL FIX: Use "username" field instead of "email"
+      // Use "username" field for Django authentication
       const response = await authAPI.login({ username: email, password });
-      console.log('Login response:', response.data);
+      console.log('Login response:', response);
       
-      const { token, user_id, email: userEmail, first_name, last_name, role } = response.data;
+      // 🚨 CRITICAL FIX: Backend now returns { token, user }
+      const { token, user } = response;
       
-      if (!token) {
-        throw new Error('No authentication token received');
+      if (!token || !user) {
+        throw new Error('Invalid response from server - missing token or user data');
       }
       
-      // Store token and set user
+      // Store token and user
       localStorage.setItem('authToken', token);
-      
-      // Create user object from response
-      const user: User = {
-        id: user_id,
-        email: userEmail,
-        first_name: first_name,
-        last_name: last_name,
-        role: role,
-        phone: '',
-        department: '',
-        account: 1 // Default account ID
-      };
+      localStorage.setItem('user', JSON.stringify(user));
       
       setUser(user);
       console.log('Login successful, user set:', user);
       
     } catch (error: any) {
       console.error('Login failed:', error);
-      const errorMessage = error.response?.data?.error || 
-                          error.response?.data?.detail || 
-                          error.response?.data?.non_field_errors?.[0] ||
-                          error.message ||
-                          'Login failed. Please check your credentials.';
+      
+      let errorMessage = 'Login failed. Please check your credentials.';
+      
+      if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = error.message;
+      } else if (!error.response) {
+        errorMessage = 'Network error - cannot reach server';
+      }
+      
       throw new Error(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
     setUser(null);
   };
 
