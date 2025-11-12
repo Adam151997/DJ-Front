@@ -3,83 +3,63 @@ export interface User {
   email: string;
   first_name: string;
   last_name: string;
-  role: 'admin' | 'manager' | 'rep';
+  role: string;
   phone: string;
   department: string;
-  account: number;
-}
-
-export interface Account {
-  id: number;
-  name: string;
-  industry: string;
-  website: string;
-  phone: string;
-  created_at: string;
+  account: number;  // Account ID
+  account_name?: string;  // Account name for display
 }
 
 export interface Lead {
   id: number;
-  account: number;
-  assigned_to: number | null;
   first_name: string;
   last_name: string;
   email: string;
   phone: string;
   company: string;
-  status: 'new' | 'contacted' | 'qualified' | 'unqualified';
+  status: string;
   source: string;
   notes: string;
+  assigned_to: number | null;
+  assigned_to_name?: string;
   created_by: number;
   created_at: string;
   updated_at: string;
-  assigned_to_name?: string;
+  custom_data: any;
 }
 
 export interface Contact {
   id: number;
-  account: number;
-  lead: number | null;
   first_name: string;
   last_name: string;
   email: string;
   phone: string;
   company: string;
   title: string;
+  department: string;
+  lead: number | null;
+  lead_source?: string;
+  deal_count?: number;
   created_by: number;
   created_at: string;
   updated_at: string;
+  custom_data: any;
 }
 
 export interface Deal {
   id: number;
-  account: number;
   name: string;
   contact: number;
+  contact_name?: string;
   assigned_to: number | null;
-  amount: string;
-  stage: 'prospect' | 'qualification' | 'proposal' | 'negotiation' | 'closed_won' | 'closed_lost';
+  assigned_to_name?: string;
+  amount: string | null;
+  stage: string;
   expected_close_date: string | null;
   probability: number;
+  notes: string;
   created_by: number;
   created_at: string;
   updated_at: string;
-  contact_name?: string;
-  assigned_to_name?: string;
-}
-
-export interface DashboardData {
-  lead_analytics: {
-    total: number;
-    new: number;
-    contacted: number;
-    qualified: number;
-  };
-  deal_analytics: {
-    total_amount: string | null;
-    won_amount: string | null;
-    open_deals: number;
-  };
-  recent_leads: Lead[];
-  recent_deals: Deal[];
+  custom_data: any;
 }
