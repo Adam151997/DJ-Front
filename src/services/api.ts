@@ -62,6 +62,10 @@ export const dealsAPI = {
   create: (data: any) => api.post('/deals/', data).then(res => res.data),
   update: (id: number, data: any) => api.patch(`/deals/${id}/`, data).then(res => res.data),
   delete: (id: number) => api.delete(`/deals/${id}/`).then(res => res.data),
+  updateStage: (dealId: number, stage: string) => 
+    api.patch(`/deals/${dealId}/update_stage/`, { stage }).then(res => res.data),
+  getPipelineAnalytics: () => 
+    api.get('/deals/pipeline_analytics/').then(res => res.data),
 };
 
 export const dashboardAPI = {
