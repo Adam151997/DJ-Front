@@ -24,44 +24,46 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('authToken');
-      window.location.href = '/';
+      localStorage.removeItem('user');
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
 export const authAPI = {
-  // 🚨 CRITICAL FIX: Expect username field (not email)
   login: (data: { username: string; password: string }) => 
-    api.post('/auth/login/', data),
-  logout: () => api.post('/auth/logout/'),
-  getProfile: () => api.get('/users/profile/'),
+    api.post('/auth/login/', data).then(res => res.data),
+  logout: () => api.post('/auth/logout/').then(res => res.data),
+  getProfile: () => api.get('/users/profile/').then(res => res.data),
 };
 
 export const leadsAPI = {
-  getAll: () => api.get('/leads/'),
-  getById: (id: number) => api.get(`/leads/${id}/`),
-  create: (data: any) => api.post('/leads/', data),
-  update: (id: number, data: any) => api.patch(`/leads/${id}/`, data),
-  delete: (id: number) => api.delete(`/leads/${id}/`),
+  getAll: () => api.get('/leads/').then(res => res.data),
+  getById: (id: number) => api.get(`/leads/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/leads/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/leads/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/leads/${id}/`).then(res => res.data),
 };
 
 export const contactsAPI = {
-  getAll: () => api.get('/contacts/'),
-  getById: (id: number) => api.get(`/contacts/${id}/`),
-  create: (data: any) => api.post('/contacts/', data),
-  update: (id: number, data: any) => api.patch(`/contacts/${id}/`, data),
-  delete: (id: number) => api.delete(`/contacts/${id}/`),
+  getAll: () => api.get('/contacts/').then(res => res.data),
+  getById: (id: number) => api.get(`/contacts/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/contacts/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/contacts/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/contacts/${id}/`).then(res => res.data),
+  convertFromLead: (leadId: number) => 
+    api.post('/contacts/convert_from_lead/', { lead_id: leadId }).then(res => res.data),
 };
 
 export const dealsAPI = {
-  getAll: () => api.get('/deals/'),
-  getById: (id: number) => api.get(`/deals/${id}/`),
-  create: (data: any) => api.post('/deals/', data),
-  update: (id: number, data: any) => api.patch(`/deals/${id}/`, data),
-  delete: (id: number) => api.delete(`/deals/${id}/`),
+  getAll: () => api.get('/deals/').then(res => res.data),
+  getById: (id: number) => api.get(`/deals/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/deals/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/deals/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/deals/${id}/`).then(res => res.data),
 };
 
 export const dashboardAPI = {
-  getData: () => api.get('/dashboard/'),
+  getData: () => api.get('/dashboard/').then(res => res.data),
 };
