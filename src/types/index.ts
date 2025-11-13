@@ -63,3 +63,50 @@ export interface Deal {
   updated_at: string;
   custom_data: any;
 }
+
+// Custom Objects System
+export interface CustomObject {
+  id: number;
+  name: string;
+  display_name: string;
+  description: string;
+  icon: string;
+  created_at: string;
+  created_by: number;
+  account: number;
+}
+
+export interface CustomField {
+  id: number;
+  name: string;
+  display_name: string;
+  field_type: 'text' | 'number' | 'date' | 'boolean' | 'select' | 'email' | 'phone' | 'textarea' | 'currency';
+  required: boolean;
+  options: string[] | null;
+  order: number;
+  custom_object: number;
+  default_value?: string;
+}
+
+export interface CustomObjectRecord {
+  id: number;
+  data: Record<string, any>;
+  created_at: string;
+  updated_at: string;
+  custom_object: number;
+  created_by: number;
+}
+
+// Pipeline Stage Configuration
+export interface PipelineStage {
+  id: number;
+  name: string;
+  display_name: string;
+  color: string;
+  order: number;
+  is_closed: boolean;
+  is_won: boolean;
+  account: number;
+  created_at: string;
+  updated_at: string;
+}

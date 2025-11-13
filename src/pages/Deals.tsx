@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { dealsAPI, contactsAPI } from '../services/api';
-import { Deal, Contact } from '../types';
+import { dealsAPI, contactsAPI, pipelineStagesAPI } from '../services/api';
+import { Deal, Contact, PipelineStage } from '../types';
 import { DealForm } from '../components/forms/DealForm';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -43,6 +43,11 @@ export const Deals: React.FC = () => {
     queryFn: () => contactsAPI.getAll(),
   });
 
+  const { data: pipelineStages } = useQuery({
+    queryKey: ['pipeline-stages'],
+    queryFn: () => pipelineStagesAPI.getAll(),
+  });
+
   const deleteMutation = useMutation({
     mutationFn: (id: number) => dealsAPI.delete(id),
     onSuccess: () => {
@@ -80,7 +85,8 @@ export const Deals: React.FC = () => {
     return matchesSearch && matchesStage;
   });
 
-  const stageOptions = [
+  // Use dynamic stages or fallback to default
+  const defaultStages = [
     { value: 'all', label: 'All Stages', color: 'gray' },
     { value: 'prospect', label: 'Prospect', color: 'blue' },
     { value: 'qualification', label: 'Qualification', color: 'yellow' },
@@ -89,6 +95,38 @@ export const Deals: React.FC = () => {
     { value: 'closed_won', label: 'Won', color: 'green' },
     { value: 'closed_lost', label: 'Lost', color: 'red' },
   ];
+
+  const stageOptions = pipelineStages && pipelineStages.length > 0
+    ? [
+        { value: 'all', label: 'All Stages', color: 'gray' },
+        ...pipelineStages.map(stage => ({
+          value: stage.name,
+          label: stage.display_name,
+          color: stage.color.replace('#', ''), // Remove # for Tailwind classes
+        }))
+      ]
+    : defaultStages;
+
+  // Helper to get stage color class
+  const getStageColorClass = (stageName: string) => {
+    const stage = pipelineStages?.find(s => s.name === stageName);
+    if (stage) {
+      return {
+        bg: stage.color + '1A', // 10% opacity
+        text: stage.color,
+      };
+    }
+    // Fallback colors
+    const colorMap: Record<string, { bg: string; text: string }> = {
+      prospect: { bg: '#3B82F61A', text: '#3B82F6' },
+      qualification: { bg: '#F59E0B1A', text: '#F59E0B' },
+      proposal: { bg: '#F97316 1A', text: '#F97316' },
+      negotiation: { bg: '#8B5CF61A', text: '#8B5CF6' },
+      closed_won: { bg: '#10B9811A', text: '#10B981' },
+      closed_lost: { bg: '#EF44441A', text: '#EF4444' },
+    };
+    return colorMap[stageName] || { bg: '#6B72801A', text: '#6B7280' };
+  };
 
   const formatCurrency = (amount: string | null) => {
     if (!amount) return '$0';
@@ -254,21 +292,28 @@ export const Deals: React.FC = () => {
                       <select
                         value={deal.stage}
                         onChange={(e) => handleStageUpdate(deal, e.target.value)}
-                        className={`px-3 py-1 text-xs font-medium rounded-full border-0 focus:ring-2 focus:ring-primary-500 ${
-                          deal.stage === 'closed_won' ? 'bg-green-100 text-green-800' :
-                          deal.stage === 'closed_lost' ? 'bg-red-100 text-red-800' :
-                          deal.stage === 'prospect' ? 'bg-blue-100 text-blue-800' :
-                          deal.stage === 'qualification' ? 'bg-yellow-100 text-yellow-800' :
-                          deal.stage === 'proposal' ? 'bg-orange-100 text-orange-800' :
-                          'bg-purple-100 text-purple-800'
-                        }`}
+                        className="px-3 py-1 text-xs font-medium rounded-full border-0 focus:ring-2 focus:ring-primary-500"
+                        style={{
+                          backgroundColor: getStageColorClass(deal.stage).bg,
+                          color: getStageColorClass(deal.stage).text,
+                        }}
                       >
-                        <option value="prospect">Prospect</option>
-                        <option value="qualification">Qualification</option>
-                        <option value="proposal">Proposal</option>
-                        <option value="negotiation">Negotiation</option>
-                        <option value="closed_won">Won</option>
-                        <option value="closed_lost">Lost</option>
+                        {(pipelineStages && pipelineStages.length > 0 ? pipelineStages : []).map(stage => (
+                          <option key={stage.name} value={stage.name}>
+                            {stage.display_name}
+                          </option>
+                        ))}
+                        {/* Fallback if no stages configured */}
+                        {(!pipelineStages || pipelineStages.length === 0) && (
+                          <>
+                            <option value="prospect">Prospect</option>
+                            <option value="qualification">Qualification</option>
+                            <option value="proposal">Proposal</option>
+                            <option value="negotiation">Negotiation</option>
+                            <option value="closed_won">Won</option>
+                            <option value="closed_lost">Lost</option>
+                          </>
+                        )}
                       </select>
                     </td>
                     <td className="py-3 px-4">

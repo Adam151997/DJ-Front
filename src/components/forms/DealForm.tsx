@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { dealsAPI } from '../../services/api';
-import { Deal, Contact } from '../../types';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { dealsAPI, customFieldsAPI, pipelineStagesAPI } from '../../services/api';
+import { Deal, Contact, CustomField, PipelineStage } from '../../types';
 import { Button } from '../ui/Button';
 import { X } from 'lucide-react';
 
@@ -27,8 +27,21 @@ export const DealForm: React.FC<DealFormProps> = ({
     probability: 50,
     notes: '',
   });
+  const [customFieldsData, setCustomFieldsData] = useState<Record<string, any>>({});
 
   const queryClient = useQueryClient();
+
+  // Fetch custom fields
+  const { data: customFields } = useQuery({
+    queryKey: ['custom-fields', 'deals'],
+    queryFn: () => customFieldsAPI.getAll(),
+  });
+
+  // Fetch pipeline stages
+  const { data: pipelineStages } = useQuery({
+    queryKey: ['pipeline-stages'],
+    queryFn: () => pipelineStagesAPI.getAll(),
+  });
 
   useEffect(() => {
     if (deal) {
@@ -41,6 +54,10 @@ export const DealForm: React.FC<DealFormProps> = ({
         probability: deal.probability,
         notes: deal.notes || '',
       });
+      // Load custom fields data
+      if (deal.custom_data) {
+        setCustomFieldsData(deal.custom_data);
+      }
     }
   }, [deal]);
 
@@ -58,15 +75,113 @@ export const DealForm: React.FC<DealFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const submitData = {
       ...formData,
       contact: parseInt(formData.contact),
       amount: formData.amount ? parseFloat(formData.amount) : null,
       probability: parseInt(formData.probability.toString()),
+      custom_data: customFieldsData,
     };
-    
+
     mutation.mutate(submitData);
+  };
+
+  const handleCustomFieldChange = (fieldName: string, value: any) => {
+    setCustomFieldsData(prev => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  };
+
+  const renderCustomField = (field: CustomField) => {
+    const value = customFieldsData[field.name] || field.default_value || '';
+
+    switch (field.field_type) {
+      case 'text':
+      case 'email':
+      case 'phone':
+        return (
+          <input
+            type={field.field_type}
+            required={field.required}
+            value={value}
+            onChange={(e) => handleCustomFieldChange(field.name, e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            placeholder={`Enter ${field.display_name.toLowerCase()}`}
+          />
+        );
+
+      case 'textarea':
+        return (
+          <textarea
+            required={field.required}
+            value={value}
+            onChange={(e) => handleCustomFieldChange(field.name, e.target.value)}
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            placeholder={`Enter ${field.display_name.toLowerCase()}`}
+          />
+        );
+
+      case 'number':
+      case 'currency':
+        return (
+          <input
+            type="number"
+            step={field.field_type === 'currency' ? '0.01' : '1'}
+            required={field.required}
+            value={value}
+            onChange={(e) => handleCustomFieldChange(field.name, e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            placeholder={`Enter ${field.display_name.toLowerCase()}`}
+          />
+        );
+
+      case 'date':
+        return (
+          <input
+            type="date"
+            required={field.required}
+            value={value}
+            onChange={(e) => handleCustomFieldChange(field.name, e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+          />
+        );
+
+      case 'boolean':
+        return (
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={value === true || value === 'true'}
+              onChange={(e) => handleCustomFieldChange(field.name, e.target.checked)}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <label className="ml-2 text-sm text-gray-600">Yes</label>
+          </div>
+        );
+
+      case 'select':
+        return (
+          <select
+            required={field.required}
+            value={value}
+            onChange={(e) => handleCustomFieldChange(field.name, e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            <option value="">Select an option</option>
+            {field.options?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        );
+
+      default:
+        return null;
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -76,14 +191,20 @@ export const DealForm: React.FC<DealFormProps> = ({
     }));
   };
 
-  const stageOptions = [
-    { value: 'prospect', label: 'Prospect' },
-    { value: 'qualification', label: 'Qualification' },
-    { value: 'proposal', label: 'Proposal' },
-    { value: 'negotiation', label: 'Negotiation' },
-    { value: 'closed_won', label: 'Won' },
-    { value: 'closed_lost', label: 'Lost' },
-  ];
+  // Use dynamic stages or fallback to default
+  const stageOptions = pipelineStages && pipelineStages.length > 0
+    ? pipelineStages.map(stage => ({
+        value: stage.name,
+        label: stage.display_name,
+      }))
+    : [
+        { value: 'prospect', label: 'Prospect' },
+        { value: 'qualification', label: 'Qualification' },
+        { value: 'proposal', label: 'Proposal' },
+        { value: 'negotiation', label: 'Negotiation' },
+        { value: 'closed_won', label: 'Won' },
+        { value: 'closed_lost', label: 'Lost' },
+      ];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -228,6 +349,25 @@ export const DealForm: React.FC<DealFormProps> = ({
               placeholder="Add any notes about this deal..."
             />
           </div>
+
+          {/* Custom Fields Section */}
+          {customFields && customFields.length > 0 && (
+            <>
+              <div className="pt-4 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Custom Fields</h3>
+                <div className="space-y-4">
+                  {customFields.map((field) => (
+                    <div key={field.id}>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        {field.display_name} {field.required && <span className="text-red-500">*</span>}
+                      </label>
+                      {renderCustomField(field)}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
             <Button

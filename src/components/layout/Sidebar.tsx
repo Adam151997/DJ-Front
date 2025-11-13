@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Contact, 
+import {
+  LayoutDashboard,
+  Users,
+  Contact,
   TrendingUp,
   Menu,
-  X
+  X,
+  Settings,
+  Sliders,
+  Layout as LayoutIcon
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -20,6 +23,11 @@ export const Sidebar: React.FC = () => {
     { name: 'Leads', href: '/leads', icon: Users },
     { name: 'Contacts', href: '/contacts', icon: Contact },
     { name: 'Deals', href: '/deals', icon: TrendingUp },
+  ];
+
+  const settingsNavigation = [
+    { name: 'Pipeline Stages', href: '/settings/pipeline', icon: Sliders },
+    { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
   ];
 
   const isActive = (path: string) => {
@@ -52,25 +60,56 @@ export const Sidebar: React.FC = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 py-6 space-y-2">
-          {navigation.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setIsMobileOpen(false)}
-                className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive(item.href)
-                    ? 'bg-primary-50 text-primary-700 border border-primary-200'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <Icon className="h-5 w-5 mr-3" />
-                {item.name}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 px-4 py-6 space-y-6 overflow-y-auto">
+          {/* Main Navigation */}
+          <div className="space-y-2">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-150 ${
+                    isActive(item.href)
+                      ? 'bg-primary-50 text-primary-700 border border-primary-200'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-5 w-5 mr-3" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Settings Section */}
+          <div className="space-y-2">
+            <div className="flex items-center px-4 py-2">
+              <Settings className="h-4 w-4 text-gray-400 mr-2" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Settings
+              </span>
+            </div>
+            {settingsNavigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-150 ${
+                    isActive(item.href)
+                      ? 'bg-primary-50 text-primary-700 border border-primary-200'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className="h-5 w-5 mr-3" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* User Section */}

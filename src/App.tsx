@@ -8,6 +8,8 @@ import { Dashboard } from './pages/Dashboard';
 import { Leads } from './pages/Leads';
 import { Contacts } from './pages/Contacts';
 import { Deals } from './pages/Deals';
+import { PipelineSettings } from './pages/PipelineSettings';
+import { CustomFieldsSettings } from './pages/CustomFieldsSettings';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -24,6 +26,8 @@ function App() {
                 <Route path="/leads" element={<Leads />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/deals" element={<Deals />} />
+                <Route path="/settings/pipeline" element={<PipelineSettings />} />
+                <Route path="/settings/custom-fields" element={<CustomFieldsSettings />} />
               </Routes>
             </Layout>
           </ProtectedRoute>
