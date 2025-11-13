@@ -9,7 +9,12 @@ import {
   X,
   Settings,
   Sliders,
-  Layout as LayoutIcon
+  Layout as LayoutIcon,
+  Sparkles,
+  Brain,
+  Zap,
+  Mail,
+  Webhook as WebhookIcon,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -25,9 +30,17 @@ export const Sidebar: React.FC = () => {
     { name: 'Deals', href: '/deals', icon: TrendingUp },
   ];
 
+  const automationNavigation = [
+    { name: 'AI Insights', href: '/ai-insights', icon: Brain },
+    { name: 'Workflows', href: '/workflows', icon: Zap },
+    { name: 'Email Campaigns', href: '/email-campaigns', icon: Mail },
+  ];
+
   const settingsNavigation = [
+    { name: 'Templates', href: '/settings/templates', icon: Sparkles },
     { name: 'Pipeline Stages', href: '/settings/pipeline', icon: Sliders },
     { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
+    { name: 'Webhooks', href: '/settings/webhooks', icon: WebhookIcon },
   ];
 
   const isActive = (path: string) => {
@@ -70,6 +83,35 @@ export const Sidebar: React.FC = () => {
           {/* Main Navigation */}
           <div className="space-y-1">
             {navigation.map((item) => {
+              const Icon = item.icon;
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMobileOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
+                    active
+                      ? 'bg-primary-50 text-primary-700 shadow-xs'
+                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                  }`}
+                >
+                  <Icon className={`h-5 w-5 ${active ? 'text-primary-600' : 'text-gray-400'}`} />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Automation Section */}
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 px-3 py-2">
+              <Zap className="h-4 w-4 text-gray-400" />
+              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                Automation
+              </span>
+            </div>
+            {automationNavigation.map((item) => {
               const Icon = item.icon;
               const active = isActive(item.href);
               return (

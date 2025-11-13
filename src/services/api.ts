@@ -100,3 +100,85 @@ export const pipelineStagesAPI = {
   reorder: (stages: Array<{ id: number; order: number }>) =>
     api.post('/pipeline-stages/reorder/', { stages }).then(res => res.data),
 };
+
+// Business Templates API
+export const templatesAPI = {
+  getAll: () => api.get('/templates/').then(res => res.data),
+  getById: (id: number) => api.get(`/templates/${id}/`).then(res => res.data),
+  apply: (id: number, configuration?: any) =>
+    api.post(`/templates/${id}/apply/`, { configuration }).then(res => res.data),
+  getApplied: () => api.get('/applied-templates/').then(res => res.data),
+};
+
+// AI & Automation API
+export const aiInsightsAPI = {
+  getAll: () => api.get('/ai-insights/').then(res => res.data),
+  getById: (id: number) => api.get(`/ai-insights/${id}/`).then(res => res.data),
+  markRead: (id: number) => api.patch(`/ai-insights/${id}/`, { is_read: true }).then(res => res.data),
+  generateLeadScore: (leadId: number) =>
+    api.post(`/ai-insights/generate-lead-score/`, { lead_id: leadId }).then(res => res.data),
+  generateDealPrediction: (dealId: number) =>
+    api.post(`/ai-insights/generate-deal-prediction/`, { deal_id: dealId }).then(res => res.data),
+  analyzeSentiment: (text: string, entityType?: string, entityId?: number) =>
+    api.post(`/ai-insights/analyze-sentiment/`, { text, entity_type: entityType, entity_id: entityId }).then(res => res.data),
+};
+
+export const workflowsAPI = {
+  getAll: () => api.get('/workflows/').then(res => res.data),
+  getById: (id: number) => api.get(`/workflows/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/workflows/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/workflows/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/workflows/${id}/`).then(res => res.data),
+  activate: (id: number) => api.post(`/workflows/${id}/activate/`).then(res => res.data),
+  pause: (id: number) => api.post(`/workflows/${id}/pause/`).then(res => res.data),
+  getExecutions: (id: number) => api.get(`/workflows/${id}/executions/`).then(res => res.data),
+};
+
+// Email API
+export const emailTemplatesAPI = {
+  getAll: () => api.get('/email-templates/').then(res => res.data),
+  getById: (id: number) => api.get(`/email-templates/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/email-templates/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/email-templates/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/email-templates/${id}/`).then(res => res.data),
+  preview: (id: number, data: any) => api.post(`/email-templates/${id}/preview/`, data).then(res => res.data),
+};
+
+export const emailCampaignsAPI = {
+  getAll: () => api.get('/email-campaigns/').then(res => res.data),
+  getById: (id: number) => api.get(`/email-campaigns/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/email-campaigns/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/email-campaigns/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/email-campaigns/${id}/`).then(res => res.data),
+  send: (id: number) => api.post(`/email-campaigns/${id}/send/`).then(res => res.data),
+  pause: (id: number) => api.post(`/email-campaigns/${id}/pause/`).then(res => res.data),
+  getEmails: (id: number) => api.get(`/email-campaigns/${id}/emails/`).then(res => res.data),
+  getStats: (id: number) => api.get(`/email-campaigns/${id}/stats/`).then(res => res.data),
+};
+
+export const emailsAPI = {
+  getAll: () => api.get('/emails/').then(res => res.data),
+  getById: (id: number) => api.get(`/emails/${id}/`).then(res => res.data),
+  send: (data: any) => api.post('/emails/', data).then(res => res.data),
+};
+
+// Integrations API
+export const webhooksAPI = {
+  getAll: () => api.get('/webhooks/').then(res => res.data),
+  getById: (id: number) => api.get(`/webhooks/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/webhooks/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/webhooks/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/webhooks/${id}/`).then(res => res.data),
+  test: (id: number) => api.post(`/webhooks/${id}/test/`).then(res => res.data),
+  getLogs: (id: number) => api.get(`/webhooks/${id}/logs/`).then(res => res.data),
+};
+
+export const integrationsAPI = {
+  getAll: () => api.get('/integrations/').then(res => res.data),
+  getById: (id: number) => api.get(`/integrations/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/integrations/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/integrations/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/integrations/${id}/`).then(res => res.data),
+  sync: (id: number) => api.post(`/integrations/${id}/sync/`).then(res => res.data),
+  test: (id: number) => api.post(`/integrations/${id}/test/`).then(res => res.data),
+};
