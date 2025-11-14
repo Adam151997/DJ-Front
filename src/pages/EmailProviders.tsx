@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tantml:react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { emailProvidersAPI } from '../services/api';
 import { EmailProvider, EmailProviderStats } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
