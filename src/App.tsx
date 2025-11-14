@@ -14,6 +14,7 @@ import { BusinessTemplates } from './pages/BusinessTemplates';
 import { AIInsights } from './pages/AIInsights';
 import { Workflows } from './pages/Workflows';
 import { EmailCampaigns } from './pages/EmailCampaigns';
+import { EmailProviders } from './pages/EmailProviders';
 import { WebhookSettings } from './pages/WebhookSettings';
 
 // Create a client
@@ -36,6 +37,7 @@ function App() {
                 <Route path="/ai-insights" element={<AIInsights />} />
                 <Route path="/workflows" element={<Workflows />} />
                 <Route path="/email-campaigns" element={<EmailCampaigns />} />
+                <Route path="/email-providers" element={<EmailProviders />} />
 
                 {/* Settings Routes */}
                 <Route path="/settings/templates" element={<BusinessTemplates />} />

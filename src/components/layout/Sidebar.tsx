@@ -40,6 +40,7 @@ export const Sidebar: React.FC = () => {
     { name: 'Templates', href: '/settings/templates', icon: Sparkles },
     { name: 'Pipeline Stages', href: '/settings/pipeline', icon: Sliders },
     { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
+    { name: 'Email Providers', href: '/email-providers', icon: Mail },
     { name: 'Webhooks', href: '/settings/webhooks', icon: WebhookIcon },
   ];
 
