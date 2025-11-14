@@ -182,3 +182,17 @@ export const integrationsAPI = {
   sync: (id: number) => api.post(`/integrations/${id}/sync/`).then(res => res.data),
   test: (id: number) => api.post(`/integrations/${id}/test/`).then(res => res.data),
 };
+
+// Email Provider API
+export const emailProvidersAPI = {
+  getAll: () => api.get('/email-providers/').then(res => res.data),
+  getById: (id: number) => api.get(`/email-providers/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/email-providers/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/email-providers/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/email-providers/${id}/`).then(res => res.data),
+  verify: (id: number) => api.post(`/email-providers/${id}/verify/`).then(res => res.data),
+  testSend: (id: number, data: { test_email: string }) =>
+    api.post(`/email-providers/${id}/test-send/`, data).then(res => res.data),
+  getStats: (id: number) => api.get(`/email-providers/${id}/stats/`).then(res => res.data),
+  toggleActive: (id: number) => api.post(`/email-providers/${id}/toggle-active/`).then(res => res.data),
+};

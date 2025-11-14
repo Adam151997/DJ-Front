@@ -215,6 +215,47 @@ export interface EmailCampaign {
   created_by: number;
   created_at: string;
   updated_at: string;
+  providers?: number[];  // Email provider IDs
+  provider_strategy?: 'priority' | 'round_robin' | 'failover';
+}
+
+export interface EmailProvider {
+  id: number;
+  account: number;
+  provider_type: 'sendgrid' | 'mailgun' | 'mailchimp' | 'brevo' | 'klaviyo';
+  name: string;
+  api_key?: string; // write-only
+  api_secret?: string; // write-only
+  sender_email: string;
+  sender_name: string;
+  config: any;
+  is_active: boolean;
+  is_verified: boolean;
+  daily_limit: number | null;
+  monthly_limit: number | null;
+  sent_today: number;
+  sent_this_month: number;
+  last_error: string;
+  last_sent_at: string | null;
+  priority: number;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EmailProviderStats {
+  total_sent: number;
+  delivered: number;
+  opened: number;
+  clicked: number;
+  bounced: number;
+  failed: number;
+  sent_today: number;
+  sent_this_month: number;
+  delivery_rate: number;
+  open_rate: number;
+  click_rate: number;
+  bounce_rate: number;
 }
 
 export interface Email {
