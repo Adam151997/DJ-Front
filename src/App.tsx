@@ -18,6 +18,9 @@ import { EmailProviders } from './pages/EmailProviders';
 import { WebhookSettings } from './pages/WebhookSettings';
 import { Plugins } from './pages/Plugins';
 import { PluginOAuthCallback } from './pages/PluginOAuthCallback';
+import { Segments } from './pages/Segments';
+import { DripCampaigns } from './pages/DripCampaigns';
+import { EmailAnalytics } from './pages/EmailAnalytics';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -40,6 +43,11 @@ function App() {
                 <Route path="/workflows" element={<Workflows />} />
                 <Route path="/email-campaigns" element={<EmailCampaigns />} />
                 <Route path="/email-providers" element={<EmailProviders />} />
+
+                {/* Enhanced Email Campaign Routes */}
+                <Route path="/segments" element={<Segments />} />
+                <Route path="/drip-campaigns" element={<DripCampaigns />} />
+                <Route path="/email-analytics" element={<EmailAnalytics />} />
 
                 {/* Plugin Integration Routes */}
                 <Route path="/plugins" element={<Plugins />} />

@@ -191,6 +191,15 @@ export interface EmailTemplate {
   subject: string;
   body_html: string;
   body_text: string;
+  preview_text?: string;
+  design_json?: any;
+  thumbnail?: string;
+  category?: 'newsletter' | 'promotional' | 'transactional';
+  ai_optimization_score?: number;
+  spam_score?: number;
+  times_used?: number;
+  avg_open_rate?: number;
+  avg_click_rate?: number;
   available_variables: string[];
   is_active: boolean;
   created_by: number;
@@ -205,17 +214,41 @@ export interface EmailCampaign {
   template: number | null;
   template_name?: string;
   status: 'draft' | 'scheduled' | 'sending' | 'completed' | 'paused';
+  campaign_type?: 'one_time' | 'recurring' | 'drip' | 'triggered';
+  segment?: number | null;
+  segment_name?: string;
   recipient_filter: any;
   scheduled_at: string | null;
+  send_optimization?: 'immediate' | 'optimal_time' | 'time_zone_aware';
+  throttle_rate?: number;
+  utm_campaign?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_content?: string;
   total_recipients: number;
   sent_count: number;
+  delivered_count?: number;
   opened_count: number;
+  unique_opens?: number;
   clicked_count: number;
+  unique_clicks?: number;
   bounced_count: number;
+  hard_bounces?: number;
+  soft_bounces?: number;
+  unsubscribe_count?: number;
+  spam_complaints?: number;
+  conversions?: number;
+  revenue?: number;
+  roi?: number;
+  ab_test_enabled?: boolean;
+  ab_test_config?: any;
+  goal_metric?: string;
+  goal_value?: number;
   created_by: number;
   created_at: string;
   updated_at: string;
-  providers?: number[];  // Email provider IDs
+  completed_at?: string | null;
+  providers?: number[];
   provider_strategy?: 'priority' | 'round_robin' | 'failover';
 }
 
@@ -398,4 +431,284 @@ export interface PluginAccountInfo {
   account_email?: string;
   account_status?: string;
   additional_info?: any;
+}
+
+// Enhanced Email Campaign Features
+
+export interface Segment {
+  id: number;
+  account: number;
+  name: string;
+  description: string;
+  segment_type: 'static' | 'dynamic' | 'behavioral';
+  segment_type_display?: string;
+  filter_conditions: any;
+  static_contacts?: number[];
+  estimated_size: number;
+  actual_size: number;
+  auto_update: boolean;
+  is_active: boolean;
+  tags?: string[];
+  created_by: number;
+  created_by_name?: string;
+  created_at: string;
+  updated_at: string;
+  last_updated_at?: string | null;
+}
+
+export interface CampaignABTest {
+  id: number;
+  campaign: number;
+  campaign_name?: string;
+  test_name: string;
+  status: 'testing' | 'completed' | 'cancelled';
+  status_display?: string;
+  test_element: string;
+  variant_a_value: string;
+  variant_a_sent: number;
+  variant_a_opened: number;
+  variant_a_clicked: number;
+  variant_a_conversions: number;
+  variant_b_value: string;
+  variant_b_sent: number;
+  variant_b_opened: number;
+  variant_b_clicked: number;
+  variant_b_conversions: number;
+  test_sample_size: number;
+  winner?: 'A' | 'B';
+  is_statistically_significant: boolean;
+  confidence_level?: number;
+  started_at: string;
+  completed_at?: string | null;
+  created_at: string;
+}
+
+export interface DripCampaign {
+  id: number;
+  account: number;
+  name: string;
+  description: string;
+  status: 'active' | 'paused' | 'draft';
+  status_display?: string;
+  trigger_type: string;
+  trigger_type_display?: string;
+  trigger_config: any;
+  enrollment_rules: any;
+  exit_conditions: any;
+  skip_weekends: boolean;
+  skip_holidays: boolean;
+  send_time_hour?: number;
+  time_zone?: string;
+  total_enrollments: number;
+  active_enrollments: number;
+  completed_enrollments: number;
+  total_emails_sent: number;
+  avg_open_rate?: number;
+  avg_click_rate?: number;
+  created_by: number;
+  created_by_name?: string;
+  created_at: string;
+  updated_at: string;
+  activated_at?: string | null;
+}
+
+export interface DripCampaignStep {
+  id: number;
+  drip_campaign: number;
+  drip_campaign_name?: string;
+  order: number;
+  step_name: string;
+  delay_value: number;
+  delay_unit: 'minutes' | 'hours' | 'days';
+  template: number;
+  template_name?: string;
+  branch_on_action: boolean;
+  branch_conditions?: any;
+  total_sent: number;
+  total_opened: number;
+  total_clicked: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DripCampaignEnrollment {
+  id: number;
+  drip_campaign: number;
+  drip_campaign_name?: string;
+  contact?: number | null;
+  lead?: number | null;
+  recipient_email: string;
+  recipient_name?: string;
+  status: 'active' | 'completed' | 'exited' | 'paused';
+  status_display?: string;
+  current_step?: number | null;
+  current_step_name?: string;
+  next_send_at?: string | null;
+  enrolled_at: string;
+  completed_at?: string | null;
+  exited_at?: string | null;
+  exit_reason?: string;
+  emails_sent: number;
+  emails_opened: number;
+  emails_clicked: number;
+}
+
+export interface EmailEngagement {
+  id: number;
+  email: number;
+  contact?: number | null;
+  lead?: number | null;
+  engagement_score: number;
+  opens_count: number;
+  clicks_count: number;
+  last_opened_at?: string | null;
+  last_clicked_at?: string | null;
+  device_type?: string;
+  email_client?: string;
+  location?: string;
+  user_agent?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface LinkClick {
+  id: number;
+  email: number;
+  contact?: number | null;
+  lead?: number | null;
+  url: string;
+  utm_campaign?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_content?: string;
+  clicked_at: string;
+  device_type?: string;
+  ip_address?: string;
+  location?: string;
+}
+
+export interface UnsubscribePreference {
+  id: number;
+  contact?: number | null;
+  lead?: number | null;
+  email: string;
+  unsubscribed_at: string;
+  reason?: string;
+  reason_text?: string;
+  campaign_type_preferences?: any;
+  frequency_preference?: string;
+  resubscribe_token: string;
+}
+
+export interface CampaignGoal {
+  id: number;
+  campaign: number;
+  campaign_name?: string;
+  goal_type: 'open_rate' | 'click_rate' | 'conversion' | 'revenue';
+  goal_type_display?: string;
+  target_value: number;
+  actual_value: number;
+  achieved: boolean;
+  achieved_at?: string | null;
+  created_at: string;
+}
+
+// Analytics Types
+export interface CampaignAnalytics {
+  campaign_id: number;
+  campaign_name: string;
+  total_sent: number;
+  total_delivered: number;
+  total_opened: number;
+  unique_opens: number;
+  total_clicked: number;
+  unique_clicks: number;
+  total_bounced: number;
+  hard_bounces: number;
+  soft_bounces: number;
+  total_unsubscribed: number;
+  spam_complaints: number;
+  delivery_rate: number;
+  open_rate: number;
+  click_rate: number;
+  click_to_open_rate: number;
+  bounce_rate: number;
+  unsubscribe_rate: number;
+  spam_complaint_rate: number;
+  conversions: number;
+  conversion_rate: number;
+  revenue: number;
+  roi: number;
+  device_breakdown?: {
+    desktop: number;
+    mobile: number;
+    tablet: number;
+  };
+  timeline?: Array<{
+    date: string;
+    opens: number;
+    clicks: number;
+    conversions: number;
+  }>;
+}
+
+export interface ContactEngagement {
+  contact_id?: number;
+  lead_id?: number;
+  email: string;
+  name: string;
+  engagement_score: number;
+  total_emails_received: number;
+  total_opens: number;
+  total_clicks: number;
+  lifetime_open_rate: number;
+  lifetime_click_rate: number;
+  last_engaged_at?: string | null;
+  best_send_time?: string;
+  preferred_device?: string;
+  churn_risk_score?: number;
+}
+
+// AI Feature Response Types
+export interface SubjectLineOptimization {
+  original: string;
+  suggestions: Array<{
+    subject: string;
+    score: number;
+    predicted_open_rate: number;
+    reasoning: string;
+  }>;
+  best_performer: {
+    subject: string;
+    score: number;
+    predicted_open_rate: number;
+  };
+}
+
+export interface ContentImprovement {
+  original_content: string;
+  improved_content: string;
+  improvements: string[];
+  readability_score: number;
+  spam_score: number;
+  suggestions: string[];
+}
+
+export interface SendTimeOptimization {
+  recommended_time: string;
+  predicted_open_rate: number;
+  reasoning: string;
+  timezone: string;
+  historical_data_points: number;
+}
+
+export interface SpamScoreResult {
+  score: number;
+  rating: 'excellent' | 'good' | 'fair' | 'poor';
+  issues: Array<{
+    severity: 'high' | 'medium' | 'low';
+    issue: string;
+    suggestion: string;
+  }>;
+  suggestions: string[];
 }
