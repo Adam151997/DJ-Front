@@ -14,7 +14,6 @@ import {
   Brain,
   Zap,
   Mail,
-  Webhook as WebhookIcon,
   Plug,
   Filter,
   Repeat,
@@ -51,7 +50,6 @@ export const Sidebar: React.FC = () => {
     { name: 'Custom Fields', href: '/settings/custom-fields', icon: LayoutIcon },
     { name: 'Email Providers', href: '/email-providers', icon: Mail },
     { name: 'Plugins', href: '/plugins', icon: Plug },
-    { name: 'Webhooks', href: '/settings/webhooks', icon: WebhookIcon },
   ];
 
   const isActive = (path: string) => {

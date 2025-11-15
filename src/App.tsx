@@ -16,7 +16,6 @@ import { Workflows } from './pages/Workflows';
 import { EmailCampaigns } from './pages/EmailCampaigns';
 import { EmailTemplates } from './pages/EmailTemplates';
 import { EmailProviders } from './pages/EmailProviders';
-import { WebhookSettings } from './pages/WebhookSettings';
 import { Plugins } from './pages/Plugins';
 import { PluginOAuthCallback } from './pages/PluginOAuthCallback';
 import { Segments } from './pages/Segments';
@@ -59,7 +58,6 @@ function App() {
                 <Route path="/settings/templates" element={<BusinessTemplates />} />
                 <Route path="/settings/pipeline" element={<PipelineSettings />} />
                 <Route path="/settings/custom-fields" element={<CustomFieldsSettings />} />
-                <Route path="/settings/webhooks" element={<WebhookSettings />} />
               </Routes>
             </Layout>
           </ProtectedRoute>
