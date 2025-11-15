@@ -14,8 +14,234 @@ import {
   Activity,
 } from 'lucide-react';
 
+interface WebhookFormProps {
+  webhook?: Webhook | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+const WebhookForm: React.FC<WebhookFormProps> = ({ webhook, onClose, onSuccess }) => {
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: webhook?.name || '',
+    url: webhook?.url || '',
+    event_types: webhook?.event_types || [],
+    secret: webhook?.secret || '',
+    headers: webhook?.headers ? JSON.stringify(webhook.headers, null, 2) : '{}',
+    is_active: webhook?.is_active ?? true,
+  });
+
+  const availableEvents = [
+    { value: 'lead.created', label: 'Lead Created' },
+    { value: 'lead.updated', label: 'Lead Updated' },
+    { value: 'lead.deleted', label: 'Lead Deleted' },
+    { value: 'contact.created', label: 'Contact Created' },
+    { value: 'contact.updated', label: 'Contact Updated' },
+    { value: 'contact.deleted', label: 'Contact Deleted' },
+    { value: 'deal.created', label: 'Deal Created' },
+    { value: 'deal.updated', label: 'Deal Updated' },
+    { value: 'deal.won', label: 'Deal Won' },
+    { value: 'deal.lost', label: 'Deal Lost' },
+    { value: 'email.sent', label: 'Email Sent' },
+    { value: 'email.opened', label: 'Email Opened' },
+    { value: 'email.clicked', label: 'Email Clicked' },
+  ];
+
+  const createMutation = useMutation({
+    mutationFn: (data: any) => webhooksAPI.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['webhooks'] });
+      onSuccess();
+      alert('Webhook created successfully!');
+    },
+    onError: (error: any) => {
+      alert(error?.response?.data?.detail || 'Failed to create webhook');
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (data: any) => webhooksAPI.update(webhook!.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['webhooks'] });
+      onSuccess();
+      alert('Webhook updated successfully!');
+    },
+    onError: (error: any) => {
+      alert(error?.response?.data?.detail || 'Failed to update webhook');
+    },
+  });
+
+  const handleEventToggle = (eventValue: string) => {
+    setFormData(prev => ({
+      ...prev,
+      event_types: prev.event_types.includes(eventValue)
+        ? prev.event_types.filter(e => e !== eventValue)
+        : [...prev.event_types, eventValue]
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    let parsedHeaders = {};
+    try {
+      parsedHeaders = JSON.parse(formData.headers);
+    } catch (error) {
+      alert('Invalid JSON in headers field');
+      return;
+    }
+
+    const payload = {
+      name: formData.name,
+      url: formData.url,
+      event_types: formData.event_types,
+      secret: formData.secret,
+      headers: parsedHeaders,
+      is_active: formData.is_active,
+    };
+
+    if (webhook) {
+      updateMutation.mutate(payload);
+    } else {
+      createMutation.mutate(payload);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold">
+              {webhook ? 'Edit Webhook' : 'Create Webhook'}
+            </h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+              <XCircle className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="form-label">Webhook Name *</label>
+            <input
+              type="text"
+              className="form-input"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Slack Deal Notifications"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="form-label">Webhook URL *</label>
+            <input
+              type="url"
+              className="form-input"
+              value={formData.url}
+              onChange={(e) => setFormData({ ...formData, url: e.target.value })}
+              placeholder="https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+              required
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              The endpoint that will receive webhook POST requests
+            </p>
+          </div>
+
+          <div>
+            <label className="form-label">Event Types *</label>
+            <div className="border rounded-lg p-4 space-y-2 max-h-64 overflow-y-auto">
+              {availableEvents.map((event) => (
+                <label key={event.value} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                  <input
+                    type="checkbox"
+                    checked={formData.event_types.includes(event.value)}
+                    onChange={() => handleEventToggle(event.value)}
+                    className="rounded"
+                  />
+                  <span className="text-sm">{event.label}</span>
+                  <span className="text-xs text-gray-500 ml-auto font-mono">{event.value}</span>
+                </label>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              Select which events should trigger this webhook
+            </p>
+            {formData.event_types.length === 0 && (
+              <p className="text-xs text-red-600 mt-1">At least one event type is required</p>
+            )}
+          </div>
+
+          <div>
+            <label className="form-label">Secret Key</label>
+            <input
+              type="text"
+              className="form-input font-mono text-sm"
+              value={formData.secret}
+              onChange={(e) => setFormData({ ...formData, secret: e.target.value })}
+              placeholder="your-secret-key-here"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Optional: Used to sign webhook requests for verification
+            </p>
+          </div>
+
+          <div>
+            <label className="form-label">Custom Headers (JSON)</label>
+            <textarea
+              className="form-input font-mono text-sm"
+              value={formData.headers}
+              onChange={(e) => setFormData({ ...formData, headers: e.target.value })}
+              placeholder='{"Authorization": "Bearer token", "Custom-Header": "value"}'
+              rows={4}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Optional: Custom HTTP headers to include with webhook requests (valid JSON object)
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              id="is_active"
+              checked={formData.is_active}
+              onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+              className="rounded"
+            />
+            <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+              Active (webhook will receive events)
+            </label>
+          </div>
+
+          <div className="p-4 bg-blue-50 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium mb-1">How it works</p>
+            <p className="text-sm text-blue-700">
+              When selected events occur, MoldCRM will send a POST request to your webhook URL with event details in the request body.
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+            <Button type="button" variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={createMutation.isPending || updateMutation.isPending || formData.event_types.length === 0}
+            >
+              {webhook ? 'Update Webhook' : 'Create Webhook'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 export const WebhookSettings: React.FC = () => {
   const [selectedWebhook, setSelectedWebhook] = useState<Webhook | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingWebhook, setEditingWebhook] = useState<Webhook | null>(null);
   const queryClient = useQueryClient();
 
   const { data: webhooks, isLoading } = useQuery({
@@ -86,7 +312,7 @@ export const WebhookSettings: React.FC = () => {
           </p>
         </div>
         <Button
-          onClick={() => alert('Webhook builder coming soon!')}
+          onClick={() => setShowForm(true)}
           icon={Plus}
           size="lg"
         >
@@ -221,9 +447,12 @@ export const WebhookSettings: React.FC = () => {
                           <Activity className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => setSelectedWebhook(webhook)}
+                          onClick={() => {
+                            setEditingWebhook(webhook);
+                            setShowForm(true);
+                          }}
                           className="table-action-btn"
-                          title="View details"
+                          title="Edit webhook"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
@@ -326,6 +555,21 @@ export const WebhookSettings: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Webhook Form Modal */}
+      {showForm && (
+        <WebhookForm
+          webhook={editingWebhook}
+          onClose={() => {
+            setShowForm(false);
+            setEditingWebhook(null);
+          }}
+          onSuccess={() => {
+            setShowForm(false);
+            setEditingWebhook(null);
+          }}
+        />
       )}
     </div>
   );
