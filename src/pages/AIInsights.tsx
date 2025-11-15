@@ -93,11 +93,11 @@ export const AIInsights: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-16 w-full bg-gray-200 rounded"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
+              <div className="h-16 w-full bg-theme-bg-secondary rounded"></div>
             </div>
           ))}
         </div>
@@ -112,9 +112,9 @@ export const AIInsights: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Brain className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-gray-900">AI Insights</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">AI Insights</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-theme-text-secondary">
             AI-powered insights and recommendations powered by Google Gemini
           </p>
         </div>
@@ -132,7 +132,7 @@ export const AIInsights: React.FC = () => {
             <CardTitle>Generate Lead Scores</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-theme-text-secondary mb-4">
               Get AI-powered scoring for your leads with recommendations
             </p>
             <select
@@ -160,7 +160,7 @@ export const AIInsights: React.FC = () => {
             <CardTitle>Predict Deal Outcomes</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-gray-600 mb-4">
+            <p className="text-sm text-theme-text-secondary mb-4">
               Get AI predictions for your deals' close probability and date
             </p>
             <select
@@ -193,7 +193,7 @@ export const AIInsights: React.FC = () => {
               className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
                 filter === 'all'
                   ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-theme-bg-tertiary text-theme-text-secondary hover:bg-theme-bg-secondary'
               }`}
             >
               All Insights ({insights?.length || 0})
@@ -203,7 +203,7 @@ export const AIInsights: React.FC = () => {
               className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
                 filter === 'unread'
                   ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-theme-bg-tertiary text-theme-text-secondary hover:bg-theme-bg-secondary'
               }`}
             >
               Unread ({unreadCount})
@@ -215,7 +215,7 @@ export const AIInsights: React.FC = () => {
                 className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
                   filter === type
                     ? 'bg-primary-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-theme-bg-tertiary text-theme-text-secondary hover:bg-theme-bg-secondary'
                 }`}
               >
                 {label}
@@ -242,7 +242,7 @@ export const AIInsights: React.FC = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-2">
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        <h3 className="text-lg font-semibold text-theme-text-primary mb-1">
                           {insight.title}
                         </h3>
                         <span className={`badge ${colorClass} text-xs`}>
@@ -255,18 +255,18 @@ export const AIInsights: React.FC = () => {
                     </div>
 
                     <div className="prose prose-sm max-w-none mb-3">
-                      <p className="text-gray-700 whitespace-pre-wrap">{insight.content}</p>
+                      <p className="text-theme-text-secondary whitespace-pre-wrap">{insight.content}</p>
                     </div>
 
                     {insight.confidence_score > 0 && (
                       <div className="mb-3">
                         <div className="flex items-center justify-between text-sm mb-1">
-                          <span className="text-gray-600">Confidence</span>
+                          <span className="text-theme-text-secondary">Confidence</span>
                           <span className="font-medium">
                             {Math.round(insight.confidence_score * 100)}%
                           </span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-theme-bg-secondary rounded-full h-2">
                           <div
                             className="bg-green-500 h-2 rounded-full transition-all"
                             style={{ width: `${insight.confidence_score * 100}%` }}
@@ -276,7 +276,7 @@ export const AIInsights: React.FC = () => {
                     )}
 
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-theme-text-tertiary">
                         {new Date(insight.created_at).toLocaleString()}
                       </span>
                       {!insight.is_read && (
@@ -299,11 +299,11 @@ export const AIInsights: React.FC = () => {
 
         {(!filteredInsights || filteredInsights.length === 0) && (
           <div className="empty-state py-16">
-            <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-              <Brain className="h-10 w-10 text-gray-400" />
+            <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+              <Brain className="h-10 w-10 text-theme-text-tertiary" />
             </div>
-            <h3 className="text-base font-medium text-gray-900 mb-1">No insights yet</h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="text-base font-medium text-theme-text-primary mb-1">No insights yet</h3>
+            <p className="text-sm text-theme-text-tertiary">
               Generate lead scores or deal predictions to get AI-powered insights
             </p>
           </div>

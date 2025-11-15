@@ -127,7 +127,7 @@ const PluginForm: React.FC<PluginFormProps> = ({ plugin, onClose, onSuccess }) =
                 }
                 placeholder="1234567890"
               />
-              <p className="text-xs text-gray-500 mt-1">Your Google Ads Customer ID (without hyphens)</p>
+              <p className="text-xs text-theme-text-tertiary mt-1">Your Google Ads Customer ID (without hyphens)</p>
             </div>
             <div>
               <label className="form-label">Developer Token</label>
@@ -157,7 +157,7 @@ const PluginForm: React.FC<PluginFormProps> = ({ plugin, onClose, onSuccess }) =
                 }
                 placeholder="act_123456789"
               />
-              <p className="text-xs text-gray-500 mt-1">Your Meta Ad Account ID</p>
+              <p className="text-xs text-theme-text-tertiary mt-1">Your Meta Ad Account ID</p>
             </div>
           </div>
         );
@@ -193,7 +193,7 @@ const PluginForm: React.FC<PluginFormProps> = ({ plugin, onClose, onSuccess }) =
                 placeholder="your-store.myshopify.com"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">Your Shopify store domain</p>
+              <p className="text-xs text-theme-text-tertiary mt-1">Your Shopify store domain</p>
             </div>
           </div>
         );
@@ -204,13 +204,13 @@ const PluginForm: React.FC<PluginFormProps> = ({ plugin, onClose, onSuccess }) =
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {plugin ? 'Edit Plugin' : 'Add New Plugin'}
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -271,19 +271,19 @@ const PluginForm: React.FC<PluginFormProps> = ({ plugin, onClose, onSuccess }) =
               <button
                 type="button"
                 onClick={() => setShowClientSecret(!showClientSecret)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-theme-text-tertiary hover:text-theme-text-secondary"
               >
                 {showClientSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
             {plugin && (
-              <p className="text-xs text-gray-500 mt-1">Current: {plugin.masked_client_secret}</p>
+              <p className="text-xs text-theme-text-tertiary mt-1">Current: {plugin.masked_client_secret}</p>
             )}
           </div>
 
           {renderConfigFields()}
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
@@ -341,8 +341,8 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={`p-3 rounded-lg ${PLUGIN_COLORS[plugin.plugin_type]}`}>
@@ -350,10 +350,10 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
               </div>
               <div>
                 <h2 className="text-2xl font-semibold">{plugin.name}</h2>
-                <p className="text-sm text-gray-500">{PLUGIN_LABELS[plugin.plugin_type]}</p>
+                <p className="text-sm text-theme-text-tertiary">{PLUGIN_LABELS[plugin.plugin_type]}</p>
               </div>
             </div>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -364,7 +364,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === 'overview'
                   ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-theme-text-secondary hover:bg-theme-bg-tertiary'
               }`}
             >
               Overview
@@ -374,7 +374,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === 'events'
                   ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-theme-text-secondary hover:bg-theme-bg-tertiary'
               }`}
             >
               Webhook Events
@@ -384,7 +384,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === 'sync-logs'
                   ? 'bg-blue-100 text-blue-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-theme-text-secondary hover:bg-theme-bg-tertiary'
               }`}
             >
               Sync Logs
@@ -397,21 +397,21 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Status</p>
+                  <p className="text-sm text-theme-text-tertiary">Status</p>
                   <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[plugin.status]}`}>
                     {plugin.status_display || plugin.status}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Category</p>
+                  <p className="text-sm text-theme-text-tertiary">Category</p>
                   <p className="font-medium">{plugin.category_display || plugin.category}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Client ID</p>
+                  <p className="text-sm text-theme-text-tertiary">Client ID</p>
                   <p className="font-mono text-sm">{plugin.client_id}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Last Sync</p>
+                  <p className="text-sm text-theme-text-tertiary">Last Sync</p>
                   <p className="font-medium">
                     {plugin.last_sync_at
                       ? new Date(plugin.last_sync_at).toLocaleString()
@@ -419,7 +419,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Verified</p>
+                  <p className="text-sm text-theme-text-tertiary">Verified</p>
                   <p className="flex items-center gap-1">
                     {plugin.is_verified ? (
                       <><CheckCircle className="w-4 h-4 text-green-600" /> Yes</>
@@ -429,7 +429,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Active</p>
+                  <p className="text-sm text-theme-text-tertiary">Active</p>
                   <p className="flex items-center gap-1">
                     {plugin.is_active ? (
                       <><CheckCircle className="w-4 h-4 text-green-600" /> Yes</>
@@ -460,28 +460,28 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
                   </Button>
                 </div>
                 {accountInfo && (
-                  <div className="p-4 bg-gray-50 rounded-lg space-y-2">
+                  <div className="p-4 bg-theme-bg-tertiary rounded-lg space-y-2">
                     {accountInfo.account_id && (
                       <div>
-                        <p className="text-sm text-gray-500">Account ID</p>
+                        <p className="text-sm text-theme-text-tertiary">Account ID</p>
                         <p className="font-medium">{accountInfo.account_id}</p>
                       </div>
                     )}
                     {accountInfo.account_name && (
                       <div>
-                        <p className="text-sm text-gray-500">Account Name</p>
+                        <p className="text-sm text-theme-text-tertiary">Account Name</p>
                         <p className="font-medium">{accountInfo.account_name}</p>
                       </div>
                     )}
                     {accountInfo.account_email && (
                       <div>
-                        <p className="text-sm text-gray-500">Account Email</p>
+                        <p className="text-sm text-theme-text-tertiary">Account Email</p>
                         <p className="font-medium">{accountInfo.account_email}</p>
                       </div>
                     )}
                     {accountInfo.account_status && (
                       <div>
-                        <p className="text-sm text-gray-500">Account Status</p>
+                        <p className="text-sm text-theme-text-tertiary">Account Status</p>
                         <p className="font-medium">{accountInfo.account_status}</p>
                       </div>
                     )}
@@ -491,7 +491,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
 
               <div>
                 <h3 className="font-semibold mb-2">Configuration</h3>
-                <pre className="p-4 bg-gray-50 rounded-lg text-xs overflow-x-auto">
+                <pre className="p-4 bg-theme-bg-tertiary rounded-lg text-xs overflow-x-auto">
                   {JSON.stringify(plugin.config, null, 2)}
                 </pre>
               </div>
@@ -501,10 +501,10 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
           {activeTab === 'events' && (
             <div className="space-y-4">
               {events.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No webhook events yet</p>
+                <p className="text-center text-theme-text-tertiary py-8">No webhook events yet</p>
               ) : (
                 events.map((event: PluginEvent) => (
-                  <div key={event.id} className="p-4 bg-gray-50 rounded-lg">
+                  <div key={event.id} className="p-4 bg-theme-bg-tertiary rounded-lg">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="font-medium">{event.event_type}</p>
@@ -531,7 +531,7 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
                     )}
                     <details className="text-xs">
                       <summary className="cursor-pointer text-blue-600">View Payload</summary>
-                      <pre className="mt-2 p-2 bg-white rounded overflow-x-auto">
+                      <pre className="mt-2 p-2 bg-theme-bg-primary rounded overflow-x-auto">
                         {JSON.stringify(event.payload, null, 2)}
                       </pre>
                     </details>
@@ -544,10 +544,10 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
           {activeTab === 'sync-logs' && (
             <div className="space-y-4">
               {syncLogs.length === 0 ? (
-                <p className="text-center text-gray-500 py-8">No sync logs yet</p>
+                <p className="text-center text-theme-text-tertiary py-8">No sync logs yet</p>
               ) : (
                 syncLogs.map((log: PluginSyncLog) => (
-                  <div key={log.id} className="p-4 bg-gray-50 rounded-lg">
+                  <div key={log.id} className="p-4 bg-theme-bg-tertiary rounded-lg">
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="font-medium">{log.sync_type}</p>
@@ -567,19 +567,19 @@ const PluginDetailsModal: React.FC<PluginDetailsModalProps> = ({ plugin, onClose
                     </div>
                     <div className="grid grid-cols-4 gap-2 text-xs">
                       <div>
-                        <p className="text-gray-500">Synced</p>
+                        <p className="text-theme-text-tertiary">Synced</p>
                         <p className="font-medium">{log.records_synced}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Created</p>
+                        <p className="text-theme-text-tertiary">Created</p>
                         <p className="font-medium text-green-600">{log.records_created}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Updated</p>
+                        <p className="text-theme-text-tertiary">Updated</p>
                         <p className="font-medium text-blue-600">{log.records_updated}</p>
                       </div>
                       <div>
-                        <p className="text-gray-500">Failed</p>
+                        <p className="text-theme-text-tertiary">Failed</p>
                         <p className="font-medium text-red-600">{log.records_failed}</p>
                       </div>
                     </div>
@@ -692,7 +692,7 @@ export const Plugins: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
-          <p className="mt-2 text-gray-600">Loading plugins...</p>
+          <p className="mt-2 text-theme-text-secondary">Loading plugins...</p>
         </div>
       </div>
     );
@@ -703,7 +703,7 @@ export const Plugins: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Platform Plugins</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-theme-text-secondary mt-1">
             Connect external platforms like Google Ads, Meta Ads, TikTok Ads, and Shopify
           </p>
         </div>
@@ -716,9 +716,9 @@ export const Plugins: React.FC = () => {
       {plugins.length === 0 ? (
         <Card>
           <CardContent className="text-center py-12">
-            <Globe className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+            <Globe className="w-12 h-12 mx-auto text-theme-text-tertiary mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Plugins Connected</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-theme-text-secondary mb-4">
               Connect your first external platform to start syncing data
             </p>
             <Button onClick={() => setShowForm(true)}>
@@ -750,15 +750,15 @@ export const Plugins: React.FC = () => {
                           <PauseCircle className="w-4 h-4 text-gray-400" title="Inactive" />
                         )}
                       </div>
-                      <p className="text-gray-600 text-sm mb-2">{PLUGIN_LABELS[plugin.plugin_type]}</p>
+                      <p className="text-theme-text-secondary text-sm mb-2">{PLUGIN_LABELS[plugin.plugin_type]}</p>
 
                       <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-sm">
                         <div className="flex items-center gap-2">
-                          <span className="text-gray-500">Category:</span>
+                          <span className="text-theme-text-secondary">Category:</span>
                           <span className="font-medium">{plugin.category_display || plugin.category}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-gray-500">Last Sync:</span>
+                          <span className="text-theme-text-secondary">Last Sync:</span>
                           <span className="font-medium">
                             {plugin.last_sync_at
                               ? new Date(plugin.last_sync_at).toLocaleDateString()
@@ -766,7 +766,7 @@ export const Plugins: React.FC = () => {
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-gray-500">Created:</span>
+                          <span className="text-theme-text-secondary">Created:</span>
                           <span className="font-medium">
                             {new Date(plugin.created_at).toLocaleDateString()}
                           </span>

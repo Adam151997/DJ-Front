@@ -93,13 +93,13 @@ const DripCampaignForm: React.FC<DripCampaignFormProps> = ({ dripCampaign, onClo
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {dripCampaign ? 'Edit Drip Campaign' : 'Create Drip Campaign'}
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -156,7 +156,7 @@ const DripCampaignForm: React.FC<DripCampaignFormProps> = ({ dripCampaign, onClo
                 min="0"
                 max="23"
               />
-              <p className="text-xs text-gray-500 mt-1">Hour of day to send emails (0-23)</p>
+              <p className="text-xs text-theme-text-secondary mt-1">Hour of day to send emails (0-23)</p>
             </div>
 
             <div>
@@ -204,7 +204,7 @@ const DripCampaignForm: React.FC<DripCampaignFormProps> = ({ dripCampaign, onClo
             </p>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
@@ -279,7 +279,7 @@ export const DripCampaigns: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
-          <p className="mt-2 text-gray-600">Loading drip campaigns...</p>
+          <p className="mt-2 text-theme-text-secondary">Loading drip campaigns...</p>
         </div>
       </div>
     );
@@ -290,7 +290,7 @@ export const DripCampaigns: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Drip Campaigns</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-theme-text-secondary mt-1">
             Automated email sequences triggered by actions and events
           </p>
         </div>
@@ -305,7 +305,7 @@ export const DripCampaigns: React.FC = () => {
           <CardContent className="text-center py-12">
             <Mail className="w-12 h-12 mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Drip Campaigns Yet</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-theme-text-secondary mb-4">
               Create automated email sequences to nurture leads and engage contacts
             </p>
             <Button onClick={() => setShowForm(true)}>
@@ -332,35 +332,35 @@ export const DripCampaigns: React.FC = () => {
                         </span>
                       </div>
                       {campaign.description && (
-                        <p className="text-gray-600 text-sm mb-3">{campaign.description}</p>
+                        <p className="text-theme-text-secondary text-sm mb-3">{campaign.description}</p>
                       )}
 
                       <div className="grid grid-cols-4 gap-4 text-sm">
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4 text-gray-400" />
                           <div>
-                            <p className="text-gray-500 text-xs">Total Enrolled</p>
+                            <p className="text-theme-text-secondary text-xs">Total Enrolled</p>
                             <p className="font-semibold">{campaign.total_enrollments}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Play className="w-4 h-4 text-gray-400" />
                           <div>
-                            <p className="text-gray-500 text-xs">Active</p>
+                            <p className="text-theme-text-secondary text-xs">Active</p>
                             <p className="font-semibold">{campaign.active_enrollments}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-gray-400" />
                           <div>
-                            <p className="text-gray-500 text-xs">Completed</p>
+                            <p className="text-theme-text-secondary text-xs">Completed</p>
                             <p className="font-semibold">{campaign.completed_enrollments}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <Mail className="w-4 h-4 text-gray-400" />
                           <div>
-                            <p className="text-gray-500 text-xs">Emails Sent</p>
+                            <p className="text-theme-text-secondary text-xs">Emails Sent</p>
                             <p className="font-semibold">{campaign.total_emails_sent}</p>
                           </div>
                         </div>
@@ -369,14 +369,14 @@ export const DripCampaigns: React.FC = () => {
                       {campaign.avg_open_rate !== undefined && (
                         <div className="flex gap-4 mt-3 text-sm">
                           <div>
-                            <span className="text-gray-500">Avg Open Rate:</span>
+                            <span className="text-theme-text-secondary">Avg Open Rate:</span>
                             <span className="font-semibold ml-2 text-green-600">
                               {(campaign.avg_open_rate * 100).toFixed(1)}%
                             </span>
                           </div>
                           {campaign.avg_click_rate !== undefined && (
                             <div>
-                              <span className="text-gray-500">Avg Click Rate:</span>
+                              <span className="text-theme-text-secondary">Avg Click Rate:</span>
                               <span className="font-semibold ml-2 text-blue-600">
                                 {(campaign.avg_click_rate * 100).toFixed(1)}%
                               </span>
@@ -385,7 +385,7 @@ export const DripCampaigns: React.FC = () => {
                         </div>
                       )}
 
-                      <div className="mt-2 text-xs text-gray-500">
+                      <div className="mt-2 text-xs text-theme-text-secondary">
                         <Clock className="w-3 h-3 inline mr-1" />
                         Trigger: {campaign.trigger_type_display || campaign.trigger_type}
                         {campaign.skip_weekends && ' • Skips weekends'}

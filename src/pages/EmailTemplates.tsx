@@ -72,13 +72,13 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {template ? 'Edit Email Template' : 'Create Email Template'}
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -139,7 +139,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
               placeholder="Your monthly newsletter is here!"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               You can use variables: {'{{contact_name}}, {{company_name}}, {{email}}'}
             </p>
           </div>
@@ -153,7 +153,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
               onChange={(e) => setFormData({ ...formData, preview_text: e.target.value })}
               placeholder="This shows up in email client previews..."
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               The snippet shown in inbox before opening the email
             </p>
           </div>
@@ -167,7 +167,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
               height="400px"
               showVariables={true}
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               Use the toolbar to format your email. Click "Insert Variable" to add personalization.
             </p>
           </div>
@@ -182,7 +182,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
               rows={6}
               required
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               Fallback for email clients that don't support HTML
             </p>
           </div>
@@ -195,7 +195,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
               onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
               className="rounded"
             />
-            <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+            <label htmlFor="is_active" className="text-sm font-medium text-theme-text-secondary">
               Active (available for use in campaigns)
             </label>
           </div>
@@ -207,7 +207,7 @@ const EmailTemplateForm: React.FC<EmailTemplateFormProps> = ({ template, onClose
             </p>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
@@ -287,7 +287,7 @@ export const EmailTemplates: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <Mail className="w-8 h-8 animate-pulse mx-auto text-blue-600" />
-          <p className="mt-2 text-gray-600">Loading templates...</p>
+          <p className="mt-2 text-theme-text-secondary">Loading templates...</p>
         </div>
       </div>
     );
@@ -300,9 +300,9 @@ export const EmailTemplates: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <FileText className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-gray-900">Email Templates</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">Email Templates</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-theme-text-secondary">
             Create and manage reusable email templates for your campaigns
           </p>
         </div>
@@ -349,17 +349,17 @@ export const EmailTemplates: React.FC = () => {
                 </div>
 
                 <h3 className="text-lg font-semibold mb-2">{template.name}</h3>
-                <p className="text-sm text-gray-600 mb-1 font-medium">Subject:</p>
-                <p className="text-sm text-gray-700 mb-3 line-clamp-2">{template.subject}</p>
+                <p className="text-sm text-theme-text-secondary mb-1 font-medium">Subject:</p>
+                <p className="text-sm text-theme-text-secondary mb-3 line-clamp-2">{template.subject}</p>
 
                 {template.category && (
-                  <div className="text-xs text-gray-500 mb-3">
+                  <div className="text-xs text-theme-text-secondary mb-3">
                     Category: <span className="font-medium">{template.category}</span>
                   </div>
                 )}
 
                 {(template.avg_open_rate !== undefined || template.times_used !== undefined) && (
-                  <div className="flex gap-4 text-xs text-gray-600 mb-3 pb-3 border-b">
+                  <div className="flex gap-4 text-xs text-theme-text-secondary mb-3 pb-3 border-b">
                     {template.times_used !== undefined && (
                       <div>
                         <span className="font-medium">{template.times_used}</span> uses
@@ -377,7 +377,7 @@ export const EmailTemplates: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setPreviewTemplate(template)}
-                    className="flex-1 text-sm px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg flex items-center justify-center gap-1"
+                    className="flex-1 text-sm px-3 py-2 bg-theme-bg-tertiary hover:bg-theme-bg-secondary rounded-lg flex items-center justify-center gap-1"
                     title="Preview template"
                   >
                     <Eye className="w-4 h-4" />
@@ -429,13 +429,13 @@ export const EmailTemplates: React.FC = () => {
       {/* Preview Modal */}
       {previewTemplate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-semibold">Template Preview</h2>
                 <button
                   onClick={() => setPreviewTemplate(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-theme-text-tertiary hover:text-theme-text-secondary"
                 >
                   <XCircle className="w-6 h-6" />
                 </button>
@@ -451,27 +451,27 @@ export const EmailTemplates: React.FC = () => {
               </div>
 
               <div>
-                <p className="text-sm text-gray-600 mb-1 font-medium">Subject:</p>
+                <p className="text-sm text-theme-text-secondary mb-1 font-medium">Subject:</p>
                 <p className="text-base">{previewTemplate.subject}</p>
               </div>
 
               {previewTemplate.preview_text && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1 font-medium">Preview Text:</p>
-                  <p className="text-sm text-gray-700">{previewTemplate.preview_text}</p>
+                  <p className="text-sm text-theme-text-secondary mb-1 font-medium">Preview Text:</p>
+                  <p className="text-sm text-theme-text-secondary">{previewTemplate.preview_text}</p>
                 </div>
               )}
 
               <div className="border-t pt-4">
-                <p className="text-sm text-gray-600 mb-2 font-medium">HTML Preview:</p>
-                <div className="border rounded-lg p-4 bg-gray-50 max-h-96 overflow-auto">
+                <p className="text-sm text-theme-text-secondary mb-2 font-medium">HTML Preview:</p>
+                <div className="border rounded-lg p-4 bg-theme-bg-tertiary max-h-96 overflow-auto">
                   <div dangerouslySetInnerHTML={{ __html: previewTemplate.body_html }} />
                 </div>
               </div>
 
               <div className="border-t pt-4">
-                <p className="text-sm text-gray-600 mb-2 font-medium">Plain Text Version:</p>
-                <div className="border rounded-lg p-4 bg-gray-50 max-h-48 overflow-auto">
+                <p className="text-sm text-theme-text-secondary mb-2 font-medium">Plain Text Version:</p>
+                <div className="border rounded-lg p-4 bg-theme-bg-tertiary max-h-48 overflow-auto">
                   <pre className="whitespace-pre-wrap text-sm">{previewTemplate.body_text}</pre>
                 </div>
               </div>

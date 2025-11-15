@@ -29,21 +29,21 @@ export const Dashboard: React.FC = () => {
       <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <div className="h-9 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-5 w-80 bg-gray-200 rounded-lg animate-pulse mt-3"></div>
+            <div className="h-9 w-48 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
+            <div className="h-5 w-80 bg-theme-bg-secondary rounded-lg animate-pulse mt-3"></div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm animate-pulse">
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 shadow-sm animate-pulse">
               <div className="flex justify-between items-start">
                 <div className="space-y-3 flex-1">
-                  <div className="h-4 w-24 bg-gray-200 rounded"></div>
-                  <div className="h-8 w-20 bg-gray-200 rounded"></div>
-                  <div className="h-3 w-32 bg-gray-200 rounded"></div>
+                  <div className="h-4 w-24 bg-theme-bg-secondary rounded"></div>
+                  <div className="h-8 w-20 bg-theme-bg-secondary rounded"></div>
+                  <div className="h-3 w-32 bg-theme-bg-secondary rounded"></div>
                 </div>
-                <div className="h-12 w-12 bg-gray-200 rounded-lg"></div>
+                <div className="h-12 w-12 bg-theme-bg-secondary rounded-lg"></div>
               </div>
             </div>
           ))}
@@ -59,8 +59,8 @@ export const Dashboard: React.FC = () => {
           <div className="p-4 bg-danger-50 rounded-full inline-block mb-4">
             <BarChart3 className="h-10 w-10 text-danger-500" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load dashboard data</h3>
-          <p className="text-sm text-gray-500">
+          <h3 className="text-lg font-semibold text-theme-text-primary mb-2">Failed to load dashboard data</h3>
+          <p className="text-sm text-theme-text-secondary">
             {error instanceof Error ? error.message : 'Please check your connection and try again'}
           </p>
         </div>
@@ -104,8 +104,8 @@ export const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Dashboard</h1>
-          <p className="text-gray-600">Welcome back! Here's an overview of your business today.</p>
+          <h1 className="text-3xl font-semibold text-theme-text-primary mb-2">Dashboard</h1>
+          <p className="text-theme-text-secondary">Welcome back! Here's an overview of your business today.</p>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ export const Dashboard: React.FC = () => {
             <div className="space-y-2">
               {dashboardData?.recent_leads && dashboardData.recent_leads.length > 0 ? (
                 dashboardData.recent_leads.map((lead) => (
-                  <div key={lead.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-150 group">
+                  <div key={lead.id} className="flex items-center justify-between p-3 hover:bg-theme-bg-tertiary rounded-lg transition-all duration-150 group">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="h-10 w-10 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center ring-1 ring-primary-100 flex-shrink-0">
                         <span className="text-primary-700 font-semibold text-sm">
@@ -162,8 +162,8 @@ export const Dashboard: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 text-sm truncate">{lead.first_name} {lead.last_name}</p>
-                        <p className="text-xs text-gray-500 truncate">{lead.company || 'No company'}</p>
+                        <p className="font-medium text-theme-text-primary text-sm truncate">{lead.first_name} {lead.last_name}</p>
+                        <p className="text-xs text-theme-text-secondary truncate">{lead.company || 'No company'}</p>
                       </div>
                     </div>
                     <span className={`px-2.5 py-1 text-xs font-medium rounded-md border flex-shrink-0 ml-2 ${
@@ -178,10 +178,10 @@ export const Dashboard: React.FC = () => {
                 ))
               ) : (
                 <div className="empty-state py-12">
-                  <div className="p-3 bg-gray-100 rounded-full inline-block mb-3">
-                    <Users className="h-8 w-8 text-gray-400" />
+                  <div className="p-3 bg-theme-bg-tertiary rounded-full inline-block mb-3">
+                    <Users className="h-8 w-8 text-theme-text-tertiary" />
                   </div>
-                  <p className="text-sm text-gray-500">No recent leads</p>
+                  <p className="text-sm text-theme-text-secondary">No recent leads</p>
                 </div>
               )}
             </div>
@@ -196,13 +196,13 @@ export const Dashboard: React.FC = () => {
             <div className="space-y-2">
               {dashboardData?.recent_deals && dashboardData.recent_deals.length > 0 ? (
                 dashboardData.recent_deals.map((deal) => (
-                  <div key={deal.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all duration-150 group">
+                  <div key={deal.id} className="flex items-center justify-between p-3 hover:bg-theme-bg-tertiary rounded-lg transition-all duration-150 group">
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-gray-900 text-sm truncate">{deal.name}</p>
-                      <p className="text-xs text-gray-500 truncate">{deal.contact_name || 'No contact'}</p>
+                      <p className="font-medium text-theme-text-primary text-sm truncate">{deal.name}</p>
+                      <p className="text-xs text-theme-text-secondary truncate">{deal.contact_name || 'No contact'}</p>
                     </div>
                     <div className="text-right flex-shrink-0 ml-4">
-                      <p className="font-semibold text-gray-900 text-sm mb-1">{formatCurrency(deal.amount)}</p>
+                      <p className="font-semibold text-theme-text-primary text-sm mb-1">{formatCurrency(deal.amount)}</p>
                       <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-md border ${getStageColor(deal.pipeline_stage).bg} ${getStageColor(deal.pipeline_stage).text} ${getStageColor(deal.pipeline_stage).border}`}>
                         {getStageName(deal.pipeline_stage)}
                       </span>
@@ -211,10 +211,10 @@ export const Dashboard: React.FC = () => {
                 ))
               ) : (
                 <div className="empty-state py-12">
-                  <div className="p-3 bg-gray-100 rounded-full inline-block mb-3">
-                    <DollarSign className="h-8 w-8 text-gray-400" />
+                  <div className="p-3 bg-theme-bg-tertiary rounded-full inline-block mb-3">
+                    <DollarSign className="h-8 w-8 text-theme-text-tertiary" />
                   </div>
-                  <p className="text-sm text-gray-500">No recent deals</p>
+                  <p className="text-sm text-theme-text-secondary">No recent deals</p>
                 </div>
               )}
             </div>

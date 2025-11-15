@@ -89,17 +89,17 @@ export const Contacts: React.FC = () => {
       <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <div className="h-9 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-5 w-80 bg-gray-200 rounded-lg animate-pulse mt-3"></div>
+            <div className="h-9 w-48 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
+            <div className="h-5 w-80 bg-theme-bg-secondary rounded-lg animate-pulse mt-3"></div>
           </div>
-          <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
+          <div className="h-10 w-32 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm animate-pulse">
-              <div className="h-4 w-20 bg-gray-200 rounded"></div>
-              <div className="h-8 w-16 bg-gray-200 rounded mt-2"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 shadow-sm animate-pulse">
+              <div className="h-4 w-20 bg-theme-bg-secondary rounded"></div>
+              <div className="h-8 w-16 bg-theme-bg-secondary rounded mt-2"></div>
             </div>
           ))}
         </div>
@@ -112,8 +112,8 @@ export const Contacts: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Contacts</h1>
-          <p className="text-gray-600">Manage your customer relationships</p>
+          <h1 className="text-3xl font-semibold text-theme-text-primary mb-2">Contacts</h1>
+          <p className="text-theme-text-secondary">Manage your customer relationships</p>
         </div>
         <div className="flex space-x-3">
           <Button
@@ -166,7 +166,7 @@ export const Contacts: React.FC = () => {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-text-tertiary h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search contacts by name, email, or company..."
@@ -213,19 +213,19 @@ export const Contacts: React.FC = () => {
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900 text-sm">{contact.first_name} {contact.last_name}</p>
-                          <p className="text-xs text-gray-500">{contact.title || 'No title'}</p>
+                          <p className="font-medium text-theme-text-primary text-sm">{contact.first_name} {contact.last_name}</p>
+                          <p className="text-xs text-theme-text-secondary">{contact.title || 'No title'}</p>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-sm text-gray-700">{contact.company || '-'}</p>
+                      <p className="text-sm text-theme-text-secondary">{contact.company || '-'}</p>
                     </td>
                     <td className="py-4 px-6">
                       <div className="space-y-1">
-                        <p className="text-sm text-gray-700">{contact.email}</p>
+                        <p className="text-sm text-theme-text-secondary">{contact.email}</p>
                         {contact.phone && (
-                          <p className="text-sm text-gray-700">{contact.phone}</p>
+                          <p className="text-sm text-theme-text-secondary">{contact.phone}</p>
                         )}
                       </div>
                     </td>
@@ -272,11 +272,11 @@ export const Contacts: React.FC = () => {
 
             {(!filteredContacts || filteredContacts.length === 0) && (
               <div className="empty-state py-16">
-                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-                  <Users className="h-10 w-10 text-gray-400" />
+                <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+                  <Users className="h-10 w-10 text-theme-text-tertiary" />
                 </div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">No contacts found</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="text-base font-medium text-theme-text-primary mb-1">No contacts found</h3>
+                <p className="text-sm text-theme-text-secondary">
                   {searchTerm ? 'Try adjusting your search terms' : 'Get started by adding your first contact'}
                 </p>
               </div>
@@ -304,23 +304,23 @@ export const Contacts: React.FC = () => {
       {/* Convert Lead Modal */}
       {showConvertModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl mx-4">
+          <div className="bg-theme-bg-primary rounded-xl p-6 w-full max-w-2xl mx-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Convert Lead to Contact</h3>
-              <button 
+              <button
                 onClick={() => setShowConvertModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-theme-text-tertiary hover:text-theme-text-secondary"
               >
                 ✕
               </button>
             </div>
-            
+
             <div className="max-h-96 overflow-y-auto">
               {unconvertedLeads?.map((lead) => (
-                <div key={lead.id} className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div key={lead.id} className="flex items-center justify-between p-4 border-b border-theme-border-primary">
                   <div>
                     <p className="font-medium">{lead.first_name} {lead.last_name}</p>
-                    <p className="text-sm text-gray-500">{lead.company} • {lead.email}</p>
+                    <p className="text-sm text-theme-text-secondary">{lead.company} • {lead.email}</p>
                   </div>
                   <Button
                     size="sm"
@@ -330,11 +330,11 @@ export const Contacts: React.FC = () => {
                   </Button>
                 </div>
               ))}
-              
+
               {(!unconvertedLeads || unconvertedLeads.length === 0) && (
                 <div className="text-center py-8">
-                  <UserPlus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No unconverted leads available</p>
+                  <UserPlus className="h-12 w-12 text-theme-text-tertiary mx-auto mb-4" />
+                  <p className="text-theme-text-secondary">No unconverted leads available</p>
                 </div>
               )}
             </div>

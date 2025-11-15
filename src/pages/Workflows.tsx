@@ -71,11 +71,11 @@ export const Workflows: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         <div className="grid grid-cols-1 gap-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-20 w-full bg-gray-200 rounded"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
+              <div className="h-20 w-full bg-theme-bg-secondary rounded"></div>
             </div>
           ))}
         </div>
@@ -90,9 +90,9 @@ export const Workflows: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Zap className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-gray-900">Automation Workflows</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">Automation Workflows</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-theme-text-secondary">
             Automate repetitive tasks with triggers and actions
           </p>
         </div>
@@ -111,10 +111,10 @@ export const Workflows: React.FC = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Workflows</p>
-                <p className="text-2xl font-bold text-gray-900">{workflows?.length || 0}</p>
+                <p className="text-sm text-theme-text-secondary mb-1">Total Workflows</p>
+                <p className="text-2xl font-bold text-theme-text-primary">{workflows?.length || 0}</p>
               </div>
-              <Activity className="h-8 w-8 text-gray-400" />
+              <Activity className="h-8 w-8 text-theme-text-tertiary" />
             </div>
           </CardContent>
         </Card>
@@ -137,7 +137,7 @@ export const Workflows: React.FC = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Paused</p>
+                <p className="text-sm text-theme-text-secondary mb-1">Paused</p>
                 <p className="text-2xl font-bold text-yellow-600">
                   {workflows?.filter((w: Workflow) => w.status === 'paused').length || 0}
                 </p>
@@ -151,12 +151,12 @@ export const Workflows: React.FC = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Total Executions</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-sm text-theme-text-secondary mb-1">Total Executions</p>
+                <p className="text-2xl font-bold text-theme-text-primary">
                   {workflows?.reduce((sum: number, w: Workflow) => sum + w.execution_count, 0) || 0}
                 </p>
               </div>
-              <Zap className="h-8 w-8 text-gray-400" />
+              <Zap className="h-8 w-8 text-theme-text-tertiary" />
             </div>
           </CardContent>
         </Card>
@@ -170,7 +170,7 @@ export const Workflows: React.FC = () => {
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-theme-text-primary">
                       {workflow.name}
                     </h3>
                     <span className={`badge ${statusColors[workflow.status]} text-xs`}>
@@ -179,27 +179,27 @@ export const Workflows: React.FC = () => {
                   </div>
 
                   {workflow.description && (
-                    <p className="text-sm text-gray-600 mb-3">{workflow.description}</p>
+                    <p className="text-sm text-theme-text-secondary mb-3">{workflow.description}</p>
                   )}
 
                   <div className="flex flex-wrap gap-4 text-sm">
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-600">Trigger:</span>
+                      <span className="text-theme-text-secondary">Trigger:</span>
                       <span className="font-medium">
                         {triggerTypeLabels[workflow.trigger_type] || workflow.trigger_type}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-600">Actions:</span>
+                      <span className="text-theme-text-secondary">Actions:</span>
                       <span className="font-medium">{workflow.actions.length}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-600">Executions:</span>
+                      <span className="text-theme-text-secondary">Executions:</span>
                       <span className="font-medium">{workflow.execution_count}</span>
                     </div>
                     {workflow.last_executed_at && (
                       <div className="flex items-center gap-2">
-                        <span className="text-gray-600">Last Run:</span>
+                        <span className="text-theme-text-secondary">Last Run:</span>
                         <span className="font-medium">
                           {new Date(workflow.last_executed_at).toLocaleString()}
                         </span>
@@ -248,11 +248,11 @@ export const Workflows: React.FC = () => {
 
         {(!workflows || workflows.length === 0) && (
           <div className="empty-state py-16">
-            <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-              <Zap className="h-10 w-10 text-gray-400" />
+            <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+              <Zap className="h-10 w-10 text-theme-text-tertiary" />
             </div>
-            <h3 className="text-base font-medium text-gray-900 mb-1">No workflows yet</h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="text-base font-medium text-theme-text-primary mb-1">No workflows yet</h3>
+            <p className="text-sm text-theme-text-tertiary">
               Create your first automation workflow to save time
             </p>
           </div>
@@ -262,13 +262,13 @@ export const Workflows: React.FC = () => {
       {/* Workflow Details Modal (simplified - full builder coming soon) */}
       {selectedWorkflow && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-semibold">{selectedWorkflow.name}</h2>
                 <button
                   onClick={() => setSelectedWorkflow(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-theme-text-tertiary hover:text-theme-text-secondary"
                 >
                   ✕
                 </button>
@@ -278,7 +278,7 @@ export const Workflows: React.FC = () => {
             <div className="p-6 space-y-6">
               <div>
                 <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p className="text-gray-600">{selectedWorkflow.description || 'No description'}</p>
+                <p className="text-theme-text-secondary">{selectedWorkflow.description || 'No description'}</p>
               </div>
 
               <div>
@@ -294,10 +294,10 @@ export const Workflows: React.FC = () => {
                 <h3 className="text-lg font-semibold mb-2">Actions ({selectedWorkflow.actions.length})</h3>
                 <div className="space-y-2">
                   {selectedWorkflow.actions.map((action: any, index: number) => (
-                    <div key={index} className="p-4 bg-gray-50 rounded-lg">
+                    <div key={index} className="p-4 bg-theme-bg-tertiary rounded-lg">
                       <p className="font-medium">{action.type || 'Action ' + (index + 1)}</p>
                       {action.description && (
-                        <p className="text-sm text-gray-600 mt-1">{action.description}</p>
+                        <p className="text-sm text-theme-text-secondary mt-1">{action.description}</p>
                       )}
                     </div>
                   ))}

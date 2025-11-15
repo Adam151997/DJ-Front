@@ -33,8 +33,8 @@ export const Login: React.FC = () => {
           <div className="inline-flex items-center justify-center h-12 w-12 bg-primary-600 rounded-xl mb-4">
             <Shield className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">MoldCRM</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-theme-text-primary">MoldCRM</h1>
+          <p className="text-theme-text-secondary mt-2">Sign in to your account</p>
         </div>
 
         <Card className="border-0 shadow-medium">
@@ -51,7 +51,7 @@ export const Login: React.FC = () => {
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="email" className="block text-sm font-medium text-theme-text-secondary mb-1">
                   Email address
                 </label>
                 <input
@@ -60,13 +60,13 @@ export const Login: React.FC = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                  className="w-full px-3 py-2 border border-theme-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                   placeholder="Enter your email"
                   disabled={isLoading}
                 />
               </div>
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="password" className="block text-sm font-medium text-theme-text-secondary mb-1">
                   Password
                 </label>
                 <input
@@ -75,7 +75,7 @@ export const Login: React.FC = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
+                  className="w-full px-3 py-2 border border-theme-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                   placeholder="Enter your password"
                   disabled={isLoading}
                 />
@@ -91,8 +91,8 @@ export const Login: React.FC = () => {
               </Button>
             </form>
             
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600 text-center">
+            <div className="mt-6 p-4 bg-theme-bg-tertiary rounded-lg">
+              <p className="text-sm text-theme-text-secondary text-center">
                 <strong>Demo credentials:</strong><br />
                 admin@moldcrm.com / admin123
               </p>

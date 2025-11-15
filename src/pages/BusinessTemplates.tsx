@@ -53,14 +53,14 @@ export const BusinessTemplates: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-12 w-12 bg-gray-200 rounded-lg mb-4"></div>
-              <div className="h-6 w-3/4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-4 w-full bg-gray-200 rounded mb-4"></div>
-              <div className="h-10 w-full bg-gray-200 rounded"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
+              <div className="h-12 w-12 bg-theme-bg-secondary rounded-lg mb-4"></div>
+              <div className="h-6 w-3/4 bg-theme-bg-secondary rounded mb-2"></div>
+              <div className="h-4 w-full bg-theme-bg-secondary rounded mb-4"></div>
+              <div className="h-10 w-full bg-theme-bg-secondary rounded"></div>
             </div>
           ))}
         </div>
@@ -74,9 +74,9 @@ export const BusinessTemplates: React.FC = () => {
       <div>
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="h-8 w-8 text-primary-600" />
-          <h1 className="text-3xl font-semibold text-gray-900">Business Templates</h1>
+          <h1 className="text-3xl font-semibold text-theme-text-primary">Business Templates</h1>
         </div>
-        <p className="text-gray-600">
+        <p className="text-theme-text-secondary">
           Quick-start templates pre-configured for your industry with pipeline stages, custom fields, and automations
         </p>
       </div>
@@ -99,29 +99,29 @@ export const BusinessTemplates: React.FC = () => {
                   )}
                 </div>
 
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-xl font-semibold text-theme-text-primary mb-2">
                   {template.name}
                 </h3>
 
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-theme-text-secondary mb-4">
                   {template.description}
                 </p>
 
                 <div className="space-y-2 mb-4 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Pipeline Stages:</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="text-theme-text-secondary">Pipeline Stages:</span>
+                    <span className="font-medium text-theme-text-primary">
                       {template.pipeline_stages.length}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Custom Fields:</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="text-theme-text-secondary">Custom Fields:</span>
+                    <span className="font-medium text-theme-text-primary">
                       {template.custom_fields.length}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Type:</span>
+                    <span className="text-theme-text-secondary">Type:</span>
                     <span className="badge badge-info">
                       {templateTypeLabels[template.template_type]}
                     </span>
@@ -155,8 +155,8 @@ export const BusinessTemplates: React.FC = () => {
       {/* Template Details Modal */}
       {selectedTemplate && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">{selectedTemplate.icon}</span>
@@ -169,7 +169,7 @@ export const BusinessTemplates: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setSelectedTemplate(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-theme-text-tertiary hover:text-theme-text-secondary"
                 >
                   ✕
                 </button>
@@ -179,7 +179,7 @@ export const BusinessTemplates: React.FC = () => {
             <div className="p-6 space-y-6">
               <div>
                 <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p className="text-gray-600">{selectedTemplate.description}</p>
+                <p className="text-theme-text-secondary">{selectedTemplate.description}</p>
               </div>
 
               <div>
@@ -188,7 +188,7 @@ export const BusinessTemplates: React.FC = () => {
                   {selectedTemplate.pipeline_stages.map((stage: any, index: number) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center gap-3 p-3 bg-theme-bg-tertiary rounded-lg"
                     >
                       <div
                         className="w-4 h-4 rounded-full"
@@ -211,11 +211,11 @@ export const BusinessTemplates: React.FC = () => {
                   {selectedTemplate.custom_fields.map((field: any, index: number) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                      className="flex items-center justify-between p-3 bg-theme-bg-tertiary rounded-lg"
                     >
                       <div>
                         <span className="font-medium">{field.display_name}</span>
-                        <span className="text-sm text-gray-500 ml-2">
+                        <span className="text-sm text-theme-text-tertiary ml-2">
                           ({field.field_type})
                         </span>
                       </div>

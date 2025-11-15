@@ -137,22 +137,22 @@ export const Deals: React.FC = () => {
       <div className="space-y-8">
         <div className="flex justify-between items-center">
           <div>
-            <div className="h-9 w-48 bg-gray-200 rounded-lg animate-pulse"></div>
-            <div className="h-5 w-80 bg-gray-200 rounded-lg animate-pulse mt-3"></div>
+            <div className="h-9 w-48 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
+            <div className="h-5 w-80 bg-theme-bg-secondary rounded-lg animate-pulse mt-3"></div>
           </div>
-          <div className="h-10 w-32 bg-gray-200 rounded-lg animate-pulse"></div>
+          <div className="h-10 w-32 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm animate-pulse">
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 shadow-sm animate-pulse">
               <div className="flex justify-between items-start">
                 <div className="space-y-3 flex-1">
-                  <div className="h-4 w-24 bg-gray-200 rounded"></div>
-                  <div className="h-8 w-20 bg-gray-200 rounded"></div>
-                  <div className="h-3 w-32 bg-gray-200 rounded"></div>
+                  <div className="h-4 w-24 bg-theme-bg-secondary rounded"></div>
+                  <div className="h-8 w-20 bg-theme-bg-secondary rounded"></div>
+                  <div className="h-3 w-32 bg-theme-bg-secondary rounded"></div>
                 </div>
-                <div className="h-12 w-12 bg-gray-200 rounded-lg"></div>
+                <div className="h-12 w-12 bg-theme-bg-secondary rounded-lg"></div>
               </div>
             </div>
           ))}
@@ -166,8 +166,8 @@ export const Deals: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Deals Pipeline</h1>
-          <p className="text-gray-600">Manage your sales pipeline and track deals</p>
+          <h1 className="text-3xl font-semibold text-theme-text-primary mb-2">Deals Pipeline</h1>
+          <p className="text-theme-text-secondary">Manage your sales pipeline and track deals</p>
         </div>
         <Button
           onClick={() => setShowForm(true)}
@@ -214,7 +214,7 @@ export const Deals: React.FC = () => {
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-text-tertiary h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search deals by name or contact..."
@@ -231,11 +231,11 @@ export const Deals: React.FC = () => {
                   onClick={() => setSelectedStage(stage.value)}
                   className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
                     selectedStage === stage.value
-                      ? stage.value === 'all' 
-                        ? 'bg-gray-600 text-white'
+                      ? stage.value === 'all'
+                        ? 'bg-theme-text-secondary text-white'
                         : `bg-${stage.color}-600 text-white`
                       : stage.value === 'all'
-                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-theme-bg-tertiary text-theme-text-secondary hover:bg-theme-bg-secondary'
                       : `bg-${stage.color}-100 text-${stage.color}-700 hover:bg-${stage.color}-200`
                   }`}
                 >
@@ -275,17 +275,17 @@ export const Deals: React.FC = () => {
                   <tr key={deal.id}>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="font-medium text-gray-900">{deal.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-theme-text-primary">{deal.name}</p>
+                        <p className="text-sm text-theme-text-secondary">
                           {deal.assigned_to_name || 'Unassigned'}
                         </p>
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-gray-600">{deal.contact_name || 'No contact'}</p>
+                      <p className="text-theme-text-secondary">{deal.contact_name || 'No contact'}</p>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="font-semibold text-gray-900">
+                      <p className="font-semibold text-theme-text-primary">
                         {formatCurrency(deal.amount)}
                       </p>
                     </td>
@@ -309,8 +309,8 @@ export const Deals: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-gray-400" />
-                        <p className="text-gray-600">
+                        <Calendar className="h-4 w-4 text-theme-text-tertiary" />
+                        <p className="text-theme-text-secondary">
                           {deal.expected_close_date
                             ? new Date(deal.expected_close_date).toLocaleDateString()
                             : 'Not set'
@@ -320,13 +320,13 @@ export const Deals: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-2">
-                        <div className="w-16 bg-gray-200 rounded-full h-2">
+                        <div className="w-16 bg-theme-bg-secondary rounded-full h-2">
                           <div
                             className="bg-green-500 h-2 rounded-full"
                             style={{ width: `${deal.probability}%` }}
                           ></div>
                         </div>
-                        <span className="text-sm font-medium text-gray-700">
+                        <span className="text-sm font-medium text-theme-text-secondary">
                           {deal.probability}%
                         </span>
                       </div>
@@ -356,11 +356,11 @@ export const Deals: React.FC = () => {
             
             {(!filteredDeals || filteredDeals.length === 0) && (
               <div className="empty-state py-16">
-                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-                  <TrendingUp className="h-10 w-10 text-gray-400" />
+                <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+                  <TrendingUp className="h-10 w-10 text-theme-text-tertiary" />
                 </div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">No deals found</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="text-base font-medium text-theme-text-primary mb-1">No deals found</h3>
+                <p className="text-sm text-theme-text-secondary">
                   {searchTerm ? 'Try adjusting your search terms' : 'Get started by adding your first deal'}
                 </p>
               </div>

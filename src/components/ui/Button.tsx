@@ -28,9 +28,9 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary: 'bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 focus:ring-primary-200 shadow-sm hover:shadow-md',
-    secondary: 'bg-gray-50 text-gray-700 hover:bg-gray-100 active:bg-gray-200 focus:ring-gray-200 border border-gray-300 hover:border-gray-400',
-    outline: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-400 active:bg-gray-100 focus:ring-primary-200 shadow-xs',
-    ghost: 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 active:bg-gray-200 focus:ring-gray-200',
+    secondary: 'bg-theme-bg-tertiary text-theme-text-primary hover:bg-theme-bg-secondary active:bg-theme-bg-tertiary focus:ring-primary-200 border border-theme-border-primary hover:border-theme-border-secondary',
+    outline: 'border border-theme-border-primary bg-theme-bg-primary text-theme-text-primary hover:bg-theme-bg-tertiary hover:border-theme-border-secondary active:bg-theme-bg-secondary focus:ring-primary-200 shadow-xs',
+    ghost: 'text-theme-text-secondary hover:bg-theme-bg-tertiary hover:text-theme-text-primary active:bg-theme-bg-secondary focus:ring-primary-200',
     destructive: 'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700 focus:ring-danger-200 shadow-sm hover:shadow-md',
   };
 
