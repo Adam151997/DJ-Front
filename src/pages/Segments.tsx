@@ -90,13 +90,13 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ segment, onClose, onSuccess }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {segment ? 'Edit Segment' : 'Create New Segment'}
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -140,13 +140,13 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ segment, onClose, onSuccess }
             </select>
           </div>
 
-          <div className="border-t border-gray-200 pt-4">
+          <div className="border-t border-theme-border-primary pt-4">
             <label className="form-label mb-2">Filter Conditions</label>
-            <div className="p-4 bg-gray-50 rounded-lg space-y-3">
-              <p className="text-sm text-gray-600">
+            <div className="p-4 bg-theme-bg-tertiary rounded-lg space-y-3">
+              <p className="text-sm text-theme-text-secondary">
                 Define conditions for {formData.segment_type === 'static' ? 'including' : 'automatically including'} contacts in this segment.
               </p>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-theme-text-secondary">
                 <strong>Example conditions:</strong>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li>Email opened in last 30 days</li>
@@ -219,7 +219,7 @@ const SegmentForm: React.FC<SegmentFormProps> = ({ segment, onClose, onSuccess }
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
@@ -286,7 +286,7 @@ export const Segments: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
-          <p className="mt-2 text-gray-600">Loading segments...</p>
+          <p className="mt-2 text-theme-text-secondary">Loading segments...</p>
         </div>
       </div>
     );
@@ -297,7 +297,7 @@ export const Segments: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Audience Segments</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-theme-text-secondary mt-1">
             Create targeted segments for personalized email campaigns
           </p>
         </div>
@@ -312,7 +312,7 @@ export const Segments: React.FC = () => {
           <CardContent className="text-center py-12">
             <Filter className="w-12 h-12 mx-auto text-gray-400 mb-4" />
             <h3 className="text-lg font-semibold mb-2">No Segments Yet</h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-theme-text-secondary mb-4">
               Create your first segment to target specific groups of contacts
             </p>
             <Button onClick={() => setShowForm(true)}>
@@ -344,24 +344,24 @@ export const Segments: React.FC = () => {
                         )}
                       </div>
                       {segment.description && (
-                        <p className="text-gray-600 text-sm mb-2">{segment.description}</p>
+                        <p className="text-theme-text-secondary text-sm mb-2">{segment.description}</p>
                       )}
 
                       <div className="grid grid-cols-3 gap-4 text-sm mt-3">
                         <div>
-                          <span className="text-gray-500">Size:</span>
+                          <span className="text-theme-text-secondary">Size:</span>
                           <span className="font-semibold ml-2">
                             {segment.actual_size.toLocaleString()} contacts
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Auto-update:</span>
+                          <span className="text-theme-text-secondary">Auto-update:</span>
                           <span className="font-semibold ml-2">
                             {segment.auto_update ? 'Yes' : 'No'}
                           </span>
                         </div>
                         <div>
-                          <span className="text-gray-500">Created:</span>
+                          <span className="text-theme-text-secondary">Created:</span>
                           <span className="font-semibold ml-2">
                             {new Date(segment.created_at).toLocaleDateString()}
                           </span>
@@ -373,7 +373,7 @@ export const Segments: React.FC = () => {
                           {segment.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
+                              className="px-2 py-1 bg-theme-bg-tertiary text-theme-text-secondary rounded text-xs"
                             >
                               {tag}
                             </span>

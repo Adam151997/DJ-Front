@@ -144,13 +144,13 @@ const EmailProviderForm: React.FC<EmailProviderFormProps> = ({ provider, onClose
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {provider ? 'Edit' : 'Add'} Email Provider
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               ✕
             </button>
           </div>
@@ -174,7 +174,7 @@ const EmailProviderForm: React.FC<EmailProviderFormProps> = ({ provider, onClose
               <option value="klaviyo">Klaviyo</option>
             </select>
             {provider && (
-              <p className="text-xs text-gray-500 mt-1">Provider type cannot be changed</p>
+              <p className="text-xs text-theme-text-tertiary mt-1">Provider type cannot be changed</p>
             )}
           </div>
 
@@ -209,7 +209,7 @@ const EmailProviderForm: React.FC<EmailProviderFormProps> = ({ provider, onClose
                 <button
                   type="button"
                   onClick={() => setShowApiKey(!showApiKey)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-theme-text-tertiary hover:text-theme-text-secondary"
                 >
                   {showApiKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
@@ -232,7 +232,7 @@ const EmailProviderForm: React.FC<EmailProviderFormProps> = ({ provider, onClose
                   <button
                     type="button"
                     onClick={() => setShowApiSecret(!showApiSecret)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-theme-text-tertiary hover:text-theme-text-secondary"
                   >
                     {showApiSecret ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -309,7 +309,7 @@ const EmailProviderForm: React.FC<EmailProviderFormProps> = ({ provider, onClose
               min="0"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-tertiary mt-1">
               Lower numbers = higher priority when using priority strategy
             </p>
           </div>
@@ -349,11 +349,11 @@ const StatsModal: React.FC<StatsModalProps> = ({ provider, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">{provider.name} - Statistics</h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               ✕
             </button>
           </div>
@@ -363,7 +363,7 @@ const StatsModal: React.FC<StatsModalProps> = ({ provider, onClose }) => {
           {isLoading ? (
             <div className="text-center py-12">
               <div className="animate-spin h-8 w-8 border-4 border-primary-600 border-t-transparent rounded-full mx-auto"></div>
-              <p className="text-gray-500 mt-4">Loading statistics...</p>
+              <p className="text-theme-text-tertiary mt-4">Loading statistics...</p>
             </div>
           ) : stats ? (
             <>
@@ -414,16 +414,16 @@ const StatsModal: React.FC<StatsModalProps> = ({ provider, onClose }) => {
               {/* Usage vs Limits */}
               {(provider.daily_limit || provider.monthly_limit) && (
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-gray-900">Usage Limits</h3>
+                  <h3 className="font-semibold text-theme-text-primary">Usage Limits</h3>
                   {provider.daily_limit && (
                     <div>
                       <div className="flex justify-between text-sm mb-2">
-                        <span className="text-gray-600">Daily Usage</span>
+                        <span className="text-theme-text-secondary">Daily Usage</span>
                         <span className="font-medium">
                           {stats.sent_today} / {provider.daily_limit.toLocaleString()}
                         </span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-theme-bg-secondary rounded-full h-2">
                         <div
                           className="bg-blue-600 h-2 rounded-full"
                           style={{
@@ -436,12 +436,12 @@ const StatsModal: React.FC<StatsModalProps> = ({ provider, onClose }) => {
                   {provider.monthly_limit && (
                     <div>
                       <div className="flex justify-between text-sm mb-2">
-                        <span className="text-gray-600">Monthly Usage</span>
+                        <span className="text-theme-text-secondary">Monthly Usage</span>
                         <span className="font-medium">
                           {stats.sent_this_month} / {provider.monthly_limit.toLocaleString()}
                         </span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-theme-bg-secondary rounded-full h-2">
                         <div
                           className="bg-purple-600 h-2 rounded-full"
                           style={{
@@ -456,7 +456,7 @@ const StatsModal: React.FC<StatsModalProps> = ({ provider, onClose }) => {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500">No statistics available</p>
+              <p className="text-theme-text-tertiary">No statistics available</p>
             </div>
           )}
 
@@ -557,11 +557,11 @@ export const EmailProviders: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-16 w-full bg-gray-200 rounded"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
+              <div className="h-16 w-full bg-theme-bg-secondary rounded"></div>
             </div>
           ))}
         </div>
@@ -576,9 +576,9 @@ export const EmailProviders: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Server className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-gray-900">Email Providers</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">Email Providers</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-theme-text-secondary">
             Manage your email service providers and monitor performance
           </p>
         </div>
@@ -638,7 +638,7 @@ export const EmailProviders: React.FC = () => {
                   <tr key={provider.id}>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="font-medium text-gray-900">{provider.name}</p>
+                        <p className="font-medium text-theme-text-primary">{provider.name}</p>
                         <span className={`badge ${PROVIDER_COLORS[provider.provider_type]} text-xs mt-1`}>
                           {PROVIDER_LABELS[provider.provider_type]}
                         </span>
@@ -650,7 +650,7 @@ export const EmailProviders: React.FC = () => {
                           {provider.is_active ? (
                             <CheckCircle className="h-4 w-4 text-green-600" />
                           ) : (
-                            <PauseCircle className="h-4 w-4 text-gray-400" />
+                            <PauseCircle className="h-4 w-4 text-theme-text-tertiary" />
                           )}
                           <span className="text-sm">
                             {provider.is_active ? 'Active' : 'Inactive'}
@@ -670,22 +670,22 @@ export const EmailProviders: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{provider.sender_name}</p>
-                        <p className="text-xs text-gray-500">{provider.sender_email}</p>
+                        <p className="text-sm font-medium text-theme-text-primary">{provider.sender_name}</p>
+                        <p className="text-xs text-theme-text-tertiary">{provider.sender_email}</p>
                       </div>
                     </td>
                     <td className="py-4 px-6">
                       <div className="text-sm">
-                        <p className="text-gray-900">
+                        <p className="text-theme-text-primary">
                           Today: <span className="font-medium">{provider.sent_today}</span>
                           {provider.daily_limit && (
-                            <span className="text-gray-500"> / {provider.daily_limit}</span>
+                            <span className="text-theme-text-tertiary"> / {provider.daily_limit}</span>
                           )}
                         </p>
-                        <p className="text-gray-900">
+                        <p className="text-theme-text-primary">
                           Month: <span className="font-medium">{provider.sent_this_month}</span>
                           {provider.monthly_limit && (
-                            <span className="text-gray-500"> / {provider.monthly_limit}</span>
+                            <span className="text-theme-text-tertiary"> / {provider.monthly_limit}</span>
                           )}
                         </p>
                       </div>
@@ -753,11 +753,11 @@ export const EmailProviders: React.FC = () => {
 
             {(!providers || providers.length === 0) && (
               <div className="empty-state py-16">
-                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-                  <Server className="h-10 w-10 text-gray-400" />
+                <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+                  <Server className="h-10 w-10 text-theme-text-tertiary" />
                 </div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">No providers configured</h3>
-                <p className="text-sm text-gray-500 mb-4">
+                <h3 className="text-base font-medium text-theme-text-primary mb-1">No providers configured</h3>
+                <p className="text-sm text-theme-text-tertiary mb-4">
                   Add your first email provider to start sending campaigns
                 </p>
                 <Button onClick={() => setShowForm(true)} icon={Plus}>
@@ -785,8 +785,8 @@ export const EmailProviders: React.FC = () => {
       {/* Test Email Modal */}
       {testingProviderId && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-md">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-md">
+            <div className="p-6 border-b border-theme-border-primary">
               <h2 className="text-xl font-semibold">Send Test Email</h2>
             </div>
             <div className="p-6 space-y-4">

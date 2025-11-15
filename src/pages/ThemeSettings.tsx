@@ -67,7 +67,7 @@ export const ThemeSettings: React.FC = () => {
                     relative p-6 rounded-xl border-2 text-left transition-all duration-200
                     ${isActive
                       ? 'border-primary-500 bg-primary-50 shadow-lg scale-105'
-                      : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+                      : 'border-theme-border-primary hover:border-gray-300 hover:shadow-md'
                     }
                   `}
                 >
@@ -90,15 +90,15 @@ export const ThemeSettings: React.FC = () => {
                   )}
 
                   <div className="flex items-center gap-3 mb-4">
-                    <div className={`p-3 rounded-lg ${isActive ? 'bg-primary-100' : 'bg-gray-100'}`}>
-                      <Icon className={`h-6 w-6 ${isActive ? 'text-primary-600' : 'text-gray-600'}`} />
+                    <div className={`p-3 rounded-lg ${isActive ? 'bg-primary-100' : 'bg-theme-bg-tertiary'}`}>
+                      <Icon className={`h-6 w-6 ${isActive ? 'text-primary-600' : 'text-theme-text-secondary'}`} />
                     </div>
                   </div>
 
-                  <h3 className={`text-lg font-semibold mb-1 ${isActive ? 'text-primary-700' : 'text-gray-900'}`}>
+                  <h3 className={`text-lg font-semibold mb-1 ${isActive ? 'text-primary-700' : 'text-theme-text-primary'}`}>
                     {themeOption.name}
                   </h3>
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p className="text-sm text-theme-text-secondary mb-4">
                     {themeOption.description}
                   </p>
 

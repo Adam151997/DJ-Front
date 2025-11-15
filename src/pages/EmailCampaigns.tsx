@@ -92,13 +92,13 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+      <div className="bg-theme-bg-primary rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold">
               {campaign ? 'Edit Campaign' : 'Create Email Campaign'}
             </h2>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+            <button onClick={onClose} className="text-theme-text-tertiary hover:text-theme-text-secondary">
               <XCircle className="w-6 h-6" />
             </button>
           </div>
@@ -129,7 +129,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
               <option value="recurring">Recurring Campaign</option>
               <option value="triggered">Triggered Campaign</option>
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               One-time: Send once. Recurring: Regular schedule. Triggered: Event-based.
             </p>
           </div>
@@ -149,7 +149,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
                 </option>
               ))}
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               Choose the email content template to use for this campaign
             </p>
           </div>
@@ -168,7 +168,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
                 </option>
               ))}
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               Optionally target a specific segment of your audience
             </p>
           </div>
@@ -184,7 +184,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
               <option value="optimal_time">Optimal Send Time</option>
               <option value="time_zone_aware">Time Zone Aware</option>
             </select>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-theme-text-secondary mt-1">
               Optimize delivery timing for better engagement
             </p>
           </div>
@@ -198,7 +198,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
                 value={formData.scheduled_at}
                 onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-theme-text-secondary mt-1">
                 Leave empty to save as draft. Set a future time to schedule.
               </p>
             </div>
@@ -247,7 +247,7 @@ const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose
             </p>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+          <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
             </Button>
@@ -328,11 +328,11 @@ export const EmailCampaigns: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
-              <div className="h-16 w-full bg-gray-200 rounded"></div>
+            <div key={i} className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
+              <div className="h-16 w-full bg-theme-bg-secondary rounded"></div>
             </div>
           ))}
         </div>
@@ -347,9 +347,9 @@ export const EmailCampaigns: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <Mail className="h-8 w-8 text-primary-600" />
-            <h1 className="text-3xl font-semibold text-gray-900">Email Campaigns</h1>
+            <h1 className="text-3xl font-semibold text-theme-text-primary">Email Campaigns</h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-theme-text-secondary">
             Create and manage email campaigns with advanced tracking
           </p>
         </div>
@@ -414,8 +414,8 @@ export const EmailCampaigns: React.FC = () => {
                   <tr key={campaign.id}>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="font-medium text-gray-900">{campaign.name}</p>
-                        <p className="text-sm text-gray-500">
+                        <p className="font-medium text-theme-text-primary">{campaign.name}</p>
+                        <p className="text-sm text-theme-text-secondary">
                           {new Date(campaign.created_at).toLocaleDateString()}
                         </p>
                       </div>
@@ -426,15 +426,15 @@ export const EmailCampaigns: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-gray-900">{campaign.total_recipients}</p>
+                      <p className="text-theme-text-primary">{campaign.total_recipients}</p>
                     </td>
                     <td className="py-4 px-6">
-                      <p className="text-gray-900">{campaign.sent_count}</p>
+                      <p className="text-theme-text-primary">{campaign.sent_count}</p>
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="text-gray-900">{campaign.opened_count}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-theme-text-primary">{campaign.opened_count}</p>
+                        <p className="text-xs text-theme-text-secondary">
                           {campaign.sent_count > 0
                             ? `${((campaign.opened_count / campaign.sent_count) * 100).toFixed(1)}%`
                             : '0%'}
@@ -443,8 +443,8 @@ export const EmailCampaigns: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <p className="text-gray-900">{campaign.clicked_count}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-theme-text-primary">{campaign.clicked_count}</p>
+                        <p className="text-xs text-theme-text-secondary">
                           {campaign.sent_count > 0
                             ? `${((campaign.clicked_count / campaign.sent_count) * 100).toFixed(1)}%`
                             : '0%'}
@@ -495,11 +495,11 @@ export const EmailCampaigns: React.FC = () => {
 
             {(!campaigns || campaigns.length === 0) && (
               <div className="empty-state py-16">
-                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-                  <Mail className="h-10 w-10 text-gray-400" />
+                <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+                  <Mail className="h-10 w-10 text-theme-text-tertiary" />
                 </div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">No campaigns yet</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="text-base font-medium text-theme-text-primary mb-1">No campaigns yet</h3>
+                <p className="text-sm text-theme-text-secondary">
                   Create your first email campaign to engage with your contacts
                 </p>
               </div>
@@ -511,13 +511,13 @@ export const EmailCampaigns: React.FC = () => {
       {/* Campaign Details Modal */}
       {selectedCampaign && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-theme-border-primary sticky top-0 bg-theme-bg-primary">
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-semibold">{selectedCampaign.name}</h2>
                 <button
                   onClick={() => setSelectedCampaign(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-theme-text-tertiary hover:text-theme-text-secondary"
                 >
                   ✕
                 </button>
@@ -527,27 +527,27 @@ export const EmailCampaigns: React.FC = () => {
             <div className="p-6 space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Status</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Status</p>
                   <span className={`badge ${statusColors[selectedCampaign.status]}`}>
                     {selectedCampaign.status.charAt(0).toUpperCase() + selectedCampaign.status.slice(1)}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Total Recipients</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Total Recipients</p>
                   <p className="text-lg font-semibold">{selectedCampaign.total_recipients}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Sent</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Sent</p>
                   <p className="text-lg font-semibold">{selectedCampaign.sent_count}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Opened</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Opened</p>
                   <p className="text-lg font-semibold">
                     {selectedCampaign.opened_count}{' '}
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-theme-text-secondary">
                       ({selectedCampaign.sent_count > 0
                         ? ((selectedCampaign.opened_count / selectedCampaign.sent_count) * 100).toFixed(1)
                         : 0}%)
@@ -558,10 +558,10 @@ export const EmailCampaigns: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Clicked</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Clicked</p>
                   <p className="text-lg font-semibold">
                     {selectedCampaign.clicked_count}{' '}
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-theme-text-secondary">
                       ({selectedCampaign.sent_count > 0
                         ? ((selectedCampaign.clicked_count / selectedCampaign.sent_count) * 100).toFixed(1)
                         : 0}%)
@@ -569,10 +569,10 @@ export const EmailCampaigns: React.FC = () => {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Bounced</p>
+                  <p className="text-sm text-theme-text-secondary mb-1">Bounced</p>
                   <p className="text-lg font-semibold">
                     {selectedCampaign.bounced_count}{' '}
-                    <span className="text-sm text-gray-500">
+                    <span className="text-sm text-theme-text-secondary">
                       ({selectedCampaign.sent_count > 0
                         ? ((selectedCampaign.bounced_count / selectedCampaign.sent_count) * 100).toFixed(1)
                         : 0}%)

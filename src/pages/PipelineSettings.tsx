@@ -114,11 +114,11 @@ export const PipelineSettings: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-64 bg-gray-200 rounded-lg animate-pulse"></div>
-        <div className="bg-white rounded-xl border border-gray-200 p-6 animate-pulse">
+        <div className="h-8 w-64 bg-theme-bg-secondary rounded-lg animate-pulse"></div>
+        <div className="bg-theme-bg-primary rounded-xl border border-theme-border-primary p-6 animate-pulse">
           <div className="space-y-4">
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="h-16 bg-gray-100 rounded-lg"></div>
+              <div key={i} className="h-16 bg-theme-bg-tertiary rounded-lg"></div>
             ))}
           </div>
         </div>
@@ -131,8 +131,8 @@ export const PipelineSettings: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">Pipeline Settings</h1>
-          <p className="text-gray-600">Configure your deal pipeline stages</p>
+          <h1 className="text-3xl font-semibold text-theme-text-primary mb-2">Pipeline Settings</h1>
+          <p className="text-theme-text-secondary">Configure your deal pipeline stages</p>
         </div>
         <Button
           onClick={() => setShowForm(true)}
@@ -147,7 +147,7 @@ export const PipelineSettings: React.FC = () => {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Settings2 className="h-5 w-5 text-gray-600" />
+            <Settings2 className="h-5 w-5 text-theme-text-secondary" />
             Pipeline Stages
           </CardTitle>
         </CardHeader>
@@ -156,10 +156,10 @@ export const PipelineSettings: React.FC = () => {
             {stages?.map((stage) => (
               <div
                 key={stage.id}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-between p-4 bg-theme-bg-tertiary rounded-lg hover:bg-theme-bg-secondary transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <GripVertical className="h-5 w-5 text-gray-400 cursor-move" />
+                  <GripVertical className="h-5 w-5 text-theme-text-tertiary cursor-move" />
 
                   <div
                     className="h-8 w-8 rounded-full"
@@ -167,8 +167,8 @@ export const PipelineSettings: React.FC = () => {
                   ></div>
 
                   <div>
-                    <h3 className="font-semibold text-gray-900">{stage.display_name}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-semibold text-theme-text-primary">{stage.display_name}</h3>
+                    <p className="text-sm text-theme-text-secondary">
                       {stage.name}
                       {stage.is_closed && (
                         <span className="ml-2 badge badge-gray">
@@ -207,11 +207,11 @@ export const PipelineSettings: React.FC = () => {
 
             {(!stages || stages.length === 0) && (
               <div className="empty-state">
-                <div className="p-4 bg-gray-100 rounded-full inline-block mb-4">
-                  <Settings2 className="h-10 w-10 text-gray-400" />
+                <div className="p-4 bg-theme-bg-tertiary rounded-full inline-block mb-4">
+                  <Settings2 className="h-10 w-10 text-theme-text-tertiary" />
                 </div>
-                <h3 className="text-base font-medium text-gray-900 mb-1">No pipeline stages configured</h3>
-                <p className="text-sm text-gray-500">Add your first stage to get started</p>
+                <h3 className="text-base font-medium text-theme-text-primary mb-1">No pipeline stages configured</h3>
+                <p className="text-sm text-theme-text-secondary">Add your first stage to get started</p>
               </div>
             )}
           </div>
@@ -221,14 +221,14 @@ export const PipelineSettings: React.FC = () => {
       {/* Stage Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl w-full max-w-lg">
-            <div className="flex justify-between items-center p-6 border-b border-gray-200">
+          <div className="bg-theme-bg-primary rounded-xl w-full max-w-lg">
+            <div className="flex justify-between items-center p-6 border-b border-theme-border-primary">
               <h2 className="text-xl font-semibold">
                 {editingStage ? 'Edit Stage' : 'Add New Stage'}
               </h2>
               <button
                 onClick={resetForm}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-theme-text-tertiary hover:text-theme-text-secondary transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -261,7 +261,7 @@ export const PipelineSettings: React.FC = () => {
                   className="input-field"
                   placeholder="e.g., qualification"
                 />
-                <p className="text-xs text-gray-500 mt-1">Lowercase, no spaces (used for API)</p>
+                <p className="text-xs text-theme-text-secondary mt-1">Lowercase, no spaces (used for API)</p>
               </div>
 
               <div>
@@ -296,7 +296,7 @@ export const PipelineSettings: React.FC = () => {
                     onChange={(e) => setFormData({ ...formData, is_closed: e.target.checked })}
                     className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
-                  <span className="text-sm text-gray-700">This is a closed stage</span>
+                  <span className="text-sm text-theme-text-secondary">This is a closed stage</span>
                 </label>
 
                 {formData.is_closed && (
@@ -307,12 +307,12 @@ export const PipelineSettings: React.FC = () => {
                       onChange={(e) => setFormData({ ...formData, is_won: e.target.checked })}
                       className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                     />
-                    <span className="text-sm text-gray-700">Mark as won (success)</span>
+                    <span className="text-sm text-theme-text-secondary">Mark as won (success)</span>
                   </label>
                 )}
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+              <div className="flex justify-end gap-3 pt-4 border-t border-theme-border-primary">
                 <Button
                   type="button"
                   variant="outline"

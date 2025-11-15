@@ -45,7 +45,7 @@ export const EmailAnalytics: React.FC = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto text-blue-600" />
-          <p className="mt-2 text-gray-600">Loading analytics...</p>
+          <p className="mt-2 text-theme-text-secondary">Loading analytics...</p>
         </div>
       </div>
     );
@@ -56,7 +56,7 @@ export const EmailAnalytics: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Email Analytics</h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-theme-text-secondary mt-1">
             Comprehensive performance metrics for your email campaigns
           </p>
         </div>
@@ -161,7 +161,7 @@ export const EmailAnalytics: React.FC = () => {
           {loadingCampaign && (
             <div className="text-center py-8">
               <RefreshCw className="w-6 h-6 animate-spin mx-auto text-blue-600" />
-              <p className="mt-2 text-gray-600">Loading campaign analytics...</p>
+              <p className="mt-2 text-theme-text-secondary">Loading campaign analytics...</p>
             </div>
           )}
 
@@ -204,8 +204,8 @@ export const EmailAnalytics: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 border border-gray-200 rounded-lg">
-                  <p className="text-sm text-gray-600 mb-2">Performance Metrics</p>
+                <div className="p-4 border border-theme-border-primary rounded-lg">
+                  <p className="text-sm text-theme-text-secondary mb-2">Performance Metrics</p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span>Delivery Rate:</span>
@@ -227,8 +227,8 @@ export const EmailAnalytics: React.FC = () => {
                 </div>
 
                 {campaignAnalytics.device_breakdown && (
-                  <div className="p-4 border border-gray-200 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-2">Device Breakdown</p>
+                  <div className="p-4 border border-theme-border-primary rounded-lg">
+                    <p className="text-sm text-theme-text-secondary mb-2">Device Breakdown</p>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span>Desktop:</span>
@@ -269,8 +269,8 @@ export const EmailAnalytics: React.FC = () => {
           )}
 
           {!selectedCampaignId && !loadingCampaign && (
-            <div className="text-center py-8 text-gray-500">
-              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-gray-400" />
+            <div className="text-center py-8 text-theme-text-tertiary">
+              <BarChart3 className="w-12 h-12 mx-auto mb-2 text-theme-text-tertiary" />
               <p>Select a campaign to view detailed analytics</p>
             </div>
           )}
@@ -287,18 +287,18 @@ export const EmailAnalytics: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-700">Provider</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">Sent</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">Delivered</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">Open Rate</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">Click Rate</th>
-                    <th className="text-right py-3 px-4 font-medium text-gray-700">Bounce Rate</th>
+                  <tr className="border-b border-theme-border-primary">
+                    <th className="text-left py-3 px-4 font-medium text-theme-text-secondary">Provider</th>
+                    <th className="text-right py-3 px-4 font-medium text-theme-text-secondary">Sent</th>
+                    <th className="text-right py-3 px-4 font-medium text-theme-text-secondary">Delivered</th>
+                    <th className="text-right py-3 px-4 font-medium text-theme-text-secondary">Open Rate</th>
+                    <th className="text-right py-3 px-4 font-medium text-theme-text-secondary">Click Rate</th>
+                    <th className="text-right py-3 px-4 font-medium text-theme-text-secondary">Bounce Rate</th>
                   </tr>
                 </thead>
                 <tbody>
                   {providerPerformance.map((provider: any, index: number) => (
-                    <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
+                    <tr key={index} className="border-b border-theme-border-primary hover:bg-theme-bg-tertiary">
                       <td className="py-3 px-4 font-medium">{provider.provider_name}</td>
                       <td className="text-right py-3 px-4">{provider.total_sent.toLocaleString()}</td>
                       <td className="text-right py-3 px-4">{provider.total_delivered.toLocaleString()}</td>
