@@ -163,16 +163,6 @@ export const emailsAPI = {
 };
 
 // Integrations API
-export const webhooksAPI = {
-  getAll: () => api.get('/webhooks/').then(res => res.data),
-  getById: (id: number) => api.get(`/webhooks/${id}/`).then(res => res.data),
-  create: (data: any) => api.post('/webhooks/', data).then(res => res.data),
-  update: (id: number, data: any) => api.patch(`/webhooks/${id}/`, data).then(res => res.data),
-  delete: (id: number) => api.delete(`/webhooks/${id}/`).then(res => res.data),
-  test: (id: number) => api.post(`/webhooks/${id}/test/`).then(res => res.data),
-  getLogs: (id: number) => api.get(`/webhooks/${id}/logs/`).then(res => res.data),
-};
-
 export const integrationsAPI = {
   getAll: () => api.get('/integrations/').then(res => res.data),
   getById: (id: number) => api.get(`/integrations/${id}/`).then(res => res.data),

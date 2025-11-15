@@ -314,36 +314,6 @@ export interface Email {
 }
 
 // Integrations
-export interface Webhook {
-  id: number;
-  account: number;
-  name: string;
-  url: string;
-  event_types: string[];
-  secret: string;
-  headers: any;
-  is_active: boolean;
-  total_calls: number;
-  failed_calls: number;
-  last_called_at: string | null;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface WebhookLog {
-  id: number;
-  webhook: number;
-  webhook_name?: string;
-  event_type: string;
-  payload: any;
-  response_code: number | null;
-  response_body: string;
-  status: 'success' | 'failed';
-  error_message: string;
-  created_at: string;
-}
-
 export interface ExternalIntegration {
   id: number;
   account: number;
