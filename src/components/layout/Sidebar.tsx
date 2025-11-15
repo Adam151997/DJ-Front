@@ -19,6 +19,7 @@ import {
   Filter,
   Repeat,
   BarChart3,
+  FileText,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -38,6 +39,7 @@ export const Sidebar: React.FC = () => {
     { name: 'AI Insights', href: '/ai-insights', icon: Brain },
     { name: 'Workflows', href: '/workflows', icon: Zap },
     { name: 'Email Campaigns', href: '/email-campaigns', icon: Mail },
+    { name: 'Email Templates', href: '/email-templates', icon: FileText },
     { name: 'Drip Campaigns', href: '/drip-campaigns', icon: Repeat },
     { name: 'Segments', href: '/segments', icon: Filter },
     { name: 'Email Analytics', href: '/email-analytics', icon: BarChart3 },
