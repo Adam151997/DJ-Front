@@ -24,7 +24,7 @@ export const Deals: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStage, setSelectedStage] = useState<string>('all');
+  const [selectedStage, setSelectedStage] = useState<string | number>('all');
   
   const queryClient = useQueryClient();
   
@@ -76,12 +76,12 @@ export const Deals: React.FC = () => {
   };
 
   const filteredDeals = deals?.filter(deal => {
-    const matchesSearch = 
+    const matchesSearch =
       deal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       deal.contact_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStage = selectedStage === 'all' || deal.stage === selectedStage;
-    
+
+    const matchesStage = selectedStage === 'all' || deal.pipeline_stage === selectedStage;
+
     return matchesSearch && matchesStage;
   });
 
@@ -100,7 +100,7 @@ export const Deals: React.FC = () => {
     ? [
         { value: 'all', label: 'All Stages', color: 'gray' },
         ...pipelineStages.map(stage => ({
-          value: stage.name,
+          value: stage.id,
           label: stage.display_name,
           color: stage.color.replace('#', ''), // Remove # for Tailwind classes
         }))
@@ -108,24 +108,19 @@ export const Deals: React.FC = () => {
     : defaultStages;
 
   // Helper to get stage color class
-  const getStageColorClass = (stageName: string) => {
-    const stage = pipelineStages?.find(s => s.name === stageName);
+  const getStageColorClass = (pipelineStageId: number | null) => {
+    if (!pipelineStageId || !pipelineStages) {
+      return { bg: '#6B72801A', text: '#6B7280' };
+    }
+    const stage = pipelineStages?.find(s => s.id === pipelineStageId);
     if (stage) {
       return {
         bg: stage.color + '1A', // 10% opacity
         text: stage.color,
       };
     }
-    // Fallback colors
-    const colorMap: Record<string, { bg: string; text: string }> = {
-      prospect: { bg: '#3B82F61A', text: '#3B82F6' },
-      qualification: { bg: '#F59E0B1A', text: '#F59E0B' },
-      proposal: { bg: '#F97316 1A', text: '#F97316' },
-      negotiation: { bg: '#8B5CF61A', text: '#8B5CF6' },
-      closed_won: { bg: '#10B9811A', text: '#10B981' },
-      closed_lost: { bg: '#EF44441A', text: '#EF4444' },
-    };
-    return colorMap[stageName] || { bg: '#6B72801A', text: '#6B7280' };
+    // Fallback color
+    return { bg: '#6B72801A', text: '#6B7280' };
   };
 
   const formatCurrency = (amount: string | null) => {
@@ -300,9 +295,9 @@ export const Deals: React.FC = () => {
                         onChange={(e) => handleStageUpdate(deal, Number(e.target.value))}
                         className="badge text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity"
                         style={{
-                          backgroundColor: getStageColorClass(deal.stage).bg,
-                          color: getStageColorClass(deal.stage).text,
-                          border: `1px solid ${getStageColorClass(deal.stage).text}33`,
+                          backgroundColor: getStageColorClass(deal.pipeline_stage).bg,
+                          color: getStageColorClass(deal.pipeline_stage).text,
+                          border: `1px solid ${getStageColorClass(deal.pipeline_stage).text}33`,
                         }}
                       >
                         {(pipelineStages && pipelineStages.length > 0 ? pipelineStages : []).map(stage => (

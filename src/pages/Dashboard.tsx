@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { dashboardAPI } from '../services/api';
+import { dashboardAPI, pipelineStagesAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
-import { 
-  Users, 
-  TrendingUp, 
-  DollarSign, 
+import {
+  Users,
+  TrendingUp,
+  DollarSign,
   BarChart3,
   ArrowUpRight,
   ArrowDownRight
@@ -17,6 +17,11 @@ export const Dashboard: React.FC = () => {
     queryKey: ['dashboard'],
     queryFn: () => dashboardAPI.getData(),
     retry: 1,
+  });
+
+  const { data: pipelineStages } = useQuery({
+    queryKey: ['pipeline-stages'],
+    queryFn: () => pipelineStagesAPI.getAll(),
   });
 
   if (isLoading) {
@@ -70,6 +75,28 @@ export const Dashboard: React.FC = () => {
       style: 'currency',
       currency: 'USD',
     }).format(num);
+  };
+
+  const getStageName = (pipelineStageId: number | null) => {
+    if (!pipelineStageId || !pipelineStages) return 'Unknown';
+    const stage = pipelineStages.find((s: any) => s.id === pipelineStageId);
+    return stage?.display_name || 'Unknown';
+  };
+
+  const getStageColor = (pipelineStageId: number | null) => {
+    if (!pipelineStageId || !pipelineStages) return { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' };
+    const stage = pipelineStages.find((s: any) => s.id === pipelineStageId);
+
+    if (!stage) return { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' };
+
+    // Determine color classes based on stage properties
+    if (stage.is_won) {
+      return { bg: 'bg-success-50', text: 'text-success-700', border: 'border-success-200' };
+    } else if (stage.is_closed && !stage.is_won) {
+      return { bg: 'bg-danger-50', text: 'text-danger-700', border: 'border-danger-200' };
+    } else {
+      return { bg: 'bg-warning-50', text: 'text-warning-700', border: 'border-warning-200' };
+    }
   };
 
   return (
@@ -176,12 +203,8 @@ export const Dashboard: React.FC = () => {
                     </div>
                     <div className="text-right flex-shrink-0 ml-4">
                       <p className="font-semibold text-gray-900 text-sm mb-1">{formatCurrency(deal.amount)}</p>
-                      <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-md border ${
-                        deal.stage === 'closed_won' ? 'bg-success-50 text-success-700 border-success-200' :
-                        deal.stage === 'closed_lost' ? 'bg-danger-50 text-danger-700 border-danger-200' :
-                        'bg-warning-50 text-warning-700 border-warning-200'
-                      }`}>
-                        {deal.stage.replace('_', ' ')}
+                      <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-md border ${getStageColor(deal.pipeline_stage).bg} ${getStageColor(deal.pipeline_stage).text} ${getStageColor(deal.pipeline_stage).border}`}>
+                        {getStageName(deal.pipeline_stage)}
                       </span>
                     </div>
                   </div>
