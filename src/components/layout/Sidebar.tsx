@@ -16,6 +16,9 @@ import {
   Mail,
   Webhook as WebhookIcon,
   Plug,
+  Filter,
+  Repeat,
+  BarChart3,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -35,6 +38,9 @@ export const Sidebar: React.FC = () => {
     { name: 'AI Insights', href: '/ai-insights', icon: Brain },
     { name: 'Workflows', href: '/workflows', icon: Zap },
     { name: 'Email Campaigns', href: '/email-campaigns', icon: Mail },
+    { name: 'Drip Campaigns', href: '/drip-campaigns', icon: Repeat },
+    { name: 'Segments', href: '/segments', icon: Filter },
+    { name: 'Email Analytics', href: '/email-analytics', icon: BarChart3 },
   ];
 
   const settingsNavigation = [

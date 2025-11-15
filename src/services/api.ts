@@ -231,3 +231,116 @@ export const pluginSyncLogsAPI = {
   },
   getById: (id: number) => api.get(`/plugin-sync-logs/${id}/`).then(res => res.data),
 };
+
+// Enhanced Email Campaign APIs
+
+// Segments API
+export const segmentsAPI = {
+  getAll: () => api.get('/segments/').then(res => res.data),
+  getById: (id: number) => api.get(`/segments/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/segments/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/segments/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/segments/${id}/`).then(res => res.data),
+  preview: (id: number, params?: { limit?: number }) =>
+    api.get(`/segments/${id}/preview/`, { params }).then(res => res.data),
+  calculateSize: (id: number) =>
+    api.post(`/segments/${id}/calculate-size/`).then(res => res.data),
+  performance: (id: number) =>
+    api.get(`/segments/${id}/performance/`).then(res => res.data),
+  validateConditions: (data: any) =>
+    api.post('/segments/validate-conditions/', data).then(res => res.data),
+};
+
+// A/B Test API
+export const abTestsAPI = {
+  getAll: (campaignId?: number) => {
+    const url = campaignId ? `/ab-tests/?campaign=${campaignId}` : '/ab-tests/';
+    return api.get(url).then(res => res.data);
+  },
+  getById: (id: number) => api.get(`/ab-tests/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/ab-tests/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/ab-tests/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/ab-tests/${id}/`).then(res => res.data),
+  results: (id: number) => api.get(`/ab-tests/${id}/results/`).then(res => res.data),
+  selectWinner: (id: number, data: { winner: 'A' | 'B' }) =>
+    api.post(`/ab-tests/${id}/select-winner/`, data).then(res => res.data),
+};
+
+// Drip Campaigns API
+export const dripCampaignsAPI = {
+  getAll: () => api.get('/drip-campaigns/').then(res => res.data),
+  getById: (id: number) => api.get(`/drip-campaigns/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/drip-campaigns/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/drip-campaigns/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/drip-campaigns/${id}/`).then(res => res.data),
+  activate: (id: number) => api.post(`/drip-campaigns/${id}/activate/`).then(res => res.data),
+  pause: (id: number) => api.post(`/drip-campaigns/${id}/pause/`).then(res => res.data),
+  enrollContact: (id: number, data: { contact_id?: number; lead_id?: number }) =>
+    api.post(`/drip-campaigns/${id}/enroll-contact/`, data).then(res => res.data),
+  analytics: (id: number) =>
+    api.get(`/drip-campaigns/${id}/analytics/`).then(res => res.data),
+  enrollments: (id: number, params?: { status?: string }) =>
+    api.get(`/drip-campaigns/${id}/enrollments/`, { params }).then(res => res.data),
+};
+
+// Drip Campaign Steps API
+export const dripStepsAPI = {
+  getAll: (dripCampaignId: number) =>
+    api.get(`/drip-campaign-steps/?drip_campaign=${dripCampaignId}`).then(res => res.data),
+  getById: (id: number) => api.get(`/drip-campaign-steps/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/drip-campaign-steps/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/drip-campaign-steps/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/drip-campaign-steps/${id}/`).then(res => res.data),
+  reorder: (id: number, data: { new_order: number }) =>
+    api.post(`/drip-campaign-steps/${id}/reorder/`, data).then(res => res.data),
+};
+
+// Email Analytics API
+export const emailAnalyticsAPI = {
+  campaignOverview: (campaignId: number) =>
+    api.get(`/email-analytics/campaign-overview/?campaign_id=${campaignId}`).then(res => res.data),
+  compare: (campaignIds: number[]) =>
+    api.get(`/email-analytics/compare/?campaign_ids=${campaignIds.join(',')}`).then(res => res.data),
+  globalStats: (params?: { days?: number }) =>
+    api.get('/email-analytics/global-stats/', { params }).then(res => res.data),
+  contactEngagement: (params?: { contact_id?: number; lead_id?: number; email?: string }) =>
+    api.get('/email-analytics/contact-engagement/', { params }).then(res => res.data),
+  revenueAttribution: (params?: { start_date?: string; end_date?: string }) =>
+    api.get('/email-analytics/revenue-attribution/', { params }).then(res => res.data),
+  providerPerformance: (params?: { days?: number }) =>
+    api.get('/email-analytics/provider-performance/', { params }).then(res => res.data),
+};
+
+// AI Features API
+export const emailAIAPI = {
+  optimizeSubject: (data: { subject: string; campaign_type?: string; target_audience?: string }) =>
+    api.post('/email-ai/optimize-subject/', data).then(res => res.data),
+  improveContent: (data: { content: string; style?: string; tone?: string }) =>
+    api.post('/email-ai/improve-content/', data).then(res => res.data),
+  personalize: (data: { content: string; contact_data: any; context?: any }) =>
+    api.post('/email-ai/personalize/', data).then(res => res.data),
+  predictSendTime: (data: { contact_id?: number; lead_id?: number; email?: string }) =>
+    api.post('/email-ai/predict-send-time/', data).then(res => res.data),
+  generateAbVariants: (data: { subject: string; element: string; num_variants?: number }) =>
+    api.post('/email-ai/generate-ab-variants/', data).then(res => res.data),
+  analyzePerformance: (campaignId: number) =>
+    api.post('/email-ai/analyze-performance/', { campaign_id: campaignId }).then(res => res.data),
+  suggestSegments: (data?: { min_size?: number; max_segments?: number }) =>
+    api.post('/email-ai/suggest-segments/', data || {}).then(res => res.data),
+  generateDripSequence: (data: { goal: string; audience: string; num_steps?: number }) =>
+    api.post('/email-ai/generate-drip-sequence/', data).then(res => res.data),
+  predictUnsubscribeRisk: (data: { contact_id?: number; lead_id?: number }) =>
+    api.post('/email-ai/predict-unsubscribe-risk/', data).then(res => res.data),
+  calculateSpamScore: (data: { subject: string; body_html: string; from_name?: string }) =>
+    api.post('/email-ai/calculate-spam-score/', data).then(res => res.data),
+};
+
+// Template Tools API
+export const templateToolsAPI = {
+  validate: (data: { template_html: string; template_subject?: string }) =>
+    api.post('/template-tools/validate/', data).then(res => res.data),
+  preview: (data: { template_html: string; sample_data?: any }) =>
+    api.post('/template-tools/preview/', data).then(res => res.data),
+  extractVariables: (data: { template_html: string; template_subject?: string }) =>
+    api.post('/template-tools/extract-variables/', data).then(res => res.data),
+};
