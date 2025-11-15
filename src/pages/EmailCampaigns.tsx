@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { emailCampaignsAPI, emailTemplatesAPI } from '../services/api';
+import { emailCampaignsAPI, emailTemplatesAPI, segmentsAPI } from '../services/api';
 import { EmailCampaign } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -15,10 +15,259 @@ import {
   Eye,
   MousePointer,
   AlertCircle,
+  XCircle,
 } from 'lucide-react';
+
+interface EmailCampaignFormProps {
+  campaign?: EmailCampaign | null;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+const EmailCampaignForm: React.FC<EmailCampaignFormProps> = ({ campaign, onClose, onSuccess }) => {
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState({
+    name: campaign?.name || '',
+    campaign_type: campaign?.campaign_type || 'one_time',
+    template: campaign?.template || null,
+    segment: campaign?.segment || null,
+    scheduled_at: campaign?.scheduled_at || '',
+    send_optimization: campaign?.send_optimization || 'immediate',
+    utm_campaign: campaign?.utm_campaign || '',
+    utm_source: campaign?.utm_source || '',
+    utm_medium: campaign?.utm_medium || '',
+  });
+
+  const { data: templates = [] } = useQuery({
+    queryKey: ['email-templates'],
+    queryFn: () => emailTemplatesAPI.getAll(),
+  });
+
+  const { data: segments = [] } = useQuery({
+    queryKey: ['segments'],
+    queryFn: () => segmentsAPI.getAll(),
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (data: any) => emailCampaignsAPI.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['email-campaigns'] });
+      onSuccess();
+      alert('Campaign created successfully!');
+    },
+    onError: (error: any) => {
+      alert(error?.response?.data?.detail || 'Failed to create campaign');
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: (data: any) => emailCampaignsAPI.update(campaign!.id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['email-campaigns'] });
+      onSuccess();
+      alert('Campaign updated successfully!');
+    },
+    onError: (error: any) => {
+      alert(error?.response?.data?.detail || 'Failed to update campaign');
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const payload = {
+      ...formData,
+      template: formData.template || null,
+      segment: formData.segment || null,
+      scheduled_at: formData.scheduled_at || null,
+      status: 'draft',
+    };
+
+    if (campaign) {
+      updateMutation.mutate(payload);
+    } else {
+      createMutation.mutate(payload);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-gray-200 sticky top-0 bg-white">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold">
+              {campaign ? 'Edit Campaign' : 'Create Email Campaign'}
+            </h2>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+              <XCircle className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="form-label">Campaign Name *</label>
+            <input
+              type="text"
+              className="form-input"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Monthly Newsletter - December 2024"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="form-label">Campaign Type *</label>
+            <select
+              className="form-select"
+              value={formData.campaign_type}
+              onChange={(e) => setFormData({ ...formData, campaign_type: e.target.value as any })}
+              required
+            >
+              <option value="one_time">One-Time Send</option>
+              <option value="recurring">Recurring Campaign</option>
+              <option value="triggered">Triggered Campaign</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              One-time: Send once. Recurring: Regular schedule. Triggered: Event-based.
+            </p>
+          </div>
+
+          <div>
+            <label className="form-label">Email Template *</label>
+            <select
+              className="form-select"
+              value={formData.template || ''}
+              onChange={(e) => setFormData({ ...formData, template: e.target.value ? Number(e.target.value) : null })}
+              required
+            >
+              <option value="">Select a template...</option>
+              {templates.map((template: any) => (
+                <option key={template.id} value={template.id}>
+                  {template.name} ({template.template_type})
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              Choose the email content template to use for this campaign
+            </p>
+          </div>
+
+          <div>
+            <label className="form-label">Target Segment</label>
+            <select
+              className="form-select"
+              value={formData.segment || ''}
+              onChange={(e) => setFormData({ ...formData, segment: e.target.value ? Number(e.target.value) : null })}
+            >
+              <option value="">All contacts</option>
+              {segments.map((segment: any) => (
+                <option key={segment.id} value={segment.id}>
+                  {segment.name} ({segment.actual_size} contacts)
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              Optionally target a specific segment of your audience
+            </p>
+          </div>
+
+          <div>
+            <label className="form-label">Send Optimization</label>
+            <select
+              className="form-select"
+              value={formData.send_optimization}
+              onChange={(e) => setFormData({ ...formData, send_optimization: e.target.value as any })}
+            >
+              <option value="immediate">Send Immediately</option>
+              <option value="optimal_time">Optimal Send Time</option>
+              <option value="time_zone_aware">Time Zone Aware</option>
+            </select>
+            <p className="text-xs text-gray-500 mt-1">
+              Optimize delivery timing for better engagement
+            </p>
+          </div>
+
+          {formData.campaign_type !== 'triggered' && (
+            <div>
+              <label className="form-label">Schedule Send Time (Optional)</label>
+              <input
+                type="datetime-local"
+                className="form-input"
+                value={formData.scheduled_at}
+                onChange={(e) => setFormData({ ...formData, scheduled_at: e.target.value })}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Leave empty to save as draft. Set a future time to schedule.
+              </p>
+            </div>
+          )}
+
+          <div className="border-t pt-4">
+            <h3 className="text-sm font-semibold mb-3">UTM Tracking (Optional)</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="form-label text-xs">UTM Campaign</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={formData.utm_campaign}
+                  onChange={(e) => setFormData({ ...formData, utm_campaign: e.target.value })}
+                  placeholder="newsletter-dec-2024"
+                />
+              </div>
+              <div>
+                <label className="form-label text-xs">UTM Source</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={formData.utm_source}
+                  onChange={(e) => setFormData({ ...formData, utm_source: e.target.value })}
+                  placeholder="moldcrm"
+                />
+              </div>
+              <div>
+                <label className="form-label text-xs">UTM Medium</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  value={formData.utm_medium}
+                  onChange={(e) => setFormData({ ...formData, utm_medium: e.target.value })}
+                  placeholder="email"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 bg-blue-50 rounded-lg">
+            <p className="text-sm text-blue-800 font-medium mb-1">What happens next?</p>
+            <p className="text-sm text-blue-700">
+              Campaign will be saved as a draft. You can review and send it from the campaigns list.
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
+            <Button type="button" variant="secondary" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={createMutation.isPending || updateMutation.isPending}
+            >
+              {campaign ? 'Update Campaign' : 'Create Campaign'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
 export const EmailCampaigns: React.FC = () => {
   const [selectedCampaign, setSelectedCampaign] = useState<EmailCampaign | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const [editingCampaign, setEditingCampaign] = useState<EmailCampaign | null>(null);
   const queryClient = useQueryClient();
 
   const { data: campaigns, isLoading } = useQuery({
@@ -105,7 +354,7 @@ export const EmailCampaigns: React.FC = () => {
           </p>
         </div>
         <Button
-          onClick={() => alert('Campaign builder coming soon!')}
+          onClick={() => setShowForm(true)}
           icon={Plus}
           size="lg"
         >
@@ -343,6 +592,21 @@ export const EmailCampaigns: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Campaign Form Modal */}
+      {showForm && (
+        <EmailCampaignForm
+          campaign={editingCampaign}
+          onClose={() => {
+            setShowForm(false);
+            setEditingCampaign(null);
+          }}
+          onSuccess={() => {
+            setShowForm(false);
+            setEditingCampaign(null);
+          }}
+        />
       )}
     </div>
   );
