@@ -29,9 +29,15 @@ export const Dashboard: React.FC = () => {
 
   const handleAgentActionComplete = () => {
     // Refresh dashboard data when agent performs actions
-    queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-    queryClient.invalidateQueries({ queryKey: ['leads'] });
-    queryClient.invalidateQueries({ queryKey: ['deals'] });
+    try {
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['leads'] });
+      queryClient.invalidateQueries({ queryKey: ['deals'] });
+      queryClient.invalidateQueries({ queryKey: ['contacts'] });
+    } catch (error) {
+      console.error('Error refreshing data after AI action:', error);
+      // Silently fail - don't crash the UI
+    }
   };
 
   if (isLoading) {

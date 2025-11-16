@@ -80,10 +80,16 @@ export const AIInsights: React.FC = () => {
   const unreadCount = insights?.filter((i: AIInsight) => !i.is_read).length || 0;
 
   const handleAgentActionComplete = () => {
-    queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
-    queryClient.invalidateQueries({ queryKey: ['leads'] });
-    queryClient.invalidateQueries({ queryKey: ['deals'] });
-    queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    try {
+      queryClient.invalidateQueries({ queryKey: ['ai-insights'] });
+      queryClient.invalidateQueries({ queryKey: ['leads'] });
+      queryClient.invalidateQueries({ queryKey: ['deals'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+      queryClient.invalidateQueries({ queryKey: ['contacts'] });
+    } catch (error) {
+      console.error('Error refreshing data after AI action:', error);
+      // Silently fail - don't crash the UI
+    }
   };
 
   if (isLoading) {
@@ -120,24 +126,6 @@ export const AIInsights: React.FC = () => {
           </span>
         </div>
       </div>
-
-      {/* Deprecation Notice for Old System */}
-      <Card className="border-warning-300 bg-warning-50">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-warning-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="text-sm font-semibold text-warning-800 mb-1">
-                New AI Agent System Available
-              </h3>
-              <p className="text-sm text-warning-700">
-                The old "Generate Lead Score" and "Predict Deal Outcomes" features have been replaced with a more powerful conversational AI agent below.
-                You can now ask natural language questions like "Score lead #123" or "Predict the outcome of deal #456" and much more!
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* AI Agent Chat Interface */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
