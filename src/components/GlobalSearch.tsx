@@ -78,7 +78,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) =>
         type: 'lead',
         title: lead.company_name || 'Unnamed Lead',
         subtitle: lead.contact_name || lead.email || 'No contact info',
-        path: '/leads',
+        path: `/leads/${lead.id}`,
       });
     });
 
@@ -94,7 +94,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) =>
         type: 'contact',
         title: `${contact.first_name} ${contact.last_name}`,
         subtitle: contact.company || contact.email || 'No company',
-        path: '/contacts',
+        path: `/contacts/${contact.id}`,
       });
     });
 
@@ -108,7 +108,7 @@ export const GlobalSearch: React.FC<GlobalSearchProps> = ({ className = '' }) =>
         type: 'deal',
         title: deal.name,
         subtitle: deal.contact_name || `$${deal.amount || 0}`,
-        path: '/deals',
+        path: `/deals/${deal.id}`,
       });
     });
   }
