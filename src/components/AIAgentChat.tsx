@@ -17,6 +17,40 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
   const [conversationHistory, setConversationHistory] = useState<GeminiMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Default suggestions based on context
+  const getDefaultSuggestions = (): AIAgentSuggestion[] => {
+    const contextPage = context?.page || 'general';
+
+    const suggestionMap: Record<string, AIAgentSuggestion[]> = {
+      dashboard: [
+        { text: "Show me my pipeline summary", category: "query", priority: "high" },
+        { text: "What are my top 5 deals by value?", category: "query", priority: "high" },
+        { text: "How many leads do I have in the qualified stage?", category: "query", priority: "medium" },
+        { text: "Create a new lead for John Doe", category: "action", priority: "medium" },
+      ],
+      leads: [
+        { text: "Show me leads from Google", category: "query", priority: "high" },
+        { text: "Create a lead for Sarah Smith from Acme Corp", category: "action", priority: "high" },
+        { text: "Update lead #123 to qualified status", category: "action", priority: "medium" },
+        { text: "Score all my new leads", category: "action", priority: "medium" },
+      ],
+      deals: [
+        { text: "What's the status of deal #123?", category: "query", priority: "high" },
+        { text: "Move deal #456 to negotiation stage", category: "action", priority: "high" },
+        { text: "Predict the outcome of my recent deals", category: "action", priority: "medium" },
+        { text: "Show me deals in the proposal stage", category: "query", priority: "medium" },
+      ],
+      general: [
+        { text: "Show me my pipeline summary", category: "query", priority: "high" },
+        { text: "Create a new lead", category: "action", priority: "high" },
+        { text: "What are my recent deals?", category: "query", priority: "medium" },
+        { text: "Search for contacts from Microsoft", category: "query", priority: "medium" },
+      ],
+    };
+
+    return suggestionMap[contextPage] || suggestionMap.general;
+  };
+
   // Fetch suggestions
   const { data: suggestionsData } = useQuery({
     queryKey: ['ai-agent-suggestions', context],
@@ -24,7 +58,10 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
     enabled: messages.length === 0, // Only show suggestions when chat is empty
   });
 
-  const suggestions = suggestionsData?.suggestions || [];
+  // Use backend suggestions if available, otherwise use defaults
+  const suggestions = suggestionsData?.suggestions && suggestionsData.suggestions.length > 0
+    ? suggestionsData.suggestions
+    : getDefaultSuggestions();
 
   // Query mutation
   const queryMutation = useMutation({
@@ -56,7 +93,12 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
 
       // Trigger callback if action was completed
       if (onActionComplete && data.function_calls && data.function_calls.length > 0) {
-        onActionComplete();
+        try {
+          onActionComplete();
+        } catch (error) {
+          console.error('Error in onActionComplete callback:', error);
+          // Don't crash the UI if the callback fails
+        }
       }
     },
     onError: (error: any) => {
