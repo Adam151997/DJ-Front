@@ -4,8 +4,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { NotificationProvider } from './contexts/NotificationContext';
+import { AIChatProvider } from './contexts/AIChatContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Layout } from './components/layout/Layout';
+import { AIChatSidebar } from './components/AIChatSidebar';
+import { AIFloatingButton } from './components/AIFloatingButton';
 import { Dashboard } from './pages/Dashboard';
 import { Leads } from './pages/Leads';
 import { Contacts } from './pages/Contacts';
@@ -34,42 +37,48 @@ function App() {
       <ThemeProvider>
         <NotificationProvider>
           <AuthProvider>
-            <Router>
-              <ProtectedRoute>
-                <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/leads" element={<Leads />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/deals" element={<Deals />} />
+            <AIChatProvider>
+              <Router>
+                <ProtectedRoute>
+                  <Layout>
+                    <Routes>
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/leads" element={<Leads />} />
+                      <Route path="/contacts" element={<Contacts />} />
+                      <Route path="/deals" element={<Deals />} />
 
-                {/* Automation Routes */}
-                <Route path="/ai-insights" element={<AIInsights />} />
-                <Route path="/workflows" element={<Workflows />} />
-                <Route path="/email-campaigns" element={<EmailCampaigns />} />
-                <Route path="/email-templates" element={<EmailTemplates />} />
-                <Route path="/email-providers" element={<EmailProviders />} />
+                      {/* Automation Routes */}
+                      <Route path="/ai-insights" element={<AIInsights />} />
+                      <Route path="/workflows" element={<Workflows />} />
+                      <Route path="/email-campaigns" element={<EmailCampaigns />} />
+                      <Route path="/email-templates" element={<EmailTemplates />} />
+                      <Route path="/email-providers" element={<EmailProviders />} />
 
-                {/* Enhanced Email Campaign Routes */}
-                <Route path="/segments" element={<Segments />} />
-                <Route path="/drip-campaigns" element={<DripCampaigns />} />
-                <Route path="/email-analytics" element={<EmailAnalytics />} />
+                      {/* Enhanced Email Campaign Routes */}
+                      <Route path="/segments" element={<Segments />} />
+                      <Route path="/drip-campaigns" element={<DripCampaigns />} />
+                      <Route path="/email-analytics" element={<EmailAnalytics />} />
 
-                {/* Plugin Integration Routes */}
-                <Route path="/plugins" element={<Plugins />} />
-                <Route path="/plugins/oauth-callback" element={<PluginOAuthCallback />} />
+                      {/* Plugin Integration Routes */}
+                      <Route path="/plugins" element={<Plugins />} />
+                      <Route path="/plugins/oauth-callback" element={<PluginOAuthCallback />} />
 
-                {/* Settings Routes */}
-                <Route path="/settings/templates" element={<BusinessTemplates />} />
-                <Route path="/settings/pipeline" element={<PipelineSettings />} />
-                <Route path="/settings/custom-fields" element={<CustomFieldsSettings />} />
-                <Route path="/settings/theme" element={<ThemeSettings />} />
-              </Routes>
-              </Layout>
-            </ProtectedRoute>
-          </Router>
-        </AuthProvider>
-      </NotificationProvider>
+                      {/* Settings Routes */}
+                      <Route path="/settings/templates" element={<BusinessTemplates />} />
+                      <Route path="/settings/pipeline" element={<PipelineSettings />} />
+                      <Route path="/settings/custom-fields" element={<CustomFieldsSettings />} />
+                      <Route path="/settings/theme" element={<ThemeSettings />} />
+                    </Routes>
+                  </Layout>
+
+                  {/* Global AI Chat Components */}
+                  <AIChatSidebar />
+                  <AIFloatingButton />
+                </ProtectedRoute>
+              </Router>
+            </AIChatProvider>
+          </AuthProvider>
+        </NotificationProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

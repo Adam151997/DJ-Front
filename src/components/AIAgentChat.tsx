@@ -249,7 +249,9 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
                       Actions performed:
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {message.function_calls.map((call, callIdx) => (
+                      {message.function_calls
+                        .filter(call => call?.name) // Filter out calls without names
+                        .map((call, callIdx) => (
                         <span
                           key={callIdx}
                           className="inline-flex items-center gap-1 px-2 py-1 bg-success-50 text-success-700 border border-success-200 rounded-md text-xs font-medium"

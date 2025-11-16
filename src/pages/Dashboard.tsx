@@ -1,9 +1,8 @@
 import React from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { dashboardAPI, pipelineStagesAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
-import { AIAgentChat } from '../components/AIAgentChat';
 import {
   Users,
   TrendingUp,
@@ -14,8 +13,6 @@ import {
 } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
-  const queryClient = useQueryClient();
-
   const { data: dashboardData, isLoading, error } = useQuery({
     queryKey: ['dashboard'],
     queryFn: () => dashboardAPI.getData(),
@@ -26,19 +23,6 @@ export const Dashboard: React.FC = () => {
     queryKey: ['pipeline-stages'],
     queryFn: () => pipelineStagesAPI.getAll(),
   });
-
-  const handleAgentActionComplete = () => {
-    // Refresh dashboard data when agent performs actions
-    try {
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      queryClient.invalidateQueries({ queryKey: ['leads'] });
-      queryClient.invalidateQueries({ queryKey: ['deals'] });
-      queryClient.invalidateQueries({ queryKey: ['contacts'] });
-    } catch (error) {
-      console.error('Error refreshing data after AI action:', error);
-      // Silently fail - don't crash the UI
-    }
-  };
 
   if (isLoading) {
     return (
@@ -160,44 +144,49 @@ export const Dashboard: React.FC = () => {
         />
       </div>
 
-      {/* AI Assistant */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <div className="lg:col-span-2">
-          <div style={{ height: '600px' }}>
-            <AIAgentChat
-              context={{ page: 'dashboard' }}
-              onActionComplete={handleAgentActionComplete}
-            />
-          </div>
-        </div>
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversion Rate</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-theme-text-primary">
+              {dashboardData?.deal_analytics?.open_deals && dashboardData?.lead_analytics?.total
+                ? Math.round((dashboardData.deal_analytics.open_deals / dashboardData.lead_analytics.total) * 100)
+                : 0}%
+            </div>
+            <p className="text-sm text-theme-text-secondary mt-1">Lead to deal conversion</p>
+          </CardContent>
+        </Card>
 
-        <div className="space-y-5">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Stats</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-theme-text-secondary">Conversion Rate</span>
-                <span className="text-sm font-semibold text-theme-text-primary">
-                  {dashboardData?.deal_analytics?.open_deals && dashboardData?.lead_analytics?.total
-                    ? Math.round((dashboardData.deal_analytics.open_deals / dashboardData.lead_analytics.total) * 100)
-                    : 0}%
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-theme-text-secondary">Avg Deal Size</span>
-                <span className="text-sm font-semibold text-theme-text-primary">
-                  {formatCurrency(
-                    dashboardData?.deal_analytics?.total_amount && dashboardData?.deal_analytics?.open_deals
-                      ? (parseFloat(dashboardData.deal_analytics.total_amount) / dashboardData.deal_analytics.open_deals).toString()
-                      : '0'
-                  )}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Avg Deal Size</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-theme-text-primary">
+              {formatCurrency(
+                dashboardData?.deal_analytics?.total_amount && dashboardData?.deal_analytics?.open_deals
+                  ? (parseFloat(dashboardData.deal_analytics.total_amount) / dashboardData.deal_analytics.open_deals).toString()
+                  : '0'
+              )}
+            </div>
+            <p className="text-sm text-theme-text-secondary mt-1">Average value per deal</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Pipeline Health</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-success-600">
+              {dashboardData?.deal_analytics?.open_deals || 0}
+            </div>
+            <p className="text-sm text-theme-text-secondary mt-1">Active deals in pipeline</p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Recent Activity */}
