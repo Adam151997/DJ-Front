@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { dealsAPI, contactsAPI, pipelineStagesAPI } from '../services/api';
 import { Deal, Contact, PipelineStage } from '../types';
@@ -6,26 +7,27 @@ import { DealForm } from '../components/forms/DealForm';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { StatCard } from '../components/ui/StatCard';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  TrendingUp, 
-  DollarSign, 
+import {
+  Plus,
+  Search,
+  Filter,
+  TrendingUp,
+  DollarSign,
   Target,
   Calendar,
-  Edit, 
+  Edit,
   Trash2,
   CheckCircle2,
   XCircle
 } from 'lucide-react';
 
 export const Deals: React.FC = () => {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editingDeal, setEditingDeal] = useState<Deal | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStage, setSelectedStage] = useState<string | number>('all');
-  
+
   const queryClient = useQueryClient();
   
   const { data: deals, isLoading } = useQuery({
@@ -272,7 +274,11 @@ export const Deals: React.FC = () => {
               </thead>
               <tbody>
                 {filteredDeals?.map((deal) => (
-                  <tr key={deal.id}>
+                  <tr
+                    key={deal.id}
+                    onClick={() => navigate(`/deals/${deal.id}`)}
+                    className="cursor-pointer hover:bg-theme-bg-tertiary transition-colors"
+                  >
                     <td className="py-4 px-6">
                       <div>
                         <p className="font-medium text-theme-text-primary">{deal.name}</p>
@@ -292,7 +298,11 @@ export const Deals: React.FC = () => {
                     <td className="py-4 px-6">
                       <select
                         value={deal.pipeline_stage || ''}
-                        onChange={(e) => handleStageUpdate(deal, Number(e.target.value))}
+                        onChange={(e) => {
+                          e.stopPropagation();
+                          handleStageUpdate(deal, Number(e.target.value));
+                        }}
+                        onClick={(e) => e.stopPropagation()}
                         className="badge text-xs font-medium cursor-pointer hover:opacity-80 transition-opacity"
                         style={{
                           backgroundColor: getStageColorClass(deal.pipeline_stage).bg,
@@ -334,14 +344,20 @@ export const Deals: React.FC = () => {
                     <td className="py-4 px-6">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => setEditingDeal(deal)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingDeal(deal);
+                          }}
                           className="table-action-btn"
                           title="Edit deal"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(deal)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(deal);
+                          }}
                           className="table-action-btn hover:text-danger-600 hover:bg-danger-50"
                           title="Delete deal"
                         >

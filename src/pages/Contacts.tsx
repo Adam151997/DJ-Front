@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { contactsAPI, leadsAPI } from '../services/api';
 import { Contact, Lead } from '../types';
@@ -6,15 +7,15 @@ import { ContactForm } from '../components/forms/ContactForm';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { StatCard } from '../components/ui/StatCard';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Users, 
-  Mail, 
-  Phone, 
-  Building, 
-  Edit, 
+import {
+  Plus,
+  Search,
+  Filter,
+  Users,
+  Mail,
+  Phone,
+  Building,
+  Edit,
   Trash2,
   UserPlus,
   Download,
@@ -22,11 +23,12 @@ import {
 } from 'lucide-react';
 
 export const Contacts: React.FC = () => {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [showConvertModal, setShowConvertModal] = useState(false);
-  
+
   const queryClient = useQueryClient();
   
   const { data: contacts, isLoading } = useQuery({
@@ -204,7 +206,11 @@ export const Contacts: React.FC = () => {
               </thead>
               <tbody>
                 {filteredContacts?.map((contact) => (
-                  <tr key={contact.id}>
+                  <tr
+                    key={contact.id}
+                    onClick={() => navigate(`/contacts/${contact.id}`)}
+                    className="cursor-pointer hover:bg-theme-bg-tertiary transition-colors"
+                  >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <div className="h-9 w-9 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center ring-1 ring-primary-100 flex-shrink-0">
@@ -250,14 +256,20 @@ export const Contacts: React.FC = () => {
                     <td className="py-4 px-6">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => setEditingContact(contact)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingContact(contact);
+                          }}
                           className="table-action-btn"
                           title="Edit contact"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(contact)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(contact);
+                          }}
                           className="table-action-btn hover:text-danger-600 hover:bg-danger-50"
                           title="Delete contact"
                         >

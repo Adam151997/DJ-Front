@@ -146,6 +146,42 @@ export const workflowsAPI = {
   getExecutions: (id: number) => api.get(`/workflows/${id}/executions/`).then(res => res.data),
 };
 
+// Enhanced CRM Features API
+export const notesAPI = {
+  getAll: (params?: { lead?: number; contact?: number; deal?: number }) =>
+    api.get('/notes/', { params }).then(res => res.data),
+  getById: (id: number) => api.get(`/notes/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/notes/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/notes/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/notes/${id}/`).then(res => res.data),
+};
+
+export const attachmentsAPI = {
+  getAll: (params?: { note?: number; lead?: number; contact?: number; deal?: number }) =>
+    api.get('/attachments/', { params }).then(res => res.data),
+  getById: (id: number) => api.get(`/attachments/${id}/`).then(res => res.data),
+  upload: (formData: FormData) =>
+    api.post('/attachments/', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }).then(res => res.data),
+  delete: (id: number) => api.delete(`/attachments/${id}/`).then(res => res.data),
+};
+
+export const tasksAPI = {
+  getAll: (params?: { lead?: number; contact?: number; deal?: number; assigned_to?: number; status?: string }) =>
+    api.get('/tasks/', { params }).then(res => res.data),
+  getById: (id: number) => api.get(`/tasks/${id}/`).then(res => res.data),
+  create: (data: any) => api.post('/tasks/', data).then(res => res.data),
+  update: (id: number, data: any) => api.patch(`/tasks/${id}/`, data).then(res => res.data),
+  delete: (id: number) => api.delete(`/tasks/${id}/`).then(res => res.data),
+};
+
+export const activityLogsAPI = {
+  getAll: (params?: { lead?: number; contact?: number; deal?: number; action_type?: string }) =>
+    api.get('/activity-logs/', { params }).then(res => res.data),
+  getById: (id: number) => api.get(`/activity-logs/${id}/`).then(res => res.data),
+};
+
 // Email API
 export const emailTemplatesAPI = {
   getAll: () => api.get('/email-templates/').then(res => res.data),

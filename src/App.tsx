@@ -11,8 +11,11 @@ import { AIChatSidebar } from './components/AIChatSidebar';
 import { AIFloatingButton } from './components/AIFloatingButton';
 import { Dashboard } from './pages/Dashboard';
 import { Leads } from './pages/Leads';
+import { LeadDetail } from './pages/LeadDetail';
 import { Contacts } from './pages/Contacts';
+import { ContactDetail } from './pages/ContactDetail';
 import { Deals } from './pages/Deals';
+import { DealDetail } from './pages/DealDetail';
 import { PipelineSettings } from './pages/PipelineSettings';
 import { CustomFieldsSettings } from './pages/CustomFieldsSettings';
 import { BusinessTemplates } from './pages/BusinessTemplates';
@@ -44,8 +47,11 @@ function App() {
                     <Routes>
                       <Route path="/" element={<Dashboard />} />
                       <Route path="/leads" element={<Leads />} />
+                      <Route path="/leads/:id" element={<LeadDetail />} />
                       <Route path="/contacts" element={<Contacts />} />
+                      <Route path="/contacts/:id" element={<ContactDetail />} />
                       <Route path="/deals" element={<Deals />} />
+                      <Route path="/deals/:id" element={<DealDetail />} />
 
                       {/* Automation Routes */}
                       <Route path="/ai-insights" element={<AIInsights />} />

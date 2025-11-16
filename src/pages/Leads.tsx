@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { leadsAPI } from '../services/api';
 import { Lead } from '../types';
@@ -9,10 +10,11 @@ import { StatCard } from '../components/ui/StatCard';
 import { Plus, Search, Filter, Users, TrendingUp, Edit, Trash2 } from 'lucide-react';
 
 export const Leads: React.FC = () => {
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const queryClient = useQueryClient();
   
   const { data: leads, isLoading } = useQuery({
@@ -158,7 +160,11 @@ export const Leads: React.FC = () => {
               </thead>
               <tbody>
                 {filteredLeads?.map((lead) => (
-                  <tr key={lead.id}>
+                  <tr
+                    key={lead.id}
+                    onClick={() => navigate(`/leads/${lead.id}`)}
+                    className="cursor-pointer hover:bg-theme-bg-tertiary transition-colors"
+                  >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
                         <div className="h-9 w-9 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg flex items-center justify-center ring-1 ring-primary-100 flex-shrink-0">
@@ -190,14 +196,20 @@ export const Leads: React.FC = () => {
                     <td className="py-4 px-6">
                       <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={() => setEditingLead(lead)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setEditingLead(lead);
+                          }}
                           className="table-action-btn"
                           title="Edit lead"
                         >
                           <Edit className="h-4 w-4" />
                         </button>
                         <button
-                          onClick={() => handleDelete(lead)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(lead);
+                          }}
                           className="table-action-btn hover:text-danger-600 hover:bg-danger-50"
                           title="Delete lead"
                         >

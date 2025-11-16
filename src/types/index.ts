@@ -63,6 +63,14 @@ export interface Deal {
   created_at: string;
   updated_at: string;
   custom_data: any;
+
+  // Company-centric fields
+  company_name?: string;
+  company_industry?: string;
+  company_size?: string;
+  company_website?: string;
+  company_address?: string;
+  company_notes?: string;
 }
 
 // Custom Objects System
@@ -226,6 +234,68 @@ export interface WorkflowExecution {
   error_message: string;
   started_at: string;
   completed_at: string | null;
+}
+
+// Enhanced CRM Features
+export interface Note {
+  id: number;
+  content: string;
+  lead?: number | null;
+  contact?: number | null;
+  deal?: number | null;
+  created_by: number;
+  created_by_name?: string;
+  created_at: string;
+  updated_at: string;
+  attachments?: Attachment[];
+}
+
+export interface Attachment {
+  id: number;
+  file: string;
+  file_url?: string;
+  filename: string;
+  file_size: number;
+  note?: number | null;
+  lead?: number | null;
+  contact?: number | null;
+  deal?: number | null;
+  uploaded_by: number;
+  uploaded_by_name?: string;
+  uploaded_at: string;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  due_date?: string | null;
+  completed_at?: string | null;
+  lead?: number | null;
+  contact?: number | null;
+  deal?: number | null;
+  assigned_to: number;
+  assigned_to_name?: string;
+  created_by: number;
+  created_by_name?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ActivityLog {
+  id: number;
+  action_type: 'created' | 'updated' | 'deleted' | 'status_changed' | 'note_added' | 'task_created' | 'task_completed' | 'email_sent' | 'file_attached' | 'converted' | 'assigned' | 'stage_changed' | 'other';
+  action_type_display?: string;
+  description: string;
+  lead?: number | null;
+  contact?: number | null;
+  deal?: number | null;
+  performed_by: number;
+  performed_by_name?: string;
+  created_at: string;
+  metadata?: any;
 }
 
 // Email & Communications
