@@ -141,11 +141,18 @@ export interface AppliedTemplate {
 // AI & Automation
 
 // AI Agent (New conversational AI system)
+// Message format for UI display
 export interface AIAgentMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp?: string;
   function_calls?: AIAgentFunctionCall[];
+}
+
+// Gemini conversation history format (backend format)
+export interface GeminiMessage {
+  role: 'user' | 'model';
+  parts: { text: string }[];
 }
 
 export interface AIAgentFunctionCall {
@@ -155,9 +162,11 @@ export interface AIAgentFunctionCall {
 }
 
 export interface AIAgentResponse {
+  success: boolean;
   response: string;
-  conversation_history: AIAgentMessage[];
+  conversation_history: GeminiMessage[];  // Backend returns Gemini format
   function_calls?: AIAgentFunctionCall[];
+  error?: string;
   metadata?: {
     processing_time?: number;
     model_used?: string;

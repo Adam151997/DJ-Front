@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { aiAgentAPI } from '../services/api';
-import { AIAgentMessage, AIAgentResponse, AIAgentSuggestion } from '../types';
+import { AIAgentMessage, AIAgentResponse, AIAgentSuggestion, GeminiMessage } from '../types';
 import { Send, Bot, User, Loader2, Sparkles, AlertCircle, Zap } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
@@ -14,7 +14,7 @@ interface AIAgentChatProps {
 export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionComplete }) => {
   const [messages, setMessages] = useState<AIAgentMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const [conversationHistory, setConversationHistory] = useState<any[]>([]);
+  const [conversationHistory, setConversationHistory] = useState<GeminiMessage[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Fetch suggestions
@@ -28,8 +28,9 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
 
   // Query mutation
   const queryMutation = useMutation({
-    mutationFn: (query: string) => aiAgentAPI.query(query, conversationHistory),
-    onSuccess: (data: AIAgentResponse) => {
+    mutationFn: ({ query, userInput }: { query: string; userInput: string }) =>
+      aiAgentAPI.query(query, conversationHistory),
+    onSuccess: (data: AIAgentResponse, variables) => {
       // Add assistant message
       const assistantMessage: AIAgentMessage = {
         role: 'assistant',
@@ -39,8 +40,19 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
       };
       setMessages((prev) => [...prev, assistantMessage]);
 
-      // Update conversation history
-      setConversationHistory(data.conversation_history || []);
+      // Update conversation history in Gemini format
+      // Backend returns the updated history, or we build it ourselves
+      if (data.conversation_history && data.conversation_history.length > 0) {
+        setConversationHistory(data.conversation_history);
+      } else {
+        // Fallback: Build history manually in Gemini format
+        const newHistory: GeminiMessage[] = [
+          ...conversationHistory,
+          { role: 'user', parts: [{ text: variables.userInput }] },
+          { role: 'model', parts: [{ text: data.response }] },
+        ];
+        setConversationHistory(newHistory);
+      }
 
       // Trigger callback if action was completed
       if (onActionComplete && data.function_calls && data.function_calls.length > 0) {
@@ -48,10 +60,34 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
       }
     },
     onError: (error: any) => {
-      // Add error message
+      // Add error message with detailed error info
+      let errorContent = 'Sorry, I encountered an error.';
+
+      // Handle timeout errors
+      if (error?.code === 'ECONNABORTED' || error?.message?.includes('timeout')) {
+        errorContent = 'Request timed out. The AI is taking longer than expected. Please try again.';
+      }
+      // Handle network errors
+      else if (error?.message === 'Network Error' || !error?.response) {
+        errorContent = 'Network error. Please check your connection and try again.';
+      }
+      // Handle API errors
+      else if (error?.response?.data?.error) {
+        errorContent = `Error: ${error.response.data.error}`;
+      } else if (error?.response?.data?.response) {
+        errorContent = error.response.data.response;
+      } else if (error?.message) {
+        errorContent = `Error: ${error.message}`;
+      }
+
+      // Check for specific model errors (404 model not found)
+      if (errorContent.includes('404') && (errorContent.includes('model') || errorContent.includes('gemini'))) {
+        errorContent = 'The AI model is currently unavailable or being updated. Please try again in a few moments, or contact support if the issue persists.';
+      }
+
       const errorMessage: AIAgentMessage = {
         role: 'assistant',
-        content: `Sorry, I encountered an error: ${error?.response?.data?.error || error.message || 'Unknown error'}`,
+        content: errorContent,
         timestamp: new Date().toISOString(),
       };
       setMessages((prev) => [...prev, errorMessage]);
@@ -62,16 +98,18 @@ export const AIAgentChat: React.FC<AIAgentChatProps> = ({ context, onActionCompl
     e.preventDefault();
     if (!inputValue.trim() || queryMutation.isPending) return;
 
+    const userInput = inputValue.trim();
+
     // Add user message
     const userMessage: AIAgentMessage = {
       role: 'user',
-      content: inputValue,
+      content: userInput,
       timestamp: new Date().toISOString(),
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    // Send query
-    queryMutation.mutate(inputValue);
+    // Send query with both query and userInput (needed for history building)
+    queryMutation.mutate({ query: userInput, userInput });
 
     // Clear input
     setInputValue('');

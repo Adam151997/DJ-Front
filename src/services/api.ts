@@ -114,7 +114,10 @@ export const templatesAPI = {
 // AI Agent API (New conversational AI system)
 export const aiAgentAPI = {
   query: (query: string, conversationHistory?: any[]) =>
-    api.post('/ai-agent/query/', { query, conversation_history: conversationHistory }).then(res => res.data),
+    api.post('/ai-agent/query/',
+      { query, conversation_history: conversationHistory },
+      { timeout: 30000 } // 30 second timeout
+    ).then(res => res.data),
   getSuggestions: (context?: any) =>
     api.post('/ai-agent/suggestions/', { context }).then(res => res.data),
 };
