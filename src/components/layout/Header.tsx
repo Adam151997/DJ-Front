@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
       <div className="flex items-center justify-between h-full max-w-screen-2xl mx-auto">
         {/* Left section - Title/Breadcrumb */}
         <div className="flex items-center gap-4">
-          <h2 className="text-lg font-semibold neon-text hidden sm:block">
+          <h2 className="text-lg font-semibold hidden sm:block" style={{ color: 'var(--text-primary)' }}>
             CRM Dashboard
           </h2>
         </div>
@@ -44,8 +44,8 @@ export const Header: React.FC = () => {
               </p>
             </div>
             <div
-              className="h-10 w-10 rounded-lg flex items-center justify-center font-semibold text-white shadow-md"
-              style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+              className="h-10 w-10 rounded-lg flex items-center justify-center font-semibold shadow-md"
+              style={{ backgroundColor: 'var(--accent-primary)', color: theme === 'light' ? '#ffffff' : '#0a0a0a' }}
             >
               {user?.first_name?.[0]}{user?.last_name?.[0]}
             </div>
