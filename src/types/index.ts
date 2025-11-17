@@ -420,6 +420,51 @@ export interface DashboardData {
   upcoming_events?: Event[];
 }
 
+// ==================== AI AGENT TYPES ====================
+
+export interface AIMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: string;
+}
+
+export interface AIQueryRequest {
+  query: string;
+  conversation_history?: AIMessage[];
+}
+
+export interface AIQueryResponse {
+  success: boolean;
+  response: string;
+  function_calls?: Array<{
+    name: string;
+    arguments: Record<string, any>;
+    result?: any;
+  }>;
+  conversation_history?: AIMessage[];
+}
+
+export interface AISuggestion {
+  text: string;
+  category?: string;
+}
+
+// ==================== AI INSIGHTS TYPES ====================
+
+export interface AIInsight {
+  id: number;
+  insight_type: 'agent_query' | 'agent_response' | 'lead_score' | 'deal_prediction' | 'next_action' | 'risk_alert';
+  content: string;
+  confidence?: number;
+  metadata?: Record<string, any>;
+  is_read: boolean;
+  lead?: Lead;
+  contact?: Contact;
+  opportunity?: Opportunity;
+  created_at: string;
+  updated_at: string;
+}
+
 // ==================== API RESPONSE TYPES ====================
 
 export interface PaginatedResponse<T> {

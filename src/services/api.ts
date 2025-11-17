@@ -164,3 +164,18 @@ export const attachmentsAPI = {
     }).then(res => res.data),
   delete: (id: number) => api.delete(`/attachments/${id}/`).then(res => res.data),
 };
+
+// ==================== AI AGENT API ====================
+export const aiAgentAPI = {
+  query: (data: { query: string; conversation_history?: any[] }) =>
+    api.post('/v1/ai-agent/query/', data, { timeout: 30000 }).then(res => res.data),
+  getSuggestions: () =>
+    api.post('/v1/ai-agent/suggestions/').then(res => res.data),
+};
+
+// ==================== AI INSIGHTS API ====================
+export const aiInsightsAPI = {
+  getAll: (params?: any) => api.get('/v1/ai-insights/', { params }).then(res => res.data),
+  getById: (id: number) => api.get(`/v1/ai-insights/${id}/`).then(res => res.data),
+  markAsRead: (id: number) => api.post(`/v1/ai-insights/${id}/mark_read/`).then(res => res.data),
+};

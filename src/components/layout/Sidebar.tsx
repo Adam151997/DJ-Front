@@ -17,6 +17,8 @@ import {
   Moon,
   Sun,
   Building2,
+  Brain,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -34,6 +36,12 @@ export const Sidebar: React.FC = () => {
     { name: 'Contacts', href: '/contacts', icon: Contact },
     { name: 'Accounts', href: '/accounts', icon: Building2 },
     { name: 'Opportunities', href: '/opportunities', icon: TrendingUp },
+  ];
+
+  // AI Features - matching DJCRM backend
+  const aiNavigation = [
+    { name: 'AI Insights', href: '/ai-insights', icon: Brain },
+    { name: 'AI Agent', href: '/ai-agent', icon: Sparkles },
   ];
 
   // Operations - matching DJCRM backend
@@ -114,6 +122,16 @@ export const Sidebar: React.FC = () => {
             </h3>
             <div className="space-y-1">
               {navigation.map(renderNavItem)}
+            </div>
+          </div>
+
+          {/* AI Features */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-wider mb-3 px-4 neon-text">
+              AI Powered
+            </h3>
+            <div className="space-y-1">
+              {aiNavigation.map(renderNavItem)}
             </div>
           </div>
 
