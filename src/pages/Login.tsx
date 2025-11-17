@@ -38,11 +38,11 @@ export const Login: React.FC = () => {
         <div className="text-center mb-8">
           <div
             className="inline-flex items-center justify-center h-16 w-16 rounded-2xl mb-4"
-            style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+            style={{ backgroundColor: 'var(--accent-primary)' }}
           >
-            <Zap className="h-8 w-8 text-white" />
+            <Zap className="h-8 w-8" style={{ color: 'var(--bg-primary)' }} />
           </div>
-          <h1 className="text-3xl font-bold gradient-text mb-2">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
             DJ CRM
           </h1>
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
@@ -52,7 +52,7 @@ export const Login: React.FC = () => {
 
         <Card className="glass">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl gradient-text">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl" style={{ color: 'var(--text-primary)' }}>Welcome Back</CardTitle>
             <p className="text-sm mt-2" style={{ color: 'var(--text-tertiary)' }}>
               Sign in to access your CRM dashboard
             </p>

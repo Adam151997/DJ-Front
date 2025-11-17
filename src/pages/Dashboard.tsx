@@ -72,28 +72,6 @@ export const Dashboard: React.FC = () => {
     }).format(num);
   };
 
-  const getStageName = (pipelineStageId: number | null) => {
-    if (!pipelineStageId || !pipelineStages) return 'Unknown';
-    const stage = pipelineStages.find((s: any) => s.id === pipelineStageId);
-    return stage?.display_name || 'Unknown';
-  };
-
-  const getStageColor = (pipelineStageId: number | null) => {
-    if (!pipelineStageId || !pipelineStages) return { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' };
-    const stage = pipelineStages.find((s: any) => s.id === pipelineStageId);
-
-    if (!stage) return { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' };
-
-    // Determine color classes based on stage properties
-    if (stage.is_won) {
-      return { bg: 'bg-success-50', text: 'text-success-700', border: 'border-success-200' };
-    } else if (stage.is_closed && !stage.is_won) {
-      return { bg: 'bg-danger-50', text: 'text-danger-700', border: 'border-danger-200' };
-    } else {
-      return { bg: 'bg-warning-50', text: 'text-warning-700', border: 'border-warning-200' };
-    }
-  };
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -242,10 +220,7 @@ export const Dashboard: React.FC = () => {
                       <p className="text-xs text-theme-text-secondary truncate">{deal.contact_name || 'No contact'}</p>
                     </div>
                     <div className="text-right flex-shrink-0 ml-4">
-                      <p className="font-semibold text-theme-text-primary text-sm mb-1">{formatCurrency(deal.amount)}</p>
-                      <span className={`inline-block px-2.5 py-1 text-xs font-medium rounded-md border ${getStageColor(deal.pipeline_stage).bg} ${getStageColor(deal.pipeline_stage).text} ${getStageColor(deal.pipeline_stage).border}`}>
-                        {getStageName(deal.pipeline_stage)}
-                      </span>
+                      <p className="font-semibold text-theme-text-primary text-sm">{formatCurrency(deal.amount)}</p>
                     </div>
                   </div>
                 ))

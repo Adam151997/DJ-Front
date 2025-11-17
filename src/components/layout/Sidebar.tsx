@@ -105,7 +105,7 @@ export const Sidebar: React.FC = () => {
       `}>
         {/* Logo/Brand */}
         <div className="sidebar-header">
-          <h1 className="text-xl font-bold gradient-text">
+          <h1 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>
             DJ CRM
           </h1>
           <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
@@ -127,7 +127,7 @@ export const Sidebar: React.FC = () => {
 
           {/* AI Features */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider mb-3 px-4 neon-text">
+            <h3 className="text-xs font-semibold uppercase tracking-wider mb-3 px-4" style={{ color: 'var(--text-tertiary)' }}>
               AI Powered
             </h3>
             <div className="space-y-1">
@@ -179,8 +179,8 @@ export const Sidebar: React.FC = () => {
           {/* User Info */}
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
             <div
-              className="h-10 w-10 rounded-lg flex items-center justify-center font-semibold text-white"
-              style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+              className="h-10 w-10 rounded-lg flex items-center justify-center font-semibold"
+              style={{ backgroundColor: 'var(--accent-primary)', color: theme === 'light' ? '#ffffff' : '#0a0a0a' }}
             >
               {user?.first_name?.[0]}{user?.last_name?.[0]}
             </div>
