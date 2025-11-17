@@ -30,15 +30,24 @@ export const OpportunityForm: React.FC<OpportunityFormProps> = ({
   });
 
   // Fetch contacts and accounts for dropdowns
-  const { data: contacts } = useQuery({
+  const { data: contactsResponse } = useQuery({
     queryKey: ['contacts'],
     queryFn: () => contactsAPI.getAll(),
   });
 
-  const { data: accounts } = useQuery({
+  const { data: accountsResponse } = useQuery({
     queryKey: ['accounts'],
     queryFn: () => accountsAPI.getAll(),
   });
+
+  // Handle both paginated and non-paginated responses
+  const contacts = Array.isArray(contactsResponse)
+    ? contactsResponse
+    : contactsResponse?.results || [];
+
+  const accounts = Array.isArray(accountsResponse)
+    ? accountsResponse
+    : accountsResponse?.results || [];
 
   const createMutation = useMutation({
     mutationFn: (data: Partial<Opportunity>) => opportunitiesAPI.create(data),

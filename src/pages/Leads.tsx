@@ -16,11 +16,16 @@ export const Leads: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const queryClient = useQueryClient();
-  
-  const { data: leads, isLoading } = useQuery({
+
+  const { data: leadsResponse, isLoading } = useQuery({
     queryKey: ['leads'],
     queryFn: () => leadsAPI.getAll(),
   });
+
+  // Handle both paginated and non-paginated responses
+  const leads = Array.isArray(leadsResponse)
+    ? leadsResponse
+    : leadsResponse?.results || [];
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => leadsAPI.delete(id),
@@ -35,7 +40,7 @@ export const Leads: React.FC = () => {
     }
   };
 
-  const filteredLeads = leads?.filter(lead =>
+  const filteredLeads = leads.filter(lead =>
     lead.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lead.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     lead.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -44,10 +49,10 @@ export const Leads: React.FC = () => {
 
   // Stats for the leads page
   const leadStats = {
-    total: leads?.length || 0,
-    new: leads?.filter(lead => lead.status === 'new').length || 0,
-    contacted: leads?.filter(lead => lead.status === 'contacted').length || 0,
-    qualified: leads?.filter(lead => lead.status === 'qualified').length || 0,
+    total: leads.length || 0,
+    new: leads.filter(lead => lead.status === 'new').length || 0,
+    contacted: leads.filter(lead => lead.status === 'contacted').length || 0,
+    qualified: leads.filter(lead => lead.status === 'qualified').length || 0,
   };
 
   if (isLoading) {

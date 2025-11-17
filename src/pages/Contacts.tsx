@@ -30,19 +30,28 @@ export const Contacts: React.FC = () => {
   const [showConvertModal, setShowConvertModal] = useState(false);
 
   const queryClient = useQueryClient();
-  
-  const { data: contacts, isLoading } = useQuery({
+
+  const { data: contactsResponse, isLoading } = useQuery({
     queryKey: ['contacts'],
     queryFn: () => contactsAPI.getAll(),
   });
 
-  const { data: unconvertedLeads } = useQuery({
+  // Handle both paginated and non-paginated responses
+  const contacts = Array.isArray(contactsResponse)
+    ? contactsResponse
+    : contactsResponse?.results || [];
+
+  const { data: unconvertedLeadsResponse } = useQuery({
     queryKey: ['leads', 'unconverted'],
-    queryFn: () => leadsAPI.getAll().then(leads => 
-      leads.filter(lead => lead.status !== 'converted')
-    ),
+    queryFn: async () => {
+      const leadsData = await leadsAPI.getAll();
+      const leadsArray = Array.isArray(leadsData) ? leadsData : leadsData?.results || [];
+      return leadsArray.filter((lead: Lead) => lead.status !== 'converted');
+    },
     enabled: showConvertModal,
   });
+
+  const unconvertedLeads = unconvertedLeadsResponse || [];
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => contactsAPI.delete(id),
@@ -71,7 +80,7 @@ export const Contacts: React.FC = () => {
     }
   };
 
-  const filteredContacts = contacts?.filter(contact =>
+  const filteredContacts = contacts.filter(contact =>
     contact.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contact.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -80,10 +89,10 @@ export const Contacts: React.FC = () => {
 
   // Stats for the contacts page
   const contactStats = {
-    total: contacts?.length || 0,
-    withLeads: contacts?.filter(contact => contact.lead).length || 0,
-    withDeals: contacts?.filter(contact => contact.deal_count > 0).length || 0,
-    companies: new Set(contacts?.map(contact => contact.company).filter(Boolean)).size,
+    total: contacts.length || 0,
+    withLeads: contacts.filter(contact => contact.lead).length || 0,
+    withDeals: contacts.filter(contact => contact.deal_count > 0).length || 0,
+    companies: new Set(contacts.map(contact => contact.company).filter(Boolean)).size,
   };
 
   if (isLoading) {
