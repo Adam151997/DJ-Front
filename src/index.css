@@ -99,10 +99,6 @@
    ============================================ */
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
   body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
