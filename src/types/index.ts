@@ -1,800 +1,448 @@
+// ==================== USER & AUTH TYPES ====================
+
 export interface User {
   id: number;
+  username: string;
   email: string;
   first_name: string;
   last_name: string;
-  role: string;
-  phone: string;
-  department: string;
-  account: number;  // Account ID
-  account_name?: string;  // Account name for display
+  role?: string;
+  is_active: boolean;
+  date_joined: string;
+  profile_picture?: string;
+  phone?: string;
+  team?: number;
 }
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: User;
+}
+
+// ==================== LEAD TYPES ====================
 
 export interface Lead {
   id: number;
+  title: string;
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
-  company: string;
-  status: string;
-  source: string;
-  notes: string;
-  assigned_to: number | null;
-  assigned_to_name?: string;
-  created_by: number;
+  phone?: string;
+  company?: string;
+  website?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+  status: 'new' | 'contacted' | 'qualified' | 'lost' | 'converted';
+  source?: string;
+  description?: string;
+  assigned_to?: User[];
+  created_by?: User;
   created_at: string;
   updated_at: string;
-  custom_data: any;
+  tags?: string[];
 }
+
+export interface LeadFormData {
+  title?: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  company?: string;
+  website?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+  status?: string;
+  source?: string;
+  description?: string;
+  assigned_to?: number[];
+  tags?: string[];
+}
+
+// ==================== CONTACT TYPES ====================
 
 export interface Contact {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
-  company: string;
-  title: string;
-  department: string;
-  lead: number | null;
+  phone?: string;
+  mobile?: string;
+  title?: string;
+  department?: string;
+  account?: Account;
+  address?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+  description?: string;
+  assigned_to?: User[];
+  created_by?: User;
+  created_at: string;
+  updated_at: string;
+  tags?: string[];
+}
+
+export interface ContactFormData {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  mobile?: string;
+  title?: string;
+  department?: string;
+  account?: number;
+  address?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+  description?: string;
+  assigned_to?: number[];
+  tags?: string[];
+}
+
+// ==================== ACCOUNT TYPES ====================
+
+export interface Account {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  industry?: string;
+  billing_address?: string;
+  billing_city?: string;
+  billing_state?: string;
+  billing_postcode?: string;
+  billing_country?: string;
+  shipping_address?: string;
+  shipping_city?: string;
+  shipping_state?: string;
+  shipping_postcode?: string;
+  shipping_country?: string;
+  description?: string;
+  assigned_to?: User[];
+  created_by?: User;
+  created_at: string;
+  updated_at: string;
+  tags?: string[];
+  contacts?: Contact[];
+}
+
+export interface AccountFormData {
+  name: string;
+  email?: string;
+  phone?: string;
+  website?: string;
+  industry?: string;
+  billing_address?: string;
+  billing_city?: string;
+  billing_state?: string;
+  billing_postcode?: string;
+  billing_country?: string;
+  shipping_address?: string;
+  shipping_city?: string;
+  shipping_state?: string;
+  shipping_postcode?: string;
+  shipping_country?: string;
+  description?: string;
+  assigned_to?: number[];
+  tags?: string[];
+}
+
+// ==================== OPPORTUNITY TYPES ====================
+
+export interface Opportunity {
+  id: number;
+  name: string;
+  account?: Account;
+  amount?: number;
+  currency?: string;
+  stage: string;
+  probability?: number;
+  expected_close_date?: string;
+  closed_on?: string;
+  description?: string;
   lead_source?: string;
-  deal_count?: number;
-  created_by: number;
+  assigned_to?: User[];
+  created_by?: User;
   created_at: string;
   updated_at: string;
-  custom_data: any;
+  tags?: string[];
 }
 
-export interface Deal {
-  id: number;
+export interface OpportunityFormData {
   name: string;
-  contact: number;
-  contact_name?: string;
-  assigned_to: number | null;
-  assigned_to_name?: string;
-  amount: string | null;
-  stage: string; // Legacy field, kept for backward compatibility
-  pipeline_stage: number | null; // New field - pipeline stage ID
-  expected_close_date: string | null;
-  probability: number;
-  notes: string;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-  custom_data: any;
-
-  // Company-centric fields
-  company_name?: string;
-  company_industry?: string;
-  company_size?: string;
-  company_website?: string;
-  company_address?: string;
-  company_notes?: string;
+  account?: number;
+  amount?: number;
+  currency?: string;
+  stage: string;
+  probability?: number;
+  expected_close_date?: string;
+  description?: string;
+  lead_source?: string;
+  assigned_to?: number[];
+  tags?: string[];
 }
 
-// Custom Objects System
-export interface CustomObject {
-  id: number;
-  name: string;
-  display_name: string;
-  description: string;
-  icon: string;
-  created_at: string;
-  created_by: number;
-  account: number;
-}
-
-export interface CustomField {
-  id: number;
-  name: string;
-  display_name: string;
-  field_type: 'text' | 'number' | 'date' | 'boolean' | 'select' | 'email' | 'phone' | 'textarea' | 'currency';
-  required: boolean;
-  options: string[] | null;
-  order: number;
-  custom_object: number;
-  default_value?: string;
-}
-
-export interface CustomObjectRecord {
-  id: number;
-  data: Record<string, any>;
-  created_at: string;
-  updated_at: string;
-  custom_object: number;
-  created_by: number;
-}
-
-// Pipeline Stage Configuration
-export interface PipelineStage {
-  id: number;
-  name: string;
-  display_name: string;
-  color: string;
-  order: number;
-  is_closed: boolean;
-  is_won: boolean;
-  account: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// Business Templates
-export interface BusinessTemplate {
-  id: number;
-  name: string;
-  template_type: 'saas' | 'real_estate' | 'ecommerce' | 'consulting' | 'agency' | 'custom';
-  description: string;
-  icon: string;
-  is_active: boolean;
-  pipeline_stages: any[];
-  custom_fields: any[];
-  automation_rules: any[];
-  email_templates: any[];
-  created_at: string;
-  updated_at: string;
-}
-
-export interface AppliedTemplate {
-  id: number;
-  account: number;
-  template: number;
-  template_name?: string;
-  applied_by: number;
-  applied_at: string;
-  configuration: any;
-}
-
-// AI & Automation
-
-// AI Agent (New conversational AI system)
-// Message format for UI display
-export interface AIAgentMessage {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp?: string;
-  function_calls?: AIAgentFunctionCall[];
-}
-
-// Gemini conversation history format (backend format)
-export interface GeminiMessage {
-  role: 'user' | 'model';
-  parts: { text: string }[];
-}
-
-export interface AIAgentFunctionCall {
-  name: string;
-  arguments: any;
-  result?: any;
-}
-
-export interface AIAgentResponse {
-  success: boolean;
-  response: string;
-  conversation_history: GeminiMessage[];  // Backend returns Gemini format
-  function_calls?: AIAgentFunctionCall[];
-  error?: string;
-  metadata?: {
-    processing_time?: number;
-    model_used?: string;
-    [key: string]: any;
-  };
-}
-
-export interface AIAgentSuggestion {
-  text: string;
-  category: 'action' | 'query' | 'insight';
-  priority?: 'high' | 'medium' | 'low';
-}
-
-export interface AIAgentSuggestionsResponse {
-  suggestions: AIAgentSuggestion[];
-}
-
-// AI Insights (DEPRECATED - Use AI Agent instead)
-export interface AIInsight {
-  id: number;
-  account: number;
-  insight_type: 'lead_score' | 'deal_prediction' | 'sentiment' | 'suggestion' | 'summary' | 'agent_query' | 'agent_lead' | 'agent_deal' | 'agent_report';
-  lead?: number;
-  contact?: number;
-  deal?: number;
-  title: string;
-  content: string;
-  confidence_score: number;
-  metadata: any;
-  is_read: boolean;
-  created_at: string;
-}
-
-export interface Workflow {
-  id: number;
-  account: number;
-  name: string;
-  description: string;
-  status: 'active' | 'paused' | 'draft';
-  trigger_type: string;
-  trigger_config: any;
-  actions: any[];
-  execution_count: number;
-  last_executed_at: string | null;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface WorkflowExecution {
-  id: number;
-  workflow: number;
-  workflow_name?: string;
-  status: 'success' | 'failed' | 'running';
-  trigger_data: any;
-  actions_executed: any[];
-  error_message: string;
-  started_at: string;
-  completed_at: string | null;
-}
-
-// Enhanced CRM Features
-export interface Note {
-  id: number;
-  content: string;
-  lead?: number | null;
-  contact?: number | null;
-  deal?: number | null;
-  created_by: number;
-  created_by_name?: string;
-  created_at: string;
-  updated_at: string;
-  attachments?: Attachment[];
-}
-
-export interface Attachment {
-  id: number;
-  file: string;
-  file_url?: string;
-  filename: string;
-  file_size: number;
-  note?: number | null;
-  lead?: number | null;
-  contact?: number | null;
-  deal?: number | null;
-  uploaded_by: number;
-  uploaded_by_name?: string;
-  uploaded_at: string;
-}
+// ==================== TASK TYPES ====================
 
 export interface Task {
   id: number;
   title: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  description?: string;
+  status: 'todo' | 'in_progress' | 'completed' | 'cancelled';
   priority: 'low' | 'medium' | 'high' | 'urgent';
-  due_date?: string | null;
-  completed_at?: string | null;
-  lead?: number | null;
-  contact?: number | null;
-  deal?: number | null;
-  assigned_to: number;
-  assigned_to_name?: string;
-  created_by: number;
-  created_by_name?: string;
+  due_date?: string;
+  assigned_to?: User;
+  created_by?: User;
   created_at: string;
   updated_at: string;
+  completed_at?: string;
+  related_to_type?: string;
+  related_to_id?: number;
 }
 
-export interface ActivityLog {
+export interface TaskFormData {
+  title: string;
+  description?: string;
+  status?: string;
+  priority?: string;
+  due_date?: string;
+  assigned_to?: number;
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+// ==================== CASE TYPES ====================
+
+export interface Case {
   id: number;
-  action_type: 'created' | 'updated' | 'deleted' | 'status_changed' | 'note_added' | 'task_created' | 'task_completed' | 'email_sent' | 'file_attached' | 'converted' | 'assigned' | 'stage_changed' | 'other';
-  action_type_display?: string;
+  name: string;
+  status: 'new' | 'in_progress' | 'on_hold' | 'resolved' | 'closed';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  type?: string;
+  account?: Account;
+  contact?: Contact;
+  description?: string;
+  resolution?: string;
+  assigned_to?: User;
+  created_by?: User;
+  created_at: string;
+  updated_at: string;
+  closed_at?: string;
+}
+
+export interface CaseFormData {
+  name: string;
+  status?: string;
+  priority?: string;
+  type?: string;
+  account?: number;
+  contact?: number;
+  description?: string;
+  resolution?: string;
+  assigned_to?: number;
+}
+
+// ==================== INVOICE TYPES ====================
+
+export interface InvoiceItem {
+  id?: number;
   description: string;
-  lead?: number | null;
-  contact?: number | null;
-  deal?: number | null;
-  performed_by: number;
-  performed_by_name?: string;
-  created_at: string;
-  metadata?: any;
+  quantity: number;
+  unit_price: number;
+  amount: number;
 }
 
-// Email & Communications
-export interface EmailTemplate {
+export interface Invoice {
   id: number;
-  account: number;
-  name: string;
-  template_type: 'welcome' | 'follow_up' | 'proposal' | 'thank_you' | 'reminder' | 'custom';
-  subject: string;
-  body_html: string;
-  body_text: string;
-  preview_text?: string;
-  design_json?: any;
-  thumbnail?: string;
-  category?: 'newsletter' | 'promotional' | 'transactional';
-  ai_optimization_score?: number;
-  spam_score?: number;
-  times_used?: number;
-  avg_open_rate?: number;
-  avg_click_rate?: number;
-  available_variables: string[];
-  is_active: boolean;
-  created_by: number;
+  invoice_number: string;
+  account?: Account;
+  contact?: Contact;
+  invoice_date: string;
+  due_date: string;
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
+  subtotal: number;
+  tax?: number;
+  total: number;
+  currency?: string;
+  notes?: string;
+  terms?: string;
+  items: InvoiceItem[];
+  created_by?: User;
   created_at: string;
   updated_at: string;
+  paid_at?: string;
 }
 
-export interface EmailCampaign {
+export interface InvoiceFormData {
+  invoice_number?: string;
+  account?: number;
+  contact?: number;
+  invoice_date: string;
+  due_date: string;
+  status?: string;
+  subtotal: number;
+  tax?: number;
+  total: number;
+  currency?: string;
+  notes?: string;
+  terms?: string;
+  items: InvoiceItem[];
+}
+
+// ==================== EVENT TYPES ====================
+
+export interface Event {
   id: number;
-  account: number;
-  name: string;
-  template: number | null;
-  template_name?: string;
-  status: 'draft' | 'scheduled' | 'sending' | 'completed' | 'paused';
-  campaign_type?: 'one_time' | 'recurring' | 'drip' | 'triggered';
-  segment?: number | null;
-  segment_name?: string;
-  recipient_filter: any;
-  scheduled_at: string | null;
-  send_optimization?: 'immediate' | 'optimal_time' | 'time_zone_aware';
-  throttle_rate?: number;
-  utm_campaign?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_content?: string;
-  total_recipients: number;
-  sent_count: number;
-  delivered_count?: number;
-  opened_count: number;
-  unique_opens?: number;
-  clicked_count: number;
-  unique_clicks?: number;
-  bounced_count: number;
-  hard_bounces?: number;
-  soft_bounces?: number;
-  unsubscribe_count?: number;
-  spam_complaints?: number;
-  conversions?: number;
-  revenue?: number;
-  roi?: number;
-  ab_test_enabled?: boolean;
-  ab_test_config?: any;
-  goal_metric?: string;
-  goal_value?: number;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-  completed_at?: string | null;
-  providers?: number[];
-  provider_strategy?: 'priority' | 'round_robin' | 'failover';
-}
-
-export interface EmailProvider {
-  id: number;
-  account: number;
-  provider_type: 'sendgrid' | 'mailgun' | 'mailchimp' | 'brevo' | 'klaviyo';
-  name: string;
-  api_key?: string; // write-only
-  api_secret?: string; // write-only
-  sender_email: string;
-  sender_name: string;
-  config: any;
-  is_active: boolean;
-  is_verified: boolean;
-  daily_limit: number | null;
-  monthly_limit: number | null;
-  sent_today: number;
-  sent_this_month: number;
-  last_error: string;
-  last_sent_at: string | null;
-  priority: number;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface EmailProviderStats {
-  total_sent: number;
-  delivered: number;
-  opened: number;
-  clicked: number;
-  bounced: number;
-  failed: number;
-  sent_today: number;
-  sent_this_month: number;
-  delivery_rate: number;
-  open_rate: number;
-  click_rate: number;
-  bounce_rate: number;
-}
-
-export interface Email {
-  id: number;
-  account: number;
-  campaign: number | null;
-  from_email: string;
-  to_email: string;
-  subject: string;
-  body_html: string;
-  body_text: string;
-  lead: number | null;
-  contact: number | null;
-  deal: number | null;
-  status: 'queued' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed';
-  tracking_id: string;
-  sent_at: string | null;
-  delivered_at: string | null;
-  opened_at: string | null;
-  clicked_at: string | null;
-  error_message: string;
-  created_at: string;
-}
-
-// Integrations
-export interface ExternalIntegration {
-  id: number;
-  account: number;
-  platform: 'zapier' | 'make' | 'n8n' | 'custom_api' | 'slack' | 'google_sheets' | 'hubspot' | 'salesforce';
-  name: string;
-  config: any;
-  is_active: boolean;
-  last_sync_at: string | null;
-  created_by: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// Plugin Integrations (Google Ads, Meta Ads, TikTok Ads, Shopify)
-export interface Plugin {
-  id: number;
-  account: number;
-  plugin_type: 'google_ads' | 'meta_ads' | 'tiktok_ads' | 'shopify';
-  plugin_display?: string;
-  name: string;
-  category: 'advertising' | 'ecommerce' | 'analytics' | 'other';
-  category_display?: string;
-  status: 'active' | 'inactive' | 'error' | 'pending';
-  status_display?: string;
-  client_id: string;
-  client_secret?: string; // write-only
-  masked_client_secret?: string; // read-only masked value
-  access_token?: string; // write-only
-  masked_access_token?: string; // read-only masked value
-  refresh_token?: string; // write-only
-  token_expires_at: string | null;
-  is_token_expired_flag?: boolean;
-  config: any;
-  is_active: boolean;
-  is_verified: boolean;
-  last_sync_at: string | null;
-  last_error: string;
-  sync_frequency: number;
-  created_by: number;
-  created_by_name?: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface PluginEvent {
-  id: number;
-  plugin: number;
-  plugin_name?: string;
-  event_type: string;
-  event_id: string;
-  payload: any;
-  processed: boolean;
-  processed_at: string | null;
-  lead_created: number | null;
-  contact_created: number | null;
-  deal_created: number | null;
-  error_message: string;
-  created_at: string;
-}
-
-export interface PluginSyncLog {
-  id: number;
-  plugin: number;
-  plugin_name?: string;
-  sync_type: string;
-  status: 'success' | 'failed' | 'partial';
-  records_synced: number;
-  records_created: number;
-  records_updated: number;
-  records_failed: number;
-  error_message: string;
-  started_at: string;
-  completed_at: string | null;
-  metadata: any;
-}
-
-export interface PluginOAuthUrl {
-  oauth_url: string;
-  state: string;
-}
-
-export interface PluginAccountInfo {
-  account_id?: string;
-  account_name?: string;
-  account_email?: string;
-  account_status?: string;
-  additional_info?: any;
-}
-
-// Enhanced Email Campaign Features
-
-export interface Segment {
-  id: number;
-  account: number;
-  name: string;
-  description: string;
-  segment_type: 'static' | 'dynamic' | 'behavioral';
-  segment_type_display?: string;
-  filter_conditions: any;
-  static_contacts?: number[];
-  estimated_size: number;
-  actual_size: number;
-  auto_update: boolean;
-  is_active: boolean;
-  tags?: string[];
-  created_by: number;
-  created_by_name?: string;
-  created_at: string;
-  updated_at: string;
-  last_updated_at?: string | null;
-}
-
-export interface CampaignABTest {
-  id: number;
-  campaign: number;
-  campaign_name?: string;
-  test_name: string;
-  status: 'testing' | 'completed' | 'cancelled';
-  status_display?: string;
-  test_element: string;
-  variant_a_value: string;
-  variant_a_sent: number;
-  variant_a_opened: number;
-  variant_a_clicked: number;
-  variant_a_conversions: number;
-  variant_b_value: string;
-  variant_b_sent: number;
-  variant_b_opened: number;
-  variant_b_clicked: number;
-  variant_b_conversions: number;
-  test_sample_size: number;
-  winner?: 'A' | 'B';
-  is_statistically_significant: boolean;
-  confidence_level?: number;
-  started_at: string;
-  completed_at?: string | null;
-  created_at: string;
-}
-
-export interface DripCampaign {
-  id: number;
-  account: number;
-  name: string;
-  description: string;
-  status: 'active' | 'paused' | 'draft';
-  status_display?: string;
-  trigger_type: string;
-  trigger_type_display?: string;
-  trigger_config: any;
-  enrollment_rules: any;
-  exit_conditions: any;
-  skip_weekends: boolean;
-  skip_holidays: boolean;
-  send_time_hour?: number;
-  time_zone?: string;
-  total_enrollments: number;
-  active_enrollments: number;
-  completed_enrollments: number;
-  total_emails_sent: number;
-  avg_open_rate?: number;
-  avg_click_rate?: number;
-  created_by: number;
-  created_by_name?: string;
-  created_at: string;
-  updated_at: string;
-  activated_at?: string | null;
-}
-
-export interface DripCampaignStep {
-  id: number;
-  drip_campaign: number;
-  drip_campaign_name?: string;
-  order: number;
-  step_name: string;
-  delay_value: number;
-  delay_unit: 'minutes' | 'hours' | 'days';
-  template: number;
-  template_name?: string;
-  branch_on_action: boolean;
-  branch_conditions?: any;
-  total_sent: number;
-  total_opened: number;
-  total_clicked: number;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface DripCampaignEnrollment {
-  id: number;
-  drip_campaign: number;
-  drip_campaign_name?: string;
-  contact?: number | null;
-  lead?: number | null;
-  recipient_email: string;
-  recipient_name?: string;
-  status: 'active' | 'completed' | 'exited' | 'paused';
-  status_display?: string;
-  current_step?: number | null;
-  current_step_name?: string;
-  next_send_at?: string | null;
-  enrolled_at: string;
-  completed_at?: string | null;
-  exited_at?: string | null;
-  exit_reason?: string;
-  emails_sent: number;
-  emails_opened: number;
-  emails_clicked: number;
-}
-
-export interface EmailEngagement {
-  id: number;
-  email: number;
-  contact?: number | null;
-  lead?: number | null;
-  engagement_score: number;
-  opens_count: number;
-  clicks_count: number;
-  last_opened_at?: string | null;
-  last_clicked_at?: string | null;
-  device_type?: string;
-  email_client?: string;
+  title: string;
+  description?: string;
+  start_date: string;
+  end_date: string;
+  all_day: boolean;
   location?: string;
-  user_agent?: string;
+  event_type?: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  attendees?: User[];
+  created_by?: User;
+  created_at: string;
+  updated_at: string;
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+export interface EventFormData {
+  title: string;
+  description?: string;
+  start_date: string;
+  end_date: string;
+  all_day?: boolean;
+  location?: string;
+  event_type?: string;
+  status?: string;
+  attendees?: number[];
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+// ==================== TEAM TYPES ====================
+
+export interface Team {
+  id: number;
+  name: string;
+  description?: string;
+  members: User[];
+  created_by?: User;
   created_at: string;
   updated_at: string;
 }
 
-export interface LinkClick {
-  id: number;
-  email: number;
-  contact?: number | null;
-  lead?: number | null;
-  url: string;
-  utm_campaign?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_content?: string;
-  clicked_at: string;
-  device_type?: string;
-  ip_address?: string;
-  location?: string;
-}
-
-export interface UnsubscribePreference {
-  id: number;
-  contact?: number | null;
-  lead?: number | null;
-  email: string;
-  unsubscribed_at: string;
-  reason?: string;
-  reason_text?: string;
-  campaign_type_preferences?: any;
-  frequency_preference?: string;
-  resubscribe_token: string;
-}
-
-export interface CampaignGoal {
-  id: number;
-  campaign: number;
-  campaign_name?: string;
-  goal_type: 'open_rate' | 'click_rate' | 'conversion' | 'revenue';
-  goal_type_display?: string;
-  target_value: number;
-  actual_value: number;
-  achieved: boolean;
-  achieved_at?: string | null;
-  created_at: string;
-}
-
-// Analytics Types
-export interface CampaignAnalytics {
-  campaign_id: number;
-  campaign_name: string;
-  total_sent: number;
-  total_delivered: number;
-  total_opened: number;
-  unique_opens: number;
-  total_clicked: number;
-  unique_clicks: number;
-  total_bounced: number;
-  hard_bounces: number;
-  soft_bounces: number;
-  total_unsubscribed: number;
-  spam_complaints: number;
-  delivery_rate: number;
-  open_rate: number;
-  click_rate: number;
-  click_to_open_rate: number;
-  bounce_rate: number;
-  unsubscribe_rate: number;
-  spam_complaint_rate: number;
-  conversions: number;
-  conversion_rate: number;
-  revenue: number;
-  roi: number;
-  device_breakdown?: {
-    desktop: number;
-    mobile: number;
-    tablet: number;
-  };
-  timeline?: Array<{
-    date: string;
-    opens: number;
-    clicks: number;
-    conversions: number;
-  }>;
-}
-
-export interface ContactEngagement {
-  contact_id?: number;
-  lead_id?: number;
-  email: string;
+export interface TeamFormData {
   name: string;
-  engagement_score: number;
-  total_emails_received: number;
-  total_opens: number;
-  total_clicks: number;
-  lifetime_open_rate: number;
-  lifetime_click_rate: number;
-  last_engaged_at?: string | null;
-  best_send_time?: string;
-  preferred_device?: string;
-  churn_risk_score?: number;
+  description?: string;
+  members?: number[];
 }
 
-// AI Feature Response Types
-export interface SubjectLineOptimization {
-  original: string;
-  suggestions: Array<{
-    subject: string;
-    score: number;
-    predicted_open_rate: number;
-    reasoning: string;
-  }>;
-  best_performer: {
-    subject: string;
-    score: number;
-    predicted_open_rate: number;
+// ==================== NOTE TYPES ====================
+
+export interface Note {
+  id: number;
+  content: string;
+  created_by?: User;
+  created_at: string;
+  updated_at: string;
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+export interface NoteFormData {
+  content: string;
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+// ==================== ATTACHMENT TYPES ====================
+
+export interface Attachment {
+  id: number;
+  file: string;
+  file_name: string;
+  file_size: number;
+  file_type?: string;
+  uploaded_by?: User;
+  uploaded_at: string;
+  related_to_type?: string;
+  related_to_id?: number;
+}
+
+// ==================== DASHBOARD TYPES ====================
+
+export interface DashboardStats {
+  total_leads: number;
+  total_contacts: number;
+  total_accounts: number;
+  total_opportunities: number;
+  total_tasks: number;
+  total_cases: number;
+  total_invoices: number;
+  total_events: number;
+  leads_by_status?: Record<string, number>;
+  opportunities_by_stage?: Record<string, number>;
+  tasks_by_status?: Record<string, number>;
+  cases_by_status?: Record<string, number>;
+  invoices_by_status?: Record<string, number>;
+  revenue_summary?: {
+    total_revenue: number;
+    pending_revenue: number;
+    overdue_revenue: number;
   };
 }
 
-export interface ContentImprovement {
-  original_content: string;
-  improved_content: string;
-  improvements: string[];
-  readability_score: number;
-  spam_score: number;
-  suggestions: string[];
+export interface DashboardData {
+  stats: DashboardStats;
+  recent_leads?: Lead[];
+  recent_opportunities?: Opportunity[];
+  upcoming_tasks?: Task[];
+  upcoming_events?: Event[];
 }
 
-export interface SendTimeOptimization {
-  recommended_time: string;
-  predicted_open_rate: number;
-  reasoning: string;
-  timezone: string;
-  historical_data_points: number;
+// ==================== API RESPONSE TYPES ====================
+
+export interface PaginatedResponse<T> {
+  count: number;
+  next?: string;
+  previous?: string;
+  results: T[];
 }
 
-export interface SpamScoreResult {
-  score: number;
-  rating: 'excellent' | 'good' | 'fair' | 'poor';
-  issues: Array<{
-    severity: 'high' | 'medium' | 'low';
-    issue: string;
-    suggestion: string;
-  }>;
-  suggestions: string[];
+export interface ErrorResponse {
+  detail?: string;
+  message?: string;
+  errors?: Record<string, string[]>;
+}
+
+// ==================== FILTER & SORT TYPES ====================
+
+export interface FilterParams {
+  search?: string;
+  status?: string;
+  assigned_to?: number;
+  created_by?: number;
+  ordering?: string;
+  page?: number;
+  page_size?: number;
 }

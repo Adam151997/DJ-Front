@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { AlertCircle, Shield } from 'lucide-react';
+import { Input } from '../components/ui/Input';
+import { AlertCircle, Zap } from 'lucide-react';
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -15,71 +16,83 @@ export const Login: React.FC = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-    
+
     try {
-      await login(email, password);
+      await login(username, password);
     } catch (error: any) {
-      setError(error.message || 'Login failed. Please try again.');
+      setError(error.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-gray-100 flex items-center justify-center p-4">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      style={{
+        background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)'
+      }}
+    >
       <div className="w-full max-w-md">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center h-12 w-12 bg-primary-600 rounded-xl mb-4">
-            <Shield className="h-6 w-6 text-white" />
+          <div
+            className="inline-flex items-center justify-center h-16 w-16 rounded-2xl mb-4"
+            style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}
+          >
+            <Zap className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-theme-text-primary">MoldCRM</h1>
-          <p className="text-theme-text-secondary mt-2">Sign in to your account</p>
+          <h1 className="text-3xl font-bold gradient-text mb-2">
+            DJ CRM
+          </h1>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            Futuristic Customer Relationship Management
+          </p>
         </div>
 
-        <Card className="border-0 shadow-medium">
-          <CardHeader className="text-center pb-2">
-            <CardTitle className="text-xl font-semibold">Welcome back</CardTitle>
+        <Card className="glass">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl gradient-text">Welcome Back</CardTitle>
+            <p className="text-sm mt-2" style={{ color: 'var(--text-tertiary)' }}>
+              Sign in to access your CRM dashboard
+            </p>
           </CardHeader>
           <CardContent>
             {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
-                <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
-                <p className="text-sm text-red-700">{error}</p>
+              <div
+                className="mb-4 p-3 rounded-lg flex items-center gap-2"
+                style={{
+                  backgroundColor: 'var(--danger-bg)',
+                  border: '1px solid var(--danger)',
+                  color: 'var(--danger)'
+                }}
+              >
+                <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                <p className="text-sm">{error}</p>
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-theme-text-secondary mb-1">
-                  Email address
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-theme-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                  placeholder="Enter your email"
-                  disabled={isLoading}
-                />
-              </div>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-theme-text-secondary mb-1">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-3 py-2 border border-theme-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
-                  placeholder="Enter your password"
-                  disabled={isLoading}
-                />
-              </div>
+              <Input
+                label="Username"
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+                disabled={isLoading}
+              />
+
+              <Input
+                label="Password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                disabled={isLoading}
+              />
+
               <Button
                 type="submit"
                 loading={isLoading}
@@ -90,15 +103,12 @@ export const Login: React.FC = () => {
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </Button>
             </form>
-            
-            <div className="mt-6 p-4 bg-theme-bg-tertiary rounded-lg">
-              <p className="text-sm text-theme-text-secondary text-center">
-                <strong>Demo credentials:</strong><br />
-                admin@moldcrm.com / admin123
-              </p>
-            </div>
           </CardContent>
         </Card>
+
+        <p className="text-center text-xs mt-6" style={{ color: 'var(--text-tertiary)' }}>
+          Protected by advanced security protocols
+        </p>
       </div>
     </div>
   );
