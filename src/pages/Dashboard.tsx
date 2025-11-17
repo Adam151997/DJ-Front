@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { dashboardAPI, pipelineStagesAPI } from '../services/api';
+import { dashboardAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { StatCard } from '../components/ui/StatCard';
 import {
@@ -17,11 +17,6 @@ export const Dashboard: React.FC = () => {
     queryKey: ['dashboard'],
     queryFn: () => dashboardAPI.getData(),
     retry: 1,
-  });
-
-  const { data: pipelineStages } = useQuery({
-    queryKey: ['pipeline-stages'],
-    queryFn: () => pipelineStagesAPI.getAll(),
   });
 
   if (isLoading) {
