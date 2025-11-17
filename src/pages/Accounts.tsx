@@ -27,10 +27,15 @@ export const Accounts: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: accounts, isLoading } = useQuery({
+  const { data: accountsResponse, isLoading } = useQuery({
     queryKey: ['accounts'],
     queryFn: () => accountsAPI.getAll(),
   });
+
+  // Handle both paginated and non-paginated responses
+  const accounts = Array.isArray(accountsResponse)
+    ? accountsResponse
+    : accountsResponse?.results || [];
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => accountsAPI.delete(id),
@@ -45,7 +50,7 @@ export const Accounts: React.FC = () => {
     }
   };
 
-  const filteredAccounts = accounts?.filter(account =>
+  const filteredAccounts = accounts.filter(account =>
     account.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     account.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     account.website?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -53,10 +58,10 @@ export const Accounts: React.FC = () => {
 
   // Stats for the accounts page
   const accountStats = {
-    total: accounts?.length || 0,
-    active: accounts?.filter(account => account.contacts_count > 0).length || 0,
-    totalRevenue: accounts?.reduce((sum, acc) => sum + (parseFloat(acc.annual_revenue || '0')), 0) || 0,
-    avgContacts: accounts?.length ? Math.round(accounts.reduce((sum, acc) => sum + (acc.contacts_count || 0), 0) / accounts.length) : 0,
+    total: accounts.length || 0,
+    active: accounts.filter(account => account.contacts_count > 0).length || 0,
+    totalRevenue: accounts.reduce((sum, acc) => sum + (parseFloat(acc.annual_revenue || '0')), 0) || 0,
+    avgContacts: accounts.length ? Math.round(accounts.reduce((sum, acc) => sum + (acc.contacts_count || 0), 0) / accounts.length) : 0,
   };
 
   if (isLoading) {

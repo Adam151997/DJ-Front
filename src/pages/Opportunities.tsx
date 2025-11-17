@@ -27,10 +27,15 @@ export const Opportunities: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: opportunities, isLoading } = useQuery({
+  const { data: opportunitiesResponse, isLoading } = useQuery({
     queryKey: ['opportunities'],
     queryFn: () => opportunitiesAPI.getAll(),
   });
+
+  // Handle both paginated and non-paginated responses
+  const opportunities = Array.isArray(opportunitiesResponse)
+    ? opportunitiesResponse
+    : opportunitiesResponse?.results || [];
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => opportunitiesAPI.delete(id),
@@ -45,7 +50,7 @@ export const Opportunities: React.FC = () => {
     }
   };
 
-  const filteredOpportunities = opportunities?.filter(opp =>
+  const filteredOpportunities = opportunities.filter(opp =>
     opp.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     opp.account_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     opp.contact_name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -53,12 +58,12 @@ export const Opportunities: React.FC = () => {
 
   // Stats for the opportunities page
   const oppStats = {
-    total: opportunities?.length || 0,
-    totalValue: opportunities?.reduce((sum, opp) => sum + parseFloat(opp.amount || '0'), 0) || 0,
-    avgValue: opportunities?.length
+    total: opportunities.length || 0,
+    totalValue: opportunities.reduce((sum, opp) => sum + parseFloat(opp.amount || '0'), 0) || 0,
+    avgValue: opportunities.length
       ? (opportunities.reduce((sum, opp) => sum + parseFloat(opp.amount || '0'), 0) / opportunities.length)
       : 0,
-    closingSoon: opportunities?.filter(opp => {
+    closingSoon: opportunities.filter(opp => {
       if (!opp.close_date) return false;
       const closeDate = new Date(opp.close_date);
       const today = new Date();
